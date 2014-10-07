@@ -46,6 +46,7 @@ def note(text) :
 
 def page_end() :
     lines = list()
+    lines.append('<small><p>Code available at <a href="https://github.com/talavis/kimenu">Github</a>. Patches are very welcome.</p></small>')
     lines.append('</body>')
     lines.append('</html>')
     return lines
@@ -345,6 +346,7 @@ def parse_matmakarna(filename, weekday, tomorrow, week) :
     return lines
 
 def parse_mf(filename, weekday, tomorrow, week) :
+    # Funny fact: W3C validator crashes while analysing this page.
     lines = list()
     lines += restaurant_start("MFs Kafe & k&ouml;k", 'Huddinge', 
                               'http://mmcatering.nu/mfs-kafe-kok/', 
