@@ -75,7 +75,7 @@ def parse_61an(filename, weekday, tomorrow, week) :
     started = False
     title_passed = False
     for line in open(filename, encoding='utf8') :
-        if 'vecka' in line.lower() and not started and not 'meny' in line.lower():
+        if 'vecka' in line.lower() and not title_passed and not 'meny' in line.lower():
             note('61an - week found')
             if not str(week) in line :
                 error('61an - wrong week')
@@ -455,9 +455,10 @@ def parse_tango(filename, weekday, tomorrow, day, month) :
 
     start = False
     today = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    today_alt = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
 #    current = list()
     for line in open(filename, encoding='utf8') :
-        if today in line.lower() :
+        if today in line.lower() or today_alt in line.lower() :
             note('Tango - day found')
             start = True
             continue
