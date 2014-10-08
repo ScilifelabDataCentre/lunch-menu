@@ -33,6 +33,7 @@ def fix_for_html(text) :
     text = text.replace('Ã©', '&eacute;')
     text = text.replace('Ã¥', '&aring;')
     text = text.replace(' ', '')
+    text = text.replace('Ã', '&Aring')
     text = text.strip()
     return text
 
