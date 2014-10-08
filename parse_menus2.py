@@ -130,7 +130,7 @@ def parse_alfred(filename, weekday, tomorrow, week) :
         if fix_for_html(tomorrow) in line.lower() or 'I samtliga r&auml;tter' in line:
             break
         tmp = remove_html(line.strip())
-        if len(tmp) > 0 :
+        if len(tmp) > 1 :
             lines.append(tmp + '<br/>')
 
     lines += restaurant_end()
@@ -142,20 +142,22 @@ def parse_glada(filename, weekday, tomorrow, week, weekday_eng) :
                               'http://www.dengladarestaurangen.se/', 
                               'http://www.openstreetmap.org/#map=19/59.35123/18.03006')
 
-#    for line in open(filename, encoding='utf-8') :
-        # looking for the lines where the menu is listed in bold text
-#        if 'Meny v.' in line :
-#            if not str(week) in line :
-#                error('Glada - wrong week')
-#                break
-#            note('Glada - week found')
-#        if weekday in line.lower() :
-            # start after tags
-#            spos = line.lower().index(weekday) + len(weekday)
-            # stop at end of swedish
-#            lines.append(fix_for_html(remove_html(line[spos:line.lower().index(weekday_eng)])))
-#            break
+    menu_reached = False
+    start = False
+    for line in open(filename, encoding='utf-8') :
+        if '>Vecka' in line and '</h1>' in line :
+            menu_reached = True
+        if menu_reached and weekday in line.lower() :
+            start = True
+            continue
+        if not start :
+            continue
+        if tomorrow in line.lower() :
+            break
+        if not '<em>' in line and not '<p>Vegetariskt<br />' in line :
+            lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
         
+
     lines += restaurant_end()
 
     return lines

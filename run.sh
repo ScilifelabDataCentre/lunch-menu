@@ -10,7 +10,7 @@ function dl_menus {
     wget -nv "http://restaurangkonigs.se/" -O konigs.html 1&> /dev/null
     week=$(($(date +%W | sed 's/^0*//')+1))
     year=`date +%Y`
-    wget -nv "http://www.dengladarestaurangen.se/meny-v-${week}-${year}" -O glada.html 1&> /dev/null
+    wget -nv "http://www.dengladarestaurangen.se/vecka-${week}" -O glada.html 1&> /dev/null
     year2=`date +%y`
     wget -nv "http://www.matmakarna.nu/Veckomeny_Restaurang_Matmakarna/index_Vecka_${week}${year2}.html" -O matmakarna.html 1&> /dev/null
     wget -nv "http://mmcatering.nu/mfs-kafe-kok/meny" -O mf.html 1&> /dev/null
