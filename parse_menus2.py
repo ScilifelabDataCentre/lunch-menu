@@ -224,7 +224,7 @@ def parse_jons(filename, weekday, tomorrow, day, month) :
 
     start = False
     today = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
-    today_alt = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    today_alt = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
     current = list()
     for line in open(filename, encoding='utf8') :
         if today in line.lower() or today_alt in line.lower() :
