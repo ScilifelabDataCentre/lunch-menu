@@ -152,7 +152,7 @@ def parse_glada(filename, weekday, tomorrow, week, weekday_eng) :
             continue
         if not start :
             continue
-        if tomorrow in line.lower() :
+        if tomorrow in line.lower()  or 'i samtliga rätter ingår' in line.lower() :
             break
         if not '<em>' in line and not '<p>Vegetariskt<br />' in line :
             lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
