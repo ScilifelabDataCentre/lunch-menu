@@ -295,10 +295,8 @@ def parse_konigs(filename, weekday, tomorrow, week, day, month) :
     for line in open(filename, encoding='utf8') :
         if 'Veckans matsedel:' in line :
             menu_passed = True
-#            if not start :
-#                if not ('v ' + str(week) in line or  'v ' + str(week) in line) :
-#                    note('Königs - correct week')
-#                    break
+            continue
+
         if menu_passed and weekday in line.lower() :
             note('Königs - correct day')
             start = True
