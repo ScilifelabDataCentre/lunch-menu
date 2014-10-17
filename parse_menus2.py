@@ -99,10 +99,6 @@ def page_start(weekday, day, month) :
     }
     </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>''')
     # page formatting
-    lines.append('<style>')
-    lines.append('div.title {')
-    lines.append('           font-weight: bold;')
-    lines.append('</style>')
     lines.append('')
     return lines
 
