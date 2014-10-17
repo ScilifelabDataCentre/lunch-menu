@@ -1,0 +1,11 @@
+body { 
+    height:100%;
+    font-size:14px;
+    font-family:Helvetica, Arial, Sans-serif;
+    letter-spacing:0.01em;
+}
+
+div.title {
+    font-weight: bold;
+}
+

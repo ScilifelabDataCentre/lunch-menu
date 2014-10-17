@@ -87,6 +87,9 @@ def page_start(weekday, day, month) :
     lines.append('<title>Dagens mat p&aring; KI - {date}</title>'.format(date = fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))))
     # Google translate support, page must be at correct address for this to work
     lines.append('''<meta name="google-translate-customization" content="85dd414b95fed0f0-aa01444e15709cd9-gfbbe571cd431d573-13"></meta>''')
+    lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
+    lines.append('<link href="http://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">')
+    lines.append('<style type="text/css"></style>')
     lines.append('</head>')
     lines.append('<body>')
     # Google translate support continued
@@ -99,7 +102,6 @@ def page_start(weekday, day, month) :
     lines.append('<style>')
     lines.append('div.title {')
     lines.append('           font-weight: bold;')
-    lines.append('}')
     lines.append('</style>')
     lines.append('')
     return lines
