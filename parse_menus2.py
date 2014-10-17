@@ -89,7 +89,7 @@ def page_start(weekday, day, month) :
     lines.append('''<meta name="google-translate-customization" content="85dd414b95fed0f0-aa01444e15709cd9-gfbbe571cd431d573-13"></meta>''')
     lines.append('</head>')
     lines.append('<body>')
-    # Google tranmslate support continued
+    # Google translate support continued
     lines.append('''<div id="google_translate_element"></div><script type="text/javascript">
     function googleTranslateElementInit() {
     new google.translate.TranslateElement({pageLanguage: 'sv', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
