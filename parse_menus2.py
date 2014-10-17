@@ -179,6 +179,7 @@ def parse_glada(filename, weekday, tomorrow, week, weekday_eng) :
             note('Glada - week found')
             menu_reached = True
         if menu_reached and weekday in line.lower() :
+            note('Glada - day found')
             start = True
             continue
         if not start :
@@ -186,7 +187,9 @@ def parse_glada(filename, weekday, tomorrow, week, weekday_eng) :
         if tomorrow in line.lower()  or 'i samtliga rätter ingår' in line.lower() :
             break
         if not '<em>' in line and not '<p>Vegetariskt<br />' in line :
-            lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
+            # remove seperate lines for e.g. "Pasta"
+            if len(remove_html(line).split(' ')) > 1 :
+                lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
         
 
     lines += restaurant_end()
