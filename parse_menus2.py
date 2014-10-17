@@ -75,7 +75,7 @@ def note(text) :
 
 def page_end() :
     lines = list()
-    lines.append('<small><p>Code available at <a href="https://github.com/talavis/kimenu">Github</a>. Patches are very welcome.</p></small>')
+    lines.append('<small><div>Code available at <a href="https://github.com/talavis/kimenu">Github</a>. Patches are very welcome.</div></small>')
     lines.append('</body>')
     lines.append('</html>')
     return lines
@@ -85,15 +85,23 @@ def page_start(weekday, day, month) :
     lines.append('<html>')
     lines.append('<head>')
     lines.append('<title>Dagens mat p&aring; KI - {date}</title>'.format(date = fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))))
+    # Google translate support, page must be at correct address for this to work
     lines.append('''<meta name="google-translate-customization" content="85dd414b95fed0f0-aa01444e15709cd9-gfbbe571cd431d573-13"></meta>''')
     lines.append('</head>')
     lines.append('<body>')
+    # Google tranmslate support continued
     lines.append('''<div id="google_translate_element"></div><script type="text/javascript">
     function googleTranslateElementInit() {
     new google.translate.TranslateElement({pageLanguage: 'sv', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
     }
     </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>''')
-    lines.append('</p>')
+    # page formatting
+    lines.append('<style>')
+    lines.append('div.title {')
+    lines.append('           font-weight: bold;')
+    lines.append('}')
+    lines.append('</style>')
+    lines.append('')
     return lines
 
 def parse_61an(filename, weekday, tomorrow, week) :
@@ -542,16 +550,19 @@ def remove_html(text) :
 
 def restaurant_start(restaurant, location, home_url, mapurl) :
     lines = list()
-    lines.append('''<b><a href="{url}"> {rest}</a> (<a href="{murl}">{loc}</a>)</b><br/>'''.format(rest = restaurant, 
+    lines.append('<!--{}-->'.format(restaurant))
+    lines.append('''<div class="title"><a href="{url}"> {rest}</a> (<a href="{murl}">{loc}</a>)</div>'''.format(rest = restaurant, 
                                                                                                    url = home_url, 
                                                                                                    loc = location,
                                                                                                    murl = mapurl))
+    lines.append('<div class="menu">')
     lines.append('<p>')
     return lines
 
 def restaurant_end() :
     lines = list()
     lines.append('</p>')
+    lines.append('</div>')
     return lines
 
 if __name__ == '__main__' :
