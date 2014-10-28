@@ -135,7 +135,8 @@ def parse_61an(filename, weekday, tomorrow, week) :
                             parts = days[d].split('<br>')
                         if len(parts) == 1 :
                             error('61an - parsing failed - br')
-                        note('61an - all days on one line - day found')
+                            break
+                        note('61an - day found')
                         for i in range(1, len(parts), 1) :
                             if len(fix_for_html(remove_html(parts[i]))) > 0 :
                                 lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
