@@ -221,52 +221,48 @@ def parse_haga() :
     return lines
     
 
-def parse_hjulet(filename, weekday, tomorrow, week) :
+def parse_hjulet(filename, weekday, tomorrow, day, month) :
     lines = list()
     lines += restaurant_start('Hjulet', 'Solna', 
-                              'http://web.comhem.se/hjulet/index.html', 
+                              'http://gastrogate.com/restaurang/restauranghjulet/', 
                               'https://www.openstreetmap.org/#map=19/59.34508/18.02423')
 
     start = False
+    done = False
     tips = False
-    menu_passed = False
-    for line in open(filename, encoding = 'latin1') :
-        if not start and 'MENY VECKA' in line :
-            if not 'MENY VECKA ' + str(week) in line :
-                note('Hjulet - wrong week')
-                break
-            else :
-                note('Hjulet - week found')
-                menu_passed = True
-        if weekday in line.lower() and menu_passed :
+    today = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    today_alt = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    current = list()
+    for line in open(filename, encoding='utf8') :
+        if today in line.lower() or today_alt in line.lower() :
             note('Hjulet - day found')
             start = True
             continue
-        if tips and weekday not in ('lördag', 'söndag') :
-            if len(fix_for_html(remove_html(line)).strip()) == 0 :
-                continue
-            else : 
-                lines.append('<i>Veckans tips:</i> ' + fix_for_html(remove_html(line)).strip() + '<br/>')
-            break
-        if 'VECKANS TIPS' in line :
+        if start and (tomorrow in line.lower() or '<!-- contact -->' in line.lower()) and not done :
+            note('Hjulet - today menu ended')
+            done = True
+        if start and not done :
+            tmp = fix_for_html(remove_html(line.strip()))
+            if len(tmp.strip()) > 0 :
+                current.append(tmp.strip())
+            note(line)
+            if 'attrD.gif' in line :
+                if len(current) > 0 :
+                    lines.append('<br/>'.join(current) + '<br/>')
+                    current = list()
+        # veckans tips; for sure after the main menu
+        if done and 'hela veckan' in line.lower() :
             note('Hjulet - tips found')
             tips = True
             continue
-        if not start :
-            continue
-        if tomorrow in line.lower() :
-            start = False
-            continue
-        if len(fix_for_html(remove_html(line)).strip()) == 0 :
-            continue
-        else : 
-            tmp = fix_for_html(remove_html(line)).strip()
-            if 'align="right"' in line :
-                continue
-            lines.append(tmp + '<br/>')
+        if tips :
+            tmp = fix_for_html(remove_html(line.strip()))
+            if len(tmp) > 0 :
+                lines.append('<br/>\n<i>Veckans tips:</i> ' + tmp + '<br/>')
+                break
+                
 
     lines += restaurant_end()
-
     return lines
 
 def parse_jons(filename, weekday, tomorrow, day, month) :
@@ -634,7 +630,7 @@ if __name__ == '__main__' :
         print('\n'.join(parse_haga()))
 
     if 'hjulet' in restaurants :
-        print('\n'.join(parse_hjulet(files[restaurants.index('hjulet')], WEEKDAY, TOMORROW, WEEK)))
+        print('\n'.join(parse_hjulet(files[restaurants.index('hjulet')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
 
     if 'karolina' in restaurants :
         print('\n'.join(parse_karolina(files[restaurants.index('karolina')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))

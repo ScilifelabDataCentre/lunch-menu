@@ -46,7 +46,7 @@ function get_glada {
 function dl_menus {
     wget -nv "http://mollanasiankok.se/veckansmeny.html" -O mollan.html 1&> /dev/null
     wget -nv "http://gastrogate.com/restaurang/jonsjacob/page/3/" -O jons.html 1&> /dev/null
-    wget -nv "http://web.comhem.se/hjulet/Matsedel.html" -O hjulet.html 1&> /dev/null
+    wget -nv "http://gastrogate.com/restaurang/restauranghjulet/page/3/" -O hjulet.html 1&> /dev/null
     wget -nv "http://restaurangkonigs.se/" -O konigs.html 1&> /dev/null
     get_glada
     year2=`date +%y`
@@ -58,6 +58,7 @@ function dl_menus {
     wget -nv "http://alfredsrestaurang.com/veckans_meny.html" -O alfred.html 1&> /dev/null
     wget -nv "http://gastrogate.com/restaurang/tango/page/3/" -O tango.html 1&> /dev/null
     wget -nv "http://61an.kvartersmenyn.se/" -O 61an.html 1&> /dev/null
+    wait
 }
 
 dl_menus
