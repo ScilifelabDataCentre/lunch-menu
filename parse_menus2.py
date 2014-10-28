@@ -123,9 +123,18 @@ def parse_61an(filename, weekday, tomorrow, week) :
             if tomorrow in line.lower() :
                 note('61an - all days on one line')
                 days = line.split('<STRONG>')
+                if len(days) == 1 :
+                    days = line.split('<strong>')
+                if len(days) == 1 :
+                    error('61an - parsing failed - strong')
+                    break
                 for d in range(len(days)) :
                     if weekday in days[d].lower() :                        
                         parts = days[d].split('<BR>')
+                        if len(parts) == 1 :
+                            parts = days[d].split('<br>')
+                        if len(parts) == 1 :
+                            error('61an - parsing failed - br')
                         note('61an - all days on one line - day found')
                         for i in range(1, len(parts), 1) :
                             if len(fix_for_html(remove_html(parts[i]))) > 0 :
@@ -223,10 +232,13 @@ def parse_hjulet(filename, weekday, tomorrow, week) :
     for line in open(filename, encoding = 'latin1') :
         if not start and 'MENY VECKA' in line :
             if not 'MENY VECKA ' + str(week) in line :
+                note('Hjulet - wrong week')
                 break
             else :
+                note('Hjulet - week found')
                 menu_passed = True
         if weekday in line.lower() and menu_passed :
+            note('Hjulet - day found')
             start = True
             continue
         if tips and weekday not in ('lördag', 'söndag') :
