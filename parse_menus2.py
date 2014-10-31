@@ -245,7 +245,6 @@ def parse_hjulet(filename, weekday, tomorrow, day, month) :
             tmp = fix_for_html(remove_html(line.strip()))
             if len(tmp.strip()) > 0 :
                 current.append(tmp.strip())
-            note(line)
             if 'attrD.gif' in line :
                 if len(current) > 0 :
                     lines.append('<br/>'.join(current) + '<br/>')
