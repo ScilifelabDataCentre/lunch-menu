@@ -256,6 +256,9 @@ def parse_hjulet(filename, weekday, tomorrow, day, month) :
             continue
         if tips :
             tmp = fix_for_html(remove_html(line.strip()))
+            # adding those for now; seems to be variation of the wording over time
+            tmp = tmp.replace('Veckans Tips:', '')
+            tmp = tmp.replace('Veckans tips:', '')
             if len(tmp) > 0 :
                 lines.append('<br/>\n<i>Veckans tips:</i> ' + tmp + '<br/>')
                 break
