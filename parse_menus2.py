@@ -474,7 +474,7 @@ def parse_nanna(filename, weekday, tomorrow, week) :
                               'https://www.openstreetmap.org/#map=19/59.34848/18.02807')
     start = False
     for line in open(filename, encoding='utf-8') :
-        if "Meny vecka" in line :
+        if 'meny' in line.lower() and 'vecka' in line.lower() :
             if not str(week) in line :
                 error('Nanna - wrong week')
                 break
@@ -484,6 +484,12 @@ def parse_nanna(filename, weekday, tomorrow, week) :
             note('Nanna - Day found')
             start = True
             continue
+        # alternative formatting
+        if weekday in line.lower() and '<strong>' in line.lower() :
+            note('Nanna - Day found')
+            start = True
+            continue
+        # end of day
         if start and (tomorrow in line.lower() or '<div class="span6">' in line) :
             note('Nanna - Day ended')
             break
