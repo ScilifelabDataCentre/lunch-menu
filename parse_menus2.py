@@ -75,7 +75,7 @@ def note(text) :
 
 def page_end() :
     lines = list()
-    lines.append('<small><div>Code available at <a href="https://github.com/talavis/kimenu">Github</a>. Patches are very welcome.</div></small>')
+    lines.append('<div class="endnote">Code available at <a href="https://github.com/talavis/kimenu">Github</a>. Patches are very welcome.</div>')
     lines.append('</body>')
     lines.append('</html>')
     return lines
@@ -142,13 +142,13 @@ def parse_61an(filename, weekday, tomorrow, week) :
                                 lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
         if not started :
             continue
-        if tomorrow in line.lower() or 'streck2.gif' in line :
+        if tomorrow in line.lower() or 'streck2.gif' in line or len(line.strip()) < 25 :
             note('61an - next day reached')
             break
         tmp = line.strip()
         tmp = tmp[tmp.lower().index(weekday) + len(weekday):]
         parts = tmp.split('<BR>')
-        for i in range(2, len(parts), 2) :
+        for i in range(1, len(parts), 1) :
             lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
 
     lines += restaurant_end()
