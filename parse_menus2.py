@@ -348,8 +348,8 @@ def parse_konigs(filename, weekday, tomorrow, week, day, month) :
             menu_passed = True
             continue
 
-        if menu_passed and weekday in line.lower() :
-            note('Königs - correct day')
+        if menu_passed and (weekday in line.lower() or fix_for_html(weekday) in line.lower()) :
+            note('Königs - day found')
             start = True
             continue
         if not start :
