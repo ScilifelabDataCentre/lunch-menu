@@ -370,29 +370,36 @@ def parse_matmakarna(filename, weekday, tomorrow, week) :
     lines += restaurant_start('Restaurang Matmakarna', 'Huddinge', 
                               'http://www.matmakarna.nu/index.html', 
                               'https://www.openstreetmap.org/#map=19/59.21872/17.94068')
-
+    rad_checker = False
     started = False
-    title_passed = False
     for line in open(filename, encoding='latin1') :
         if 'vecka ' in line.lower() and not started and not 'meny' in line.lower():
             note('Matmakarna - week found')
             if not str(week) in line :
                 error('Matmakarna - wrong week')
                 break
-            title_passed = True
-        if fix_for_html(weekday) in line.lower() and title_passed :
+        if weekday.upper() in line and 'START' in line :
             started = True
             note('Matmakarna - day found')
+            continue
         if not started :
             continue
-        if tomorrow in line.lower() or 'streck2.gif' in line :
-            note('Matmakarna - next day reached')
+        if weekday.upper() in line and 'SLUT' in line :
+            note('Matmakarna - end of day')
             break
-        tmp = line.strip()
-        tmp = tmp[tmp.lower().index(weekday) + len(weekday):]
-        parts = tmp.split('<BR>')
-        for i in range(2, len(parts), 2) :
-            lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
+#        note(line)
+        if '<!-- rad' in line.lower() :
+            rad_checker = True
+            continue
+        if rad_checker :
+            tmp = remove_html(line).strip()
+            if len(tmp) > 0 :
+                lines.append(fix_for_html(tmp) + '<br/>')
+                rad_checker = False
+            else :
+                continue
+        else :
+            continue
 
     lines += restaurant_end()
     return lines
@@ -480,7 +487,7 @@ def parse_nanna(filename, weekday, tomorrow, week) :
                 break
             note('Nanna - week found')
         # looking for the lines where the menu is listed in bold text
-        if weekday in line.lower() and '<h3>' in line.lower() :
+        if weekday in line.lower() and 'h3' in line.lower() :
             note('Nanna - Day found')
             start = True
             continue
@@ -668,6 +675,9 @@ if __name__ == '__main__' :
     if 'stories' in restaurants :
         print('\n'.join(parse_stories()))
 
+    if 'matmakarna' in restaurants :
+        print('\n'.join(parse_matmakarna(files[restaurants.index('matmakarna')], WEEKDAY, TOMORROW, WEEK)))
+        
     if 'tango' in restaurants :
         print('\n'.join(parse_tango(files[restaurants.index('tango')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
 
