@@ -263,7 +263,6 @@ def parse_hjulet(filename, weekday, tomorrow, day, month) :
                 lines.append('<br/>\n<i>Veckans tips:</i> ' + tmp + '<br/>')
                 break
                 
-
     lines += restaurant_end()
     return lines
 
@@ -546,7 +545,7 @@ def parse_tango(filename, weekday, tomorrow, day, month) :
 
 def parse_subway(wdigit) :
     # sub of the day
-    subotd = {0: 'Kalkon & skinka', 1: 'Skagenröra', 2: 'Kalkon', 3: 'Italian B.M.T', 4: 'Tonfisk', 5: 'Spicy italian', 6: 'Grillat kycklingbr&ouml;st', 7: 'Kalkon & skinka'}
+    subotd = {0: 'American Steakhouse Melt', 1: 'Subway Melt', 2: 'Spicy Italian', 3: 'Rostbiff', 4: 'Tonfisk', 5: 'Subway Club', 6: 'Italian B.M.T-', 7: 'American Steakhouse Melt'}
     lines = list()
     lines += restaurant_start('Subway', 'Solna', 
                               'http://subway.se/sv/hem/', 
