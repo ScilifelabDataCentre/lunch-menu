@@ -88,14 +88,20 @@ def parse_hjulet(filename, today, tomorrow, day, month) :
     i = 0
 
     for header in soup.find_all('table')[1].find_all('th') :
-        if WEEKDAY in str(header).lower() :
-            DAY_INDEX = i
-            break
+        if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower() :
+            day_index = i
+            note('Hjulet - day found')
         i += 1
-
-    txt = remove_html(str(soup.find_all('table')[1].find_all('td')[DAY_INDEX*3]))
-    txt = txt.replace('\n', '<br>\n')
-    lines.append(fix_for_html(txt))
+    if day_index != None :
+        txt = remove_html(str(soup.find_all('table')[1].find_all('td')[day_index*3]))
+        menu = txt.split('\n')
+        for i in range(len(menu)) :
+            menu[i] = fix_for_html(menu[i])
+            menu[i] += '<br>'
+        lines += menu
+        lines.append('<i>Veckans tips:</i>: ' + fix_for_html(remove_html(str(soup.find_all('table')[1].find_all('td')[15]))))
+    else :
+        Error('Hjulet - correct day not found')
 
     lines += restaurant_end()
     return lines
@@ -129,6 +135,10 @@ def page_start(weekday, day, month) :
     lines.append('')
     return lines
 
+def print_usage(supported) :
+    sys.stderr.write('Usage: {} restaurant=filename \n'.format(sys.argv[0]))
+    sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
+
 def remove_html(text) :
     text = text.replace('&nbsp;', ' ')
     # assumes all < are part of html tags
@@ -157,9 +167,8 @@ def restaurant_start(restaurant, location, home_url, mapurl) :
     return lines
 
 if __name__ == '__main__' :
-    SUPPORTED = ('mollan', 'jons', 'hjulet', 'konigs', 'glada', 'nanna', 'subway', 'karolina',
-                 'tango', 'mf', 'alfred', 'matmakarna', 'jorpes', 'tango', '61an', 'haga', 
-                 'stories')
+    SUPPORTED = ('jorpes', 'glada', 'jons', 'haga', 'hjulet', 'karolina', 'konigs', 'mollan',
+                 'nanna', 'subway', '61an', 'alfred', 'mf', 'stories', 'matmakarna', 'tango')
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
         sys.exit()
