@@ -636,15 +636,15 @@ if __name__ == '__main__' :
 
     if 'glada' in restaurants :
         print('\n'.join(parse_glada(files[restaurants.index('glada')], WEEKDAY, TOMORROW, WEEK, WEEKDAY_ENG)))
-
-    if 'jons' in restaurants :
-        print('\n'.join(parse_jons(files[restaurants.index('jons')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
-
+        
     if 'haga' in restaurants :
         print('\n'.join(parse_haga()))
 
     if 'hjulet' in restaurants :
         print('\n'.join(parse_hjulet(files[restaurants.index('hjulet')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
+
+    if 'jons' in restaurants :
+        print('\n'.join(parse_jons(files[restaurants.index('jons')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
 
     if 'karolina' in restaurants :
         print('\n'.join(parse_karolina(files[restaurants.index('karolina')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
