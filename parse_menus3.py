@@ -402,7 +402,11 @@ def parse_konigs(filename) :
 
     return lines
 
-def parse_matmakarna(filename, weekday, tomorrow, week) :
+def parse_matmakarna(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start('Restaurang Matmakarna', 'Huddinge', 
                               'http://www.matmakarna.nu/index.html', 
@@ -556,7 +560,11 @@ def parse_stories(filename) :
     lines += restaurant_end()
     return lines
 
-def parse_tango(filename, weekday, tomorrow, day, month) :
+def parse_tango(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    day = get_day()
+    month = get_month()
     lines = list()
     lines += restaurant_start('Restaurang Tango', 'Huddinge', 
                               'http://gastrogate.com/restaurang/tango/',
@@ -630,13 +638,11 @@ def restaurant_start(restaurant, location, home_url, mapurl) :
     return lines
 
 if __name__ == '__main__' :
-    # SUPPORTED = ('jorpes', 'glada', 'jons', 'haga', 'hjulet', 'karolina', 'konigs', 'mollan',
-    #              'nanna', 'subway', '61an', 'alfred', 'mf', 'stories', 'matmakarna', 'tango')
     SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons', 'karolina', 'konigs', 'mollan',
-                 'nanna', 'subway', '61an', 'alfred', 'stories', 'mf', 'matmakarna', 'tango')
+                 'nanna', 'subway', '61an', 'alfred', 'stories','matmakarna', 'mf', 'tango')
     FUNCTIONS = (parse_jorpes, parse_glada, parse_haga, parse_hjulet, parse_jons, parse_karolina, parse_konigs, parse_mollan,
-                 parse_nanna, parse_subway, parse_61an, parse_alfred, parse_stories, parse_mf, parse_matmakarna, parse_tango)
-                 
+                 parse_nanna, parse_subway, parse_61an, parse_alfred, parse_stories, parse_matmakarna, parse_mf, parse_tango)
+    
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
         sys.exit()
