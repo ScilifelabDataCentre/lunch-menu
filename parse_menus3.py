@@ -200,6 +200,7 @@ def parse_alfred(filename) :
                               'http://alfredsrestaurang.com/', 
                               'https://www.openstreetmap.org/#map=19/59.21944/17.94074')
 
+    soup = BeautifulSoup(open(filename))
     started = False
     for line in open(filename, encoding='latin1') :
         if 'vecka' in line.lower() and not started :
@@ -550,7 +551,7 @@ def parse_nanna(filename) :
 
     return lines
 
-def parse_stories() :
+def parse_stories(filename) :
     lines = list()
     lines += restaurant_start('Flemingsberg Stories', 'Huddinge', 
                               'http://www.cafestories.se/', 
@@ -635,9 +636,9 @@ if __name__ == '__main__' :
     # SUPPORTED = ('jorpes', 'glada', 'jons', 'haga', 'hjulet', 'karolina', 'konigs', 'mollan',
     #              'nanna', 'subway', '61an', 'alfred', 'mf', 'stories', 'matmakarna', 'tango')
     SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons', 'karolina', 'konigs', 'mollan',
-                 'nanna', 'subway')
+                 'nanna', 'subway', '61an', 'alfred', 'mf', 'stories', 'matmakarna', 'tango')
     FUNCTIONS = (parse_jorpes, parse_glada, parse_haga, parse_hjulet, parse_jons, parse_karolina, parse_konigs, parse_mollan,
-                 parse_nanna, parse_subway)
+                 parse_nanna, parse_subway, parse_61an, parse_alfred, parse_mf, parse_stories, parse_matmakarna, parse_tango)
                  
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
