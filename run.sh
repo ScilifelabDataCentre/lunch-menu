@@ -48,7 +48,6 @@ function get_matmakarna {
     if [ ${#week} -eq 1 ] ; then
 	week=0${week}
     fi
-    echo $week
     wget -nv "http://www.matmakarna.nu/Veckomeny_Restaurang_Matmakarna/index_Vecka_${week}${year2}.html" -O matmakarna.html 1&> /dev/null
 }
     
@@ -64,7 +63,7 @@ function dl_menus {
     wget -nv "http://gastrogate.com/restaurang/tango/page/3/" -O tango.html 1&> /dev/null
     wget -nv "http://restaurang-ns.com/restaurang-nanna-svartz/" -O nanna.html 1&> /dev/null
     wget -nv "http://gastrogate.com/restaurang/ksrestaurangen/page/3/" -O karolina.html 1&> /dev/null
-    wget -nv "http://alfredsrestaurang.com/veckans_meny.html" -O alfred.html 1&> /dev/null
+    wget -nv "www.alfredsrestaurang.se" -O alfred.html 1&> /dev/null
     wget -nv "http://gastrogate.com/restaurang/tango/page/3/" -O tango.html 1&> /dev/null
     wget -nv "http://61an.kvartersmenyn.se/" -O 61an.html 1&> /dev/null
     wait
