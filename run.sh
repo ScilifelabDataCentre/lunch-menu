@@ -54,7 +54,7 @@ function get_matmakarna {
     
 
 function dl_menus {
-    wget -nv "http://mollanasiankok.se/veckansmeny.html" -O mollan.html 1&> /dev/null
+    wget -nv "http://mollanasiankok.se/vecka%20meny.html" -O mollan.html 1&> /dev/null
     wget -nv "http://gastrogate.com/restaurang/jonsjacob/page/3/" -O jons.html 1&> /dev/null
     wget -nv "http://gastrogate.com/restaurang/restauranghjulet/page/3/" -O hjulet.html 1&> /dev/null
     wget -nv "http://restaurangkonigs.se/" -O konigs.html 1&> /dev/null
