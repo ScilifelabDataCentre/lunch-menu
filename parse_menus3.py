@@ -201,24 +201,17 @@ def parse_alfred(filename) :
                               'https://www.openstreetmap.org/#map=19/59.21944/17.94074')
 
     soup = BeautifulSoup(open(filename))
-    started = False
-    for line in open(filename, encoding='latin1') :
-        if 'vecka' in line.lower() and not started :
-            if not str(week) in line :
-                break
-        if fix_for_html(weekday) in line.lower() :
-            note('Alfred - day found')
-            started = True
-            continue
-        if not started :
-            continue
-        if fix_for_html(tomorrow) in line.lower() or 'I samtliga r&auml;tter' in line:
-            break
-        tmp = remove_html(line.strip())
-        if len(tmp) > 1 :
-            lines.append(tmp + '<br/>')
+
+    menu = soup.find_all('div')[85]
+
+    wdigit = get_weekdigit()
+    if wdigit < 5 :
+        base = 3 + 7*wdigit
+        for i in range(4) :
+            lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
 
     lines += restaurant_end()
+
     return lines
 
 def parse_glada(filename) :
@@ -448,8 +441,12 @@ def parse_matmakarna(filename, weekday, tomorrow, week) :
     lines += restaurant_end()
     return lines
 
-def parse_mf(filename, weekday, tomorrow, week) :
+def parse_mf(filename) :
     # Funny fact: W3C validator crashes while analysing this page.
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start("MFs Kafe & k&ouml;k", 'Huddinge', 
                               'http://mmcatering.nu/mfs-kafe-kok/', 
@@ -636,9 +633,9 @@ if __name__ == '__main__' :
     # SUPPORTED = ('jorpes', 'glada', 'jons', 'haga', 'hjulet', 'karolina', 'konigs', 'mollan',
     #              'nanna', 'subway', '61an', 'alfred', 'mf', 'stories', 'matmakarna', 'tango')
     SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons', 'karolina', 'konigs', 'mollan',
-                 'nanna', 'subway', '61an', 'alfred', 'mf', 'stories', 'matmakarna', 'tango')
+                 'nanna', 'subway', '61an', 'alfred', 'stories', 'mf', 'matmakarna', 'tango')
     FUNCTIONS = (parse_jorpes, parse_glada, parse_haga, parse_hjulet, parse_jons, parse_karolina, parse_konigs, parse_mollan,
-                 parse_nanna, parse_subway, parse_61an, parse_alfred, parse_mf, parse_stories, parse_matmakarna, parse_tango)
+                 parse_nanna, parse_subway, parse_61an, parse_alfred, parse_stories, parse_mf, parse_matmakarna, parse_tango)
                  
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
