@@ -28,7 +28,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PARSER=./parse_menus3.py
+PARSER=./parse_menus2.py
 OUT_FILE=index.html
 # an attempt to compensate for the instability in the naming of the menu page for glada restaurangen
 function get_glada {
