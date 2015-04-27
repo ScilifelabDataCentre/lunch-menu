@@ -68,6 +68,8 @@ def fix_for_html(text) :
     text = text.replace('Ã¥', '&aring;')
     text = text.replace(' ', '')
     text = text.replace('Ã', '&Aring')
+    text = text.replace('´', '&#39;')
+    text = text.replace('`', '&#39;')
     text = text.strip()
     return text
 
