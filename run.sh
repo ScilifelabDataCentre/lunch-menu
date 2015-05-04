@@ -69,6 +69,6 @@ function dl_menus {
     wait
 }
 
-#dl_menus
+dl_menus
 
 ${PARSER} glada=glada.html karolina=karolina.html hjulet=hjulet.html jons=jons.html konigs=konigs.html mollan=mollan.html nanna=nanna.html subway=true mf=mf.html jorpes=true alfred=alfred.html tango=tango.html 61an=61an.html haga=true, stories=true matmakarna=matmakarna.html > ${OUT_FILE}
