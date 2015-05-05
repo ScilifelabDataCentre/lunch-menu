@@ -28,13 +28,19 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import sys
-from datetime import date
 import codecs
+from datetime import date
 import string
+import sys
 
-# global constant to handle displaying of debug messages
+from bs4 import BeautifulSoup
+
+
 DEBUG = True
+
+def error(text) :
+    if DEBUG :
+        sys.stderr.write('ERROR: ' + text + '\n')
 
 def fix_for_html(text) :
     '''HTML formatting of characters'''
@@ -62,16 +68,44 @@ def fix_for_html(text) :
     text = text.replace('Ã¥', '&aring;')
     text = text.replace(' ', '')
     text = text.replace('Ã', '&Aring')
+    text = text.replace('´', '&#39;')
+    text = text.replace('`', '&#39;')
     text = text.strip()
     return text
 
-def error(text) :
-    if DEBUG :
-        sys.stderr.write('ERROR: ' + text + '\n')
+def get_day() :
+    return date.today().day
+
+def get_monthdigit() :
+    return date.today().month
+
+def get_month() :
+    MONTHS = {1: 'januari', 2: 'februari', 3: 'mars', 4: 'april', 5: 'maj', 6: 'juni',
+              7: 'juli', 8: 'augusti', 9: 'september', 10: 'oktober', 11: 'november', 12: 'december'}
+    return MONTHS[get_monthdigit()]
+
+def get_weekdigit() :
+    return date.today().weekday()
+
+def get_week() :
+    return date.today().isocalendar()[1]
+
+def get_weekday(lang = 'sv', tomorrow = False) :
+    wdigit = get_weekdigit()
+    if tomorrow :
+        wdigit += 1
+    if lang == 'sv' :
+        WEEKDAYS = {0: 'måndag', 1: 'tisdag', 2: 'onsdag', 3: 'torsdag', 
+                    4: 'fredag', 5: 'lördag', 6: 'söndag', 7: 'måndag'}
+    if lang == 'en' :
+        WEEKDAYS = {0: 'monday', 1: 'tuesday', 2: 'wednesday', 3: 'thursday', 
+                    4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
+    return WEEKDAYS[wdigit]
 
 def note(text) :
     if DEBUG :
         sys.stderr.write('NOTE: ' + text + '\n')
+
 
 def page_end() :
     lines = list()
@@ -102,7 +136,11 @@ def page_start(weekday, day, month) :
     lines.append('')
     return lines
 
-def parse_61an(filename, weekday, tomorrow, week) :
+def parse_61an(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start('Restaurang 61:an', 'Huddinge', 
                               'http://61an.kvartersmenyn.se/', 
@@ -154,37 +192,39 @@ def parse_61an(filename, weekday, tomorrow, week) :
     lines += restaurant_end()
     return lines
 
-def parse_alfred(filename, weekday, tomorrow, week) :
+def parse_alfred(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start('Alfreds restaurang', 'Huddinge', 
                               'http://alfredsrestaurang.com/', 
                               'https://www.openstreetmap.org/#map=19/59.21944/17.94074')
 
-    started = False
-    for line in open(filename, encoding='latin1') :
-        if 'vecka' in line.lower() and not started :
-            if not str(week) in line :
-                break
-        if fix_for_html(weekday) in line.lower() :
-            note('Alfred - day found')
-            started = True
-            continue
-        if not started :
-            continue
-        if fix_for_html(tomorrow) in line.lower() or 'I samtliga r&auml;tter' in line:
-            break
-        tmp = remove_html(line.strip())
-        if len(tmp) > 1 :
-            lines.append(tmp + '<br/>')
+    soup = BeautifulSoup(open(filename))
+
+    menu = soup.find_all('div')[85]
+
+    wdigit = get_weekdigit()
+    if wdigit < 5 :
+        base = 3 + 7*wdigit
+        for i in range(4) :
+            lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
 
     lines += restaurant_end()
+
     return lines
 
-def parse_glada(filename, weekday, tomorrow, week, weekday_eng) :
+def parse_glada(filename) :
     lines = list()
     lines += restaurant_start('Den Glada Restaurangen', 'Solna', 
                               'http://www.dengladarestaurangen.se/', 
                               'http://www.openstreetmap.org/#map=19/59.35123/18.03006')
+
+    week = get_week()
+    tomorrow = get_weekday(tomorrow=True)
+    today = get_weekday()
 
     menu_reached = False
     start = False
@@ -194,7 +234,7 @@ def parse_glada(filename, weekday, tomorrow, week, weekday_eng) :
                 error('Glada - wrong week')
             note('Glada - week found')
             menu_reached = True
-        if menu_reached and weekday in line.lower() :
+        if menu_reached and today in line.lower() :
             note('Glada - day found')
             start = True
             continue
@@ -207,12 +247,10 @@ def parse_glada(filename, weekday, tomorrow, week, weekday_eng) :
             if len(remove_html(line).split(' ')) > 1 :
                 lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
         
-
     lines += restaurant_end()
-
     return lines
 
-def parse_haga() :
+def parse_haga(filename) :
     lines = list()
     lines += restaurant_start('Haga gatuk&ouml;k', 'Solna', 
                               'http://orenib.se/haga_gk2.pdf', 
@@ -220,53 +258,45 @@ def parse_haga() :
     lines += restaurant_end()
     return lines
     
+def parse_hjulet(filename) :
+    day = get_day()
+    month = get_month()
+    today = get_weekday()
 
-def parse_hjulet(filename, weekday, tomorrow, day, month) :
     lines = list()
     lines += restaurant_start('Hjulet', 'Solna', 
                               'http://gastrogate.com/restaurang/restauranghjulet/', 
                               'https://www.openstreetmap.org/#map=19/59.34508/18.02423')
 
-    start = False
-    done = False
-    tips = False
-    today = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
-    today_alt = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
-    current = list()
-    for line in open(filename, encoding='utf8') :
-        if today in line.lower() or today_alt in line.lower() :
+    soup = BeautifulSoup(open(filename))
+    # find the weekday index
+    DAY_INDEX = None
+    i = 0
+    for header in soup.find_all('table')[0].find_all('th') :
+        if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower() :
+            day_index = i
             note('Hjulet - day found')
-            start = True
-            continue
-        if start and (tomorrow in line.lower() or '<!-- contact -->' in line.lower()) and not done :
-            note('Hjulet - today menu ended')
-            done = True
-        if start and not done :
-            tmp = fix_for_html(remove_html(line.strip()))
-            if len(tmp.strip()) > 0 :
-                current.append(tmp.strip())
-            if 'attrD.gif' in line :
-                if len(current) > 0 :
-                    lines.append('<br/>'.join(current) + '<br/>')
-                    current = list()
-        # veckans tips; for sure after the main menu
-        if done and 'hela veckan' in line.lower() :
-            note('Hjulet - tips found')
-            tips = True
-            continue
-        if tips :
-            tmp = fix_for_html(remove_html(line.strip()))
-            # adding those for now; seems to be variation of the wording over time
-            tmp = tmp.replace('Veckans Tips:', '')
-            tmp = tmp.replace('Veckans tips:', '')
-            if len(tmp) > 0 :
-                lines.append('<br/>\n<i>Veckans tips:</i> ' + tmp + '<br/>')
-                break
-                
+        i += 1
+    if day_index != None :
+        txt = remove_html(str(soup.find_all('table')[0].find_all('td')[day_index*3]))
+        menu = txt.split('\n')
+        for i in range(len(menu)) :
+            menu[i] = fix_for_html(menu[i])
+            if len(menu[i].strip()) > 0 :
+                lines.append(menu[i] + '<br/>')
+        lines.append('<i>Veckans tips:</i> ' + fix_for_html(remove_html(str(soup.find_all('table')[0].find_all('td')[15]))))
+    else :
+        Error('Hjulet - correct day not found')
+
     lines += restaurant_end()
+
     return lines
 
-def parse_jons(filename, weekday, tomorrow, day, month) :
+def parse_jons(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    day = get_day()
+    month = get_month()
     lines = list()
     lines += restaurant_start('J&ouml;ns Jacob', 'Solna', 
                               'http://gastrogate.com/restaurang/jonsjacob/', 
@@ -295,7 +325,7 @@ def parse_jons(filename, weekday, tomorrow, day, month) :
     lines += restaurant_end()
     return lines
 
-def parse_jorpes() :
+def parse_jorpes(filename) :
     lines = list()
     lines += restaurant_start('Caf&eacute; Erik Jorpes', 'Solna', 
                               'http://restaurang-ns.com/cafe-erik-jorpes/', 
@@ -305,7 +335,11 @@ def parse_jorpes() :
     return lines
 
 
-def parse_karolina(filename, weekday, tomorrow, day, month) :
+def parse_karolina(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    day = get_day()
+    month = get_month()
     lines = list()
     lines += restaurant_start('Restaurang Karolina', 'Solna', 
                               'http://gastrogate.com/restaurang/ksrestaurangen/', 
@@ -335,7 +369,13 @@ def parse_karolina(filename, weekday, tomorrow, day, month) :
     return lines
 
 # accuracy not confirmed
-def parse_konigs(filename, weekday, tomorrow, week, day, month) :
+def parse_konigs(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    day = get_day()
+    month = get_month()
+    
     lines = list()
     lines += restaurant_start('Restaurang K&ouml;nigs', 'Solna', 
                               'http://restaurangkonigs.se/', 
@@ -364,7 +404,11 @@ def parse_konigs(filename, weekday, tomorrow, week, day, month) :
 
     return lines
 
-def parse_matmakarna(filename, weekday, tomorrow, week) :
+def parse_matmakarna(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start('Restaurang Matmakarna', 'Huddinge', 
                               'http://www.matmakarna.nu/index.html', 
@@ -403,8 +447,12 @@ def parse_matmakarna(filename, weekday, tomorrow, week) :
     lines += restaurant_end()
     return lines
 
-def parse_mf(filename, weekday, tomorrow, week) :
+def parse_mf(filename) :
     # Funny fact: W3C validator crashes while analysing this page.
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start("MFs Kafe & k&ouml;k", 'Huddinge', 
                               'http://mmcatering.nu/mfs-kafe-kok/', 
@@ -441,39 +489,39 @@ def parse_mf(filename, weekday, tomorrow, week) :
 
     return lines
 
-def parse_mollan(filename, weekday, tomorrow, week) :
+def parse_mollan(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start('Mollan', 'Solna', 
                               'http://mollanasiankok.se/', 
                               'https://www.openstreetmap.org/#map=19/59.34836/18.02650')
-    start = False
-    for line in open(filename, encoding='latin1') :
-        if not start and 'Lunch Meny V.' in line and not str(week) in line :
-            break
-        if weekday in line.lower() :
-            start = True
-            continue
-        if not start :
-            continue
-        if tomorrow in line.lower() :
-            break
-        if '=Gluten' in line :
-            break
-        tmp = fix_for_html(remove_html(line))
-        try :
-            if tmp[0] in string.ascii_uppercase and tmp[1] == '.' :
-                tmp = tmp[2:]
-        except :
-            pass
-        tmp = tmp.replace('<br/>', ' ')
-        if len(tmp) > 0 :
-            lines.append(tmp + '<br/>')
 
+    soup = BeautifulSoup(open(filename))
+
+    relevant = soup.find_all('div')[0].find_all('div')[0].find_all('div')[14].find_all('div')[0].find_all('div')[0].find_all('div')[0]
+    # check week
+    if not str(week) in str(relevant.find_all('div')[0]) :
+        error('Mollan - wrong week')
+
+    wdigit = get_weekdigit()
+    if wdigit < 5 :
+        base = 2 + 7*wdigit
+        for i in range(6) :
+            lines.append(fix_for_html(remove_html(str(relevant.find_all('p')[base + i]))) + '<br/>')
+            
+            
     lines += restaurant_end()
 
     return lines
 
-def parse_nanna(filename, weekday, tomorrow, week) :
+def parse_nanna(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
     lines = list()
     lines += restaurant_start('Restaurang Nanna Svartz', 'Solna', 
                               'http://restaurang-ns.com/restaurang-nanna-svartz/', 
@@ -506,7 +554,7 @@ def parse_nanna(filename, weekday, tomorrow, week) :
 
     return lines
 
-def parse_stories() :
+def parse_stories(filename) :
     lines = list()
     lines += restaurant_start('Flemingsberg Stories', 'Huddinge', 
                               'http://www.cafestories.se/', 
@@ -514,7 +562,11 @@ def parse_stories() :
     lines += restaurant_end()
     return lines
 
-def parse_tango(filename, weekday, tomorrow, day, month) :
+def parse_tango(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    day = get_day()
+    month = get_month()
     lines = list()
     lines += restaurant_start('Restaurang Tango', 'Huddinge', 
                               'http://gastrogate.com/restaurang/tango/',
@@ -543,7 +595,8 @@ def parse_tango(filename, weekday, tomorrow, day, month) :
     lines += restaurant_end()
     return lines
 
-def parse_subway(wdigit) :
+def parse_subway(filename) :
+    wdigit = get_weekdigit()
     # sub of the day
     subotd = {0: 'American Steakhouse Melt', 1: 'Subway Melt', 2: 'Spicy Italian', 3: 'Rostbiff', 4: 'Tonfisk', 5: 'Subway Club', 6: 'Italian B.M.T-', 7: 'American Steakhouse Melt'}
     lines = list()
@@ -569,6 +622,12 @@ def remove_html(text) :
         pass
     return text
 
+def restaurant_end() :
+    lines = list()
+    lines.append('</p>')
+    lines.append('</div>')
+    return lines
+
 def restaurant_start(restaurant, location, home_url, mapurl) :
     lines = list()
     lines.append('<!--{}-->'.format(restaurant))
@@ -580,16 +639,12 @@ def restaurant_start(restaurant, location, home_url, mapurl) :
     lines.append('<p>')
     return lines
 
-def restaurant_end() :
-    lines = list()
-    lines.append('</p>')
-    lines.append('</div>')
-    return lines
-
 if __name__ == '__main__' :
-    SUPPORTED = ('mollan', 'jons', 'hjulet', 'konigs', 'glada', 'nanna', 'subway', 'karolina',
-                 'tango', 'mf', 'alfred', 'matmakarna', 'jorpes', 'tango', '61an', 'haga', 
-                 'stories')
+    SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons', 'karolina', 'konigs', 'mollan',
+                 'nanna', 'subway', '61an', 'alfred', 'stories','matmakarna', 'mf', 'tango')
+    FUNCTIONS = (parse_jorpes, parse_glada, parse_haga, parse_hjulet, parse_jons, parse_karolina, parse_konigs, parse_mollan,
+                 parse_nanna, parse_subway, parse_61an, parse_alfred, parse_stories, parse_matmakarna, parse_mf, parse_tango)
+    
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
         sys.exit()
@@ -609,77 +664,11 @@ if __name__ == '__main__' :
             sys.exit()
         restaurants.append(parts[0].lower())
         files.append(parts[1])
-        
-    # stuff for conversions, always use versals when comparing to these
-    MONTHS = {1: 'januari', 2: 'februari', 3: 'mars', 4: 'april', 5: 'maj', 6: 'juni',
-                  7: 'juli', 8: 'augusti', 9: 'september', 10: 'oktober', 11: 'november', 12: 'december'}
 
-    # måndag = ndag is only because of the f-cking jöns jacob page behaving in a f-cked up way.
-    WEEKDAYS = {0: 'måndag', 1: 'tisdag', 2: 'onsdag', 3: 'torsdag', 
-                4: 'fredag', 5: 'lördag', 6: 'söndag', 7: 'måndag'}
-    WEEKDAYS_ENG = {0: 'monday', 1: 'tuesday', 2: 'wednesday', 3: 'thursday', 
-                    4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
-
-    # current date
-    DAY = date.today().day
-    MONTH = date.today().month
-    WEEK = date.today().isocalendar()[1]
-    WDIGIT = date.today().weekday()
-    WEEKDAY = WEEKDAYS[WDIGIT]
-    WEEKDAY_ENG = WEEKDAYS_ENG[WDIGIT]
-    TOMORROW = WEEKDAYS[WDIGIT+1]
-
-    print('\n'.join(page_start(WEEKDAY, str(DAY), MONTHS[MONTH])))
-    # solna
-    if 'jorpes' in restaurants :
-        print('\n'.join(parse_jorpes()))
-
-    if 'glada' in restaurants :
-        print('\n'.join(parse_glada(files[restaurants.index('glada')], WEEKDAY, TOMORROW, WEEK, WEEKDAY_ENG)))
-        
-    if 'haga' in restaurants :
-        print('\n'.join(parse_haga()))
-
-    if 'hjulet' in restaurants :
-        print('\n'.join(parse_hjulet(files[restaurants.index('hjulet')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
-
-    if 'jons' in restaurants :
-        print('\n'.join(parse_jons(files[restaurants.index('jons')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
-
-    if 'karolina' in restaurants :
-        print('\n'.join(parse_karolina(files[restaurants.index('karolina')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
-
-    if 'konigs' in restaurants :
-        print('\n'.join(parse_konigs(files[restaurants.index('konigs')], WEEKDAY, TOMORROW, WEEK, DAY, MONTH)))
-
-    if 'mollan' in restaurants :
-        print('\n'.join(parse_mollan(files[restaurants.index('mollan')], WEEKDAY, TOMORROW, WEEK)))
-
-    if 'nanna' in restaurants :
-        print('\n'.join(parse_nanna(files[restaurants.index('nanna')], WEEKDAY, TOMORROW, WEEK)))
-
-    if 'subway' in restaurants :
-        print('\n'.join(parse_subway(WDIGIT)))
-
-    # huddinge
-    if '61an' in restaurants :
-        print('\n'.join(parse_61an(files[restaurants.index('61an')], WEEKDAY, TOMORROW, WEEK)))
-
-    if 'alfred' in restaurants :
-        print('\n'.join(parse_alfred(files[restaurants.index('alfred')], WEEKDAY, TOMORROW, WEEK)))
-
-    if 'mf' in restaurants :
-        print('\n'.join(parse_mf(files[restaurants.index('mf')], WEEKDAY, TOMORROW, WEEK)))
-
-    if 'stories' in restaurants :
-        print('\n'.join(parse_stories()))
-
-    if 'matmakarna' in restaurants :
-        print('\n'.join(parse_matmakarna(files[restaurants.index('matmakarna')], WEEKDAY, TOMORROW, WEEK)))
-        
-    if 'tango' in restaurants :
-        print('\n'.join(parse_tango(files[restaurants.index('tango')], WEEKDAY, TOMORROW, DAY, MONTHS[MONTH])))
-
-
+    print('\n'.join(page_start(get_weekday(), str(get_day()), get_month())))
+    # print restaurants
+    for i in range(len(SUPPORTED)) :
+        if SUPPORTED[i] in restaurants :
+            print('\n'.join(FUNCTIONS[i](files[restaurants.index(SUPPORTED[i])])))
 
     print('\n'.join(page_end()))
