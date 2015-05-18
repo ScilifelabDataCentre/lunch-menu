@@ -204,14 +204,18 @@ def parse_alfred(filename) :
 
     soup = BeautifulSoup(open(filename))
 
-    menu = soup.find_all('div')[85]
+    try :
+        menu = soup.find_all('div')[85]
 
-    wdigit = get_weekdigit()
-    if wdigit < 5 :
-        base = 3 + 7*wdigit
-        for i in range(4) :
-            lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
+        wdigit = get_weekdigit()
+        if wdigit < 5 :
+            base = 3 + 7*wdigit
+            for i in range(4) :
+                lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
 
+    except :
+        error('Alfred crashed')
+        
     lines += restaurant_end()
 
     return lines
@@ -272,22 +276,24 @@ def parse_hjulet(filename) :
     # find the weekday index
     DAY_INDEX = None
     i = 0
-    for header in soup.find_all('table')[0].find_all('th') :
-        if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower() :
-            day_index = i
-            note('Hjulet - day found')
-        i += 1
-    if day_index != None :
-        txt = remove_html(str(soup.find_all('table')[0].find_all('td')[day_index*3]))
-        menu = txt.split('\n')
-        for i in range(len(menu)) :
-            menu[i] = fix_for_html(menu[i])
-            if len(menu[i].strip()) > 0 :
-                lines.append(menu[i] + '<br/>')
-        lines.append('<i>Veckans tips:</i> ' + fix_for_html(remove_html(str(soup.find_all('table')[0].find_all('td')[15]))))
-    else :
-        Error('Hjulet - correct day not found')
-
+    try :
+        for header in soup.find_all('table')[0].find_all('th') :
+            if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower() :
+                day_index = i
+                note('Hjulet - day found')
+            i += 1
+        if day_index != None :
+            txt = remove_html(str(soup.find_all('table')[0].find_all('td')[day_index*3]))
+            menu = txt.split('\n')
+            for i in range(len(menu)) :
+                menu[i] = fix_for_html(menu[i])
+                if len(menu[i].strip()) > 0 :
+                    lines.append(menu[i] + '<br/>')
+            lines.append('<i>Veckans tips:</i> ' + fix_for_html(remove_html(str(soup.find_all('table')[0].find_all('td')[15]))))
+        else :
+            Error('Hjulet - correct day not found')
+    except :
+        error('Hjulet crashed')
     lines += restaurant_end()
 
     return lines
@@ -500,18 +506,19 @@ def parse_mollan(filename) :
                               'https://www.openstreetmap.org/#map=19/59.34836/18.02650')
 
     soup = BeautifulSoup(open(filename))
+    try :
+        relevant = soup.find_all('div')[0].find_all('div')[0].find_all('div')[14].find_all('div')[0].find_all('div')[0].find_all('div')[0]
+        # check week
+        if not str(week) in str(relevant.find_all('div')[0]) :
+            error('Mollan - wrong week')
 
-    relevant = soup.find_all('div')[0].find_all('div')[0].find_all('div')[14].find_all('div')[0].find_all('div')[0].find_all('div')[0]
-    # check week
-    if not str(week) in str(relevant.find_all('div')[0]) :
-        error('Mollan - wrong week')
-
-    wdigit = get_weekdigit()
-    if wdigit < 5 :
-        base = 2 + 7*wdigit
-        for i in range(6) :
-            lines.append(fix_for_html(remove_html(str(relevant.find_all('p')[base + i]))) + '<br/>')
-            
+        wdigit = get_weekdigit()
+        if wdigit < 5 :
+            base = 2 + 7*wdigit
+            for i in range(6) :
+                lines.append(fix_for_html(remove_html(str(relevant.find_all('p')[base + i]))) + '<br/>')
+    except :
+        error('Mollan crashed')
             
     lines += restaurant_end()
 
