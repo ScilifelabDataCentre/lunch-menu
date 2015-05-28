@@ -71,6 +71,12 @@ def fix_for_html(text) :
     text = text.replace('´', '&#39;')
     text = text.replace('`', '&#39;')
     text = text.strip()
+    # Karolina
+    text = text.replace('å', '&aring;')
+    text = text.replace('ä', '&auml;')
+    text = text.replace('ö', '&ouml;')
+    text = text.replace('Ä', '&Auml;')
+
     return text
 
 def get_day() :
