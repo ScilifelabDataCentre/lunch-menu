@@ -177,7 +177,7 @@ def parse_61an(filename) :
                     break
                 for d in range(len(days)) :
                     if weekday in days[d].lower() :                        
-                        parts = days[d].split('<BR>')
+                        parts = days[d].split('<br />')
                         if len(parts) == 1 :
                             parts = days[d].split('<br>')
                         if len(parts) == 1 :
