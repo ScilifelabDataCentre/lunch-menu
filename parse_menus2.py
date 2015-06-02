@@ -578,6 +578,14 @@ def parse_stories(filename) :
     lines += restaurant_end()
     return lines
 
+def parse_svarta(filename) :
+    lines = list()
+    lines += restaurant_start('Svarta Räfven', 'Solna',
+                              'http://restaurang-ns.com/svarta-rafven/', 
+                              'https://www.openstreetmap.org/#map=19/59.34851/18.02804')
+    lines += restaurant_end()
+    return lines
+
 def parse_tango(filename) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
@@ -656,10 +664,14 @@ def restaurant_start(restaurant, location, home_url, mapurl) :
     return lines
 
 if __name__ == '__main__' :
-    SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons', 'karolina', 'konigs', 'mollan',
-                 'nanna', 'subway', '61an', 'alfred', 'stories','matmakarna', 'mf', 'tango')
-    FUNCTIONS = (parse_jorpes, parse_glada, parse_haga, parse_hjulet, parse_jons, parse_karolina, parse_konigs, parse_mollan,
-                 parse_nanna, parse_subway, parse_61an, parse_alfred, parse_stories, parse_matmakarna, parse_mf, parse_tango)
+    SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons',
+                 'karolina', 'konigs', 'mollan', 'nanna', 'svarta',
+                 'subway', '61an', 'alfred', 'stories','matmakarna',
+                 'mf', 'tango')
+    FUNCTIONS = (parse_jorpes, parse_glada, parse_haga, parse_hjulet, parse_jons,
+                 parse_karolina, parse_konigs, parse_mollan, parse_nanna, parse_svarta
+                 parse_subway, parse_61an, parse_alfred, parse_stories, parse_matmakarna,
+                 parse_mf, parse_tango)
     
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
