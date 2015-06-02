@@ -58,6 +58,10 @@ def fix_for_html(text) :
     text = text.replace('á', '&aacute;')
     text = text.replace('ô', '&ocirc;')
     text = text.replace('ü', '&uuml;')
+    text = text.replace('Ä', '&Auml;')
+    text = text.replace('´', '&#39;')
+    text = text.replace('`', '&#39;')
+    text = text.replace('ç', '&ccedil;')
     # MF does for sure not know how to work with text encodings
     text = text.replace('Ã¨', '&egrave;')
     text = text.replace('Ã¤', '&auml;')
@@ -68,15 +72,14 @@ def fix_for_html(text) :
     text = text.replace('Ã¥', '&aring;')
     text = text.replace(' ', '')
     text = text.replace('Ã', '&Aring')
-    text = text.replace('´', '&#39;')
-    text = text.replace('`', '&#39;')
-    text = text.strip()
     # Karolina
     text = text.replace('å', '&aring;')
     text = text.replace('ä', '&auml;')
     text = text.replace('ö', '&ouml;')
     text = text.replace('Ä', '&Auml;')
 
+    text = text.strip()
+    
     return text
 
 def get_day() :
