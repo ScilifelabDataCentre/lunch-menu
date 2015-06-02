@@ -516,7 +516,7 @@ def parse_mollan(filename) :
 
     soup = BeautifulSoup(open(filename))
     try :
-        relevant = soup.find_all('div')[0].find_all('div')[0].find_all('div')[14].find_all('div')[0].find_all('div')[0].find_all('div')[0]
+        relevant = soup.find_all('div')[24]
         # check week
         if not str(week) in str(relevant.find_all('div')[0]) :
             error('Mollan - wrong week')
