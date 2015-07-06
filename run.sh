@@ -65,7 +65,7 @@ function dl_menus {
     wget -nv "http://gastrogate.com/restaurang/ksrestaurangen/page/3/" -O karolina.html 1&> /dev/null
     wget -nv "www.alfredsrestaurang.se" -O alfred.html 1&> /dev/null
     wget -nv "http://gastrogate.com/restaurang/tango/page/3/" -O tango.html 1&> /dev/null
-    wget -nv "http://61an.kvartersmenyn.se/" -O 61an.html 1&> /dev/null
+    wget -nv "http://gastrogate.com/restaurang/61an/page/3/" -O 61an.html 1&> /dev/null
     wait
 }
 

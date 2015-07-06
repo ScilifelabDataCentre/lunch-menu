@@ -152,7 +152,7 @@ def parse_61an(filename) :
     
     lines = list()
     lines += restaurant_start('Restaurang 61:an', 'Huddinge', 
-                              'http://61an.kvartersmenyn.se/', 
+                              'http://gastrogate.com/restaurang/61an/', 
                               'https://www.openstreetmap.org/#map=19/59.22071/17.93717')
 
     started = False
@@ -669,7 +669,7 @@ if __name__ == '__main__' :
                  'subway', '61an', 'alfred', 'stories','matmakarna',
                  'mf', 'tango')
     FUNCTIONS = (parse_jorpes, parse_glada, parse_haga, parse_hjulet, parse_jons,
-                 parse_karolina, parse_konigs, parse_mollan, parse_nanna, parse_svarta
+                 parse_karolina, parse_konigs, parse_mollan, parse_nanna, parse_svarta,
                  parse_subway, parse_61an, parse_alfred, parse_stories, parse_matmakarna,
                  parse_mf, parse_tango)
     
