@@ -398,6 +398,10 @@ def parse_konigs(filename) :
     start = False
     menu_passed = False
     for line in open(filename, encoding='utf8') :
+        if 'VECKA' in line :
+            if str(week) not in line :
+                error('Königs - wrong week')
+                break
         if 'Veckans matsedel:' in line :
             menu_passed = True
             continue
