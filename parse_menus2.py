@@ -208,7 +208,7 @@ def parse_alfred(filename) :
     
     lines = list()
     lines += restaurant_start('Alfreds restaurang', 'Huddinge', 
-                              'http://alfredsrestaurang.com/', 
+                              'http://www.alfredsrestaurang.se/', 
                               'https://www.openstreetmap.org/#map=19/59.21944/17.94074')
 
     soup = BeautifulSoup(open(filename))
