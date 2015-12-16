@@ -42,12 +42,6 @@ class Restaurant() :
     def parseToday(self) :
         pass
 
-DEBUG = True
-
-def error(text) :
-    if DEBUG :
-        sys.stderr.write('ERROR: ' + text + '\n')
-
 def fix_for_html(text) :
     '''HTML formatting of characters'''
     text = text.replace('ö', '&ouml;')
@@ -116,11 +110,6 @@ def get_weekday(lang = 'sv', tomorrow = False) :
         WEEKDAYS = {0: 'monday', 1: 'tuesday', 2: 'wednesday', 3: 'thursday', 
                     4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
     return WEEKDAYS[wdigit]
-
-def note(text) :
-    if DEBUG :
-        sys.stderr.write('NOTE: ' + text + '\n')
-
     
 def parse_61an(filename) :
     weekday = get_weekday()
@@ -136,21 +125,16 @@ def parse_61an(filename) :
     title_passed = False
     for line in open(filename, encoding='utf8') :
         if 'vecka' in line.lower() and not title_passed and not 'meny' in line.lower():
-            note('61an - week found')
             if not str(week) in line :
-                error('61an - wrong week')
                 break
             title_passed = True
         if weekday in line.lower() and title_passed :
             started = True
-            note('61an - day found')
             if tomorrow in line.lower() :
-                note('61an - all days on one line')
                 days = line.split('<STRONG>')
                 if len(days) == 1 :
                     days = line.split('<strong>')
                 if len(days) == 1 :
-                    error('61an - parsing failed - strong')
                     break
                 for d in range(len(days)) :
                     if weekday in days[d].lower() :                        
@@ -158,16 +142,13 @@ def parse_61an(filename) :
                         if len(parts) == 1 :
                             parts = days[d].split('<br>')
                         if len(parts) == 1 :
-                            error('61an - parsing failed - br')
                             break
-                        note('61an - day found')
                         for i in range(1, len(parts), 1) :
                             if len(fix_for_html(remove_html(parts[i]))) > 0 :
                                 lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
         if not started :
             continue
         if tomorrow in line.lower() or 'streck2.gif' in line or len(line.strip()) < 25 :
-            note('61an - next day reached')
             break
         tmp = line.strip()
         tmp = tmp[tmp.lower().index(weekday) + len(weekday):]
@@ -200,7 +181,7 @@ def parse_alfred(filename) :
                 lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
 
     except :
-        error('Alfred crashed')
+        pass
         
     lines += restaurant_end()
 
@@ -221,11 +202,9 @@ def parse_glada(filename) :
     for line in open(filename, encoding='utf-8') :
         if 'Vecka' in line and '</h1>' in line :
             if str(week) not in line.lower() :
-                error('Glada - wrong week')
-            note('Glada - week found')
+                pass
             menu_reached = True
         if menu_reached and today in line.lower() :
-            note('Glada - day found')
             start = True
             continue
         if not start :
@@ -266,7 +245,6 @@ def parse_hjulet(filename) :
         for header in soup.find_all('table')[0].find_all('th') :
             if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower() :
                 day_index = i
-                note('Hjulet - day found')
             i += 1
         if day_index != None :
             menu = soup.find_all('table')[0].find_all('td')[day_index*15:(day_index+1)*15:3]
@@ -275,9 +253,7 @@ def parse_hjulet(filename) :
                 if len(menu[i].strip()) > 0 :
                     lines.append(menu[i] + '<br/>')
         else :
-            Error('Hjulet - correct day not found')
     except Exception as err :
-        error('Hjulet crashed: {}'.format(err))
     lines += restaurant_end()
 
     return lines
@@ -298,7 +274,6 @@ def parse_jons(filename) :
     current = list()
     for line in open(filename, encoding='utf8') :
         if today in line.lower() or today_alt in line.lower() :
-            note('Jöns Jacob - day found')
             start = True
             continue
         if start and (tomorrow in line.lower() or '<!-- contact -->' in line.lower()) :
@@ -341,7 +316,6 @@ def parse_karolina(filename) :
     current = list()
     for line in open(filename, encoding='utf8') :
         if today in line.lower() or today_alt in line.lower() :
-            note('Karolina - day found')
             start = True
             continue
         if start and (tomorrow in line.lower() or 'gäller hela veckan' in line.lower()) :
@@ -375,14 +349,12 @@ def parse_konigs(filename) :
     for line in open(filename, encoding='utf8') :
         if 'VECKA' in line :
             if str(week) not in line :
-                error('Königs - wrong week')
                 break
         if 'Veckans matsedel:' in line :
             menu_passed = True
             continue
 
         if menu_passed and (weekday in line.lower() or fix_for_html(weekday) in line.lower()) :
-            note('Königs - day found')
             start = True
             continue
         if not start :
@@ -411,20 +383,15 @@ def parse_matmakarna(filename) :
     started = False
     for line in open(filename, encoding='latin1') :
         if 'vecka ' in line.lower() and not started and not 'meny' in line.lower():
-            note('Matmakarna - week found')
             if not str(week) in line :
-                error('Matmakarna - wrong week')
                 break
         if weekday.upper() in line and 'START' in line :
             started = True
-            note('Matmakarna - day found')
             continue
         if not started :
             continue
         if weekday.upper() in line and 'SLUT' in line :
-            note('Matmakarna - end of day')
             break
-#        note(line)
         if '<!-- rad' in line.lower() :
             rad_checker = True
             continue
@@ -457,14 +424,11 @@ def parse_mf(filename) :
     start = False
     for line in open(filename, encoding = 'latin1') :
         if 'meny vecka' in line.lower() :
-            note('MF - week found')
             if 'veckans' in line.lower() :
                 continue
             if not str(week) in line :
-                error('MF - wrong week')
                 break
         if weekday in line.lower() :
-            note('MF - day found')
             start = True
             continue
         if tomorrow in line.lower() :
@@ -498,15 +462,14 @@ def parse_mollan(filename) :
         relevant = soup.find_all('div')[24]
         # check week
         if not str(week) in str(relevant.find_all('div')[0]) :
-            error('Mollan - wrong week')
-
+            pass
         wdigit = get_weekdigit()
         if wdigit < 5 :
             base = 2 + 7*wdigit
             for i in range(6) :
                 lines.append(fix_for_html(remove_html(str(relevant.find_all('p')[base + i]))) + '<br/>')
     except :
-        error('Mollan crashed')
+        pass
             
     lines += restaurant_end()
 
@@ -525,22 +488,17 @@ def parse_nanna(filename) :
     for line in open(filename, encoding='utf-8') :
         if 'meny' in line.lower() and 'vecka' in line.lower() :
             if not str(week) in line :
-                error('Nanna - wrong week')
                 break
-            note('Nanna - week found')
         # looking for the lines where the menu is listed in bold text
         if weekday in line.lower() and 'h3' in line.lower() :
-            note('Nanna - Day found')
             start = True
             continue
         # alternative formatting
         if weekday in line.lower() and '<strong>' in line.lower() :
-            note('Nanna - Day found')
             start = True
             continue
         # end of day
         if start and (tomorrow in line.lower() or '<div class="span6">' in line) :
-            note('Nanna - Day ended')
             break
         if start and len(remove_html(line.strip())) > 1 :
             lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
@@ -581,7 +539,6 @@ def parse_tango(filename) :
 #    current = list()
     for line in open(filename, encoding='utf8') :
         if today in line.lower() or today_alt in line.lower() :
-            note('Tango - day found')
             start = True
             continue
         if start and (tomorrow in line.lower() or 'gäller hela veckan' in line.lower()) :

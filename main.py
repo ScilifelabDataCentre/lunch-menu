@@ -38,10 +38,6 @@ import parser as ps
 
 DEBUG = True
 
-def error(text) :
-    if DEBUG :
-        sys.stderr.write('ERROR: ' + text + '\n')
-
 def fix_for_html(text) :
     '''HTML formatting of characters'''
     text = text.replace('ö', '&ouml;')
@@ -111,10 +107,6 @@ def get_weekday(lang = 'sv', tomorrow = False) :
                     4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
     return WEEKDAYS[wdigit]
 
-def note(text) :
-    if DEBUG :
-        sys.stderr.write('NOTE: ' + text + '\n')
-
 # page end, ie closing tags etc
 def page_end() :
     lines = list()
@@ -146,7 +138,6 @@ def read_restaurants(filename = 'restaurants.txt') :
                 continue
             restaurants.append(line.rstrip().split('\t'))
     return restaurants
-
 
 def print_usage(supported) :
     sys.stderr.write('Usage: {} restaurant=filename \n'.format(sys.argv[0]))
