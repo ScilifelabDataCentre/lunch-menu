@@ -36,8 +36,6 @@ import requests
 
 import parser as ps
 
-DEBUG = True
-
 def fix_for_html(text) :
     '''HTML formatting of characters'''
     text = text.replace('ö', '&ouml;')
@@ -77,35 +75,6 @@ def fix_for_html(text) :
     text = text.strip()
     
     return text
-
-def get_day() :
-    return date.today().day
-
-def get_monthdigit() :
-    return date.today().month
-
-def get_month() :
-    MONTHS = {1: 'januari', 2: 'februari', 3: 'mars', 4: 'april', 5: 'maj', 6: 'juni',
-              7: 'juli', 8: 'augusti', 9: 'september', 10: 'oktober', 11: 'november', 12: 'december'}
-    return MONTHS[get_monthdigit()]
-
-def get_weekdigit() :
-    return date.today().weekday()
-
-def get_week() :
-    return date.today().isocalendar()[1]
-
-def get_weekday(lang = 'sv', tomorrow = False) :
-    wdigit = get_weekdigit()
-    if tomorrow :
-        wdigit += 1
-    if lang == 'sv' :
-        WEEKDAYS = {0: 'måndag', 1: 'tisdag', 2: 'onsdag', 3: 'torsdag', 
-                    4: 'fredag', 5: 'lördag', 6: 'söndag', 7: 'måndag'}
-    if lang == 'en' :
-        WEEKDAYS = {0: 'monday', 1: 'tuesday', 2: 'wednesday', 3: 'thursday', 
-                    4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
-    return WEEKDAYS[wdigit]
 
 # page end, ie closing tags etc
 def page_end() :
@@ -173,7 +142,7 @@ if __name__ == '__main__' :
         restaurants.append(parts[0].lower())
         files.append(parts[1])
 
-    print('\n'.join(page_start(get_weekday(), str(get_day()), get_month())))
+    print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
     # print restaurants
     for i in range(len(SUPPORTED)) :
         if SUPPORTED[i] in restaurants :

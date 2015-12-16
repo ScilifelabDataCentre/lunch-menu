@@ -29,7 +29,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import codecs
-from datetime import date
 import string
 import requests
 import sys
@@ -82,6 +81,7 @@ def fix_for_html(text) :
     
     return text
 
+# date management start
 def get_day() :
     return date.today().day
 
@@ -89,8 +89,9 @@ def get_monthdigit() :
     return date.today().month
 
 def get_month() :
-    MONTHS = {1: 'januari', 2: 'februari', 3: 'mars', 4: 'april', 5: 'maj', 6: 'juni',
-              7: 'juli', 8: 'augusti', 9: 'september', 10: 'oktober', 11: 'november', 12: 'december'}
+    MONTHS = {1: 'januari', 2: 'februari', 3: 'mars', 4: 'april',
+              5: 'maj', 6: 'juni', 7: 'juli', 8: 'augusti',
+              9: 'september', 10: 'oktober', 11: 'november', 12: 'december'}
     return MONTHS[get_monthdigit()]
 
 def get_weekdigit() :
@@ -110,6 +111,7 @@ def get_weekday(lang = 'sv', tomorrow = False) :
         WEEKDAYS = {0: 'monday', 1: 'tuesday', 2: 'wednesday', 3: 'thursday', 
                     4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
     return WEEKDAYS[wdigit]
+# date management end
 
 def remove_html(text) :
     text = text.replace('&nbsp;', ' ')
