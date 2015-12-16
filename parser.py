@@ -229,11 +229,10 @@ def parse_glada(filename) :
     lines += restaurant_end()
     return lines
 
-def parse_haga(filename) :
+def parse_haga(resdata) :
     lines = list()
-    lines += restaurant_start('Haga gatuk&ouml;k', 'Solna', 
-                              'http://orenib.se/haga_gk2.pdf', 
-                              'https://www.openstreetmap.org/#map=19/59.34931/18.02095')
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
+                              resdata[3], resdata[4])
     lines += restaurant_end()
     return lines
     
@@ -573,14 +572,14 @@ def parse_tango(filename) :
     lines += restaurant_end()
     return lines
 
-def parse_subway(filename) :
+def parse_subway(resdata) :
     wdigit = get_weekdigit()
     # sub of the day
     subotd = {0: 'American Steakhouse Melt', 1: 'Subway Melt', 2: 'Spicy Italian', 3: 'Rostbiff', 4: 'Tonfisk', 5: 'Subway Club', 6: 'Italian B.M.T-', 7: 'American Steakhouse Melt'}
     lines = list()
-    lines += restaurant_start('Subway', 'Solna', 
-                              'http://subway.se/sv/hem/', 
-                              'https://www.openstreetmap.org/#map=19/59.35084/18.02433')
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
+                              resdata[3], resdata[4])
+
     lines.append('<p> Sub of the day: {0}</p>\n'.format(fix_for_html(subotd[wdigit])))
     lines += restaurant_end()
     return lines
