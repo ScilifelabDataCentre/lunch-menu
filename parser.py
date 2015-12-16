@@ -273,21 +273,23 @@ def parse_hjulet(resdata) :
 
     return lines
 
-def parse_jons(filename) :
+def parse_jons(resdata) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
     day = get_day()
     month = get_month()
     lines = list()
-    lines += restaurant_start('J&ouml;ns Jacob', 'Solna', 
-                              'http://gastrogate.com/restaurang/jonsjacob/', 
-                              'https://www.openstreetmap.org/#map=19/59.34673/18.02465')
-
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
+                              resdata[3], resdata[4])
+    
     start = False
     today = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
     today_alt = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
     current = list()
-    for line in open(filename, encoding='utf8') :
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200 :
+        pass # add error logging later
+    for line in page_req.text.split('\n') :
         if today in line.lower() or today_alt in line.lower() :
             start = True
             continue
@@ -305,31 +307,31 @@ def parse_jons(filename) :
     lines += restaurant_end()
     return lines
 
-def parse_jorpes(filename) :
+def parse_jorpes(resdata) :
     lines = list()
-    lines += restaurant_start('Caf&eacute; Erik Jorpes', 'Solna', 
-                              'http://restaurang-ns.com/cafe-erik-jorpes/', 
-                              'https://www.openstreetmap.org/#map=19/59.34851/18.02721')
-
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
+                              resdata[3], resdata[4])
     lines += restaurant_end()
     return lines
 
 
-def parse_karolina(filename) :
+def parse_karolina(resdata) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
     day = get_day()
     month = get_month()
     lines = list()
-    lines += restaurant_start('Restaurang Karolina', 'Solna', 
-                              'http://gastrogate.com/restaurang/ksrestaurangen/', 
-                              'https://www.openstreetmap.org/#map=19/59.35224/18.03103')
-
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
+                              resdata[3], resdata[4])
+    
     start = False
     today = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
     today_alt = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
     current = list()
-    for line in open(filename, encoding='utf8') :
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200 :
+        pass # add error logging later
+    for line in page_req.text.split('\n') :
         if today in line.lower() or today_alt in line.lower() :
             start = True
             continue
