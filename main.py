@@ -121,8 +121,6 @@ if __name__ == '__main__' :
               ('matmakarna', ps.parse_matmakarna), ('mf', ps.parse_mf),
               ('tango', ps.parse_tango))
     
-    print(str(list(zip(MAPPER, FUNCTIONS))))
-    
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
         sys.exit()
