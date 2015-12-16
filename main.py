@@ -136,10 +136,17 @@ def page_start(weekday, day, month) :
     return lines
 
 def read_restaurants(filename = 'restaurants.txt') :
+    '''Read a text file with the columns:
+    #identifier	Name	URL	Menu URL	Open Streetmap'''
+
     restaurants = list()
     with open(filename) as infile :
         for line in infile :
-            restaurants.append(line.rstrip().split())
+            if line.lstrip()[0] == '#' :
+                continue
+            restaurants.append(line.rstrip().split('\t'))
+    return restaurants
+
 
 def print_usage(supported) :
     sys.stderr.write('Usage: {} restaurant=filename \n'.format(sys.argv[0]))
