@@ -130,7 +130,7 @@ if __name__ == '__main__' :
     restaurants = list()
     for param in sys.argv[1:] :
         if param not in (x[0] for x in MAPPER) :
-            sys.stderr.write('Error: unsupported restaurant: {}\n'.format(parts[0]))
+            sys.stderr.write('Error: unsupported restaurant: {}\n'.format(param))
             print_usage((x[0] for x in MAPPER))
             sys.exit()
         restaurants.append(param.lower())

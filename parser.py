@@ -115,19 +115,22 @@ def get_weekday(lang = 'sv', tomorrow = False) :
 ### date management end ###
 
 ### parsers start ###
-def parse_61an(filename) :
+def parse_61an(resdata) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
     week = get_week()
     
     lines = list()
-    lines += restaurant_start('Restaurang 61:an', 'Huddinge', 
-                              'http://gastrogate.com/restaurang/61an/', 
-                              'https://www.openstreetmap.org/#map=19/59.22071/17.93717')
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
+                              resdata[3], resdata[4])
 
     started = False
     title_passed = False
-    for line in open(filename, encoding='utf8') :
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200 :
+        pass # add error logging later
+
+    for line in page_req.text.split('\n') :
         if 'vecka' in line.lower() and not title_passed and not 'meny' in line.lower():
             if not str(week) in line :
                 break
@@ -163,17 +166,20 @@ def parse_61an(filename) :
     lines += restaurant_end()
     return lines
 
-def parse_alfred(filename) :
+def parse_alfred(resdata) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
     week = get_week()
     
     lines = list()
-    lines += restaurant_start('Alfreds restaurang', 'Huddinge', 
-                              'http://www.alfredsrestaurang.se/', 
-                              'https://www.openstreetmap.org/#map=19/59.21944/17.94074')
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
+                              resdata[3], resdata[4])
 
-    soup = BeautifulSoup(open(filename), 'html.parser')
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200 :
+        pass # add error logging later
+
+    soup = BeautifulSoup(page_req.text, 'html.parser')
 
     try :
         menu = soup.find_all('div')[85]
@@ -183,7 +189,7 @@ def parse_alfred(filename) :
             base = 3 + 7*wdigit
             for i in range(4) :
                 lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
-
+                
     except :
         pass
         
@@ -231,17 +237,21 @@ def parse_haga(filename) :
     lines += restaurant_end()
     return lines
     
-def parse_hjulet(filename) :
+def parse_hjulet(resdata) :
     day = get_day()
     month = get_month()
     today = get_weekday()
 
     lines = list()
-    lines += restaurant_start('Hjulet', 'Solna', 
-                              'http://gastrogate.com/restaurang/restauranghjulet/', 
-                              'https://www.openstreetmap.org/#map=19/59.34508/18.02423')
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
+                              resdata[3], resdata[4])
 
-    soup = BeautifulSoup(open(filename), 'html.parser')
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200 :
+        pass # add error logging later
+
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+
     # find the weekday index
     day_index = None
     i = 0
@@ -339,10 +349,6 @@ def parse_karolina(filename) :
     return lines
 
 def parse_konigs(resdata) :
-    # [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200 :
-        pass # add error logging later
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
     week = get_week()
@@ -354,6 +360,10 @@ def parse_konigs(resdata) :
                               resdata[3], resdata[4])
     start = False
     menu_passed = False
+    
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200 :
+        pass # add error logging later
     for line in page_req.text.split('\n') :
         if 'VECKA' in line :
             if str(week) not in line :
