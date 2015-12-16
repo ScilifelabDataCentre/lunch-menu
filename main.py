@@ -137,9 +137,9 @@ if __name__ == '__main__' :
 
     print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
     # print restaurants
-    for i in range(len(SUPPORTED)) :
-        if SUPPORTED[i] in restaurants :
-            print('\n'.join(FUNCTIONS[i](restaurant_data[[x[0] for x in restaurant_data].index((x[0] for x in MAPPER)[i])])))
+    for i in range(len(MAPPER)) :
+        if MAPPER[i][0] in restaurants :
+            print('\n'.join(MAPPER[i][1](restaurant_data[[x[0] for x in restaurant_data].index([x[0] for x in MAPPER][i])])))
 
     print('\n'.join(page_end()))
     

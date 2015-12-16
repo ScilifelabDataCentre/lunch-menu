@@ -115,6 +115,229 @@ def get_weekday(lang = 'sv', tomorrow = False) :
 ### date management end ###
 
 ### parsers start ###
+def parse_61an(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
+    lines = list()
+    lines += restaurant_start('Restaurang 61:an', 'Huddinge', 
+                              'http://gastrogate.com/restaurang/61an/', 
+                              'https://www.openstreetmap.org/#map=19/59.22071/17.93717')
+
+    started = False
+    title_passed = False
+    for line in open(filename, encoding='utf8') :
+        if 'vecka' in line.lower() and not title_passed and not 'meny' in line.lower():
+            if not str(week) in line :
+                break
+            title_passed = True
+        if weekday in line.lower() and title_passed :
+            started = True
+            if tomorrow in line.lower() :
+                days = line.split('<STRONG>')
+                if len(days) == 1 :
+                    days = line.split('<strong>')
+                if len(days) == 1 :
+                    break
+                for d in range(len(days)) :
+                    if weekday in days[d].lower() :                        
+                        parts = days[d].split('<br />')
+                        if len(parts) == 1 :
+                            parts = days[d].split('<br>')
+                        if len(parts) == 1 :
+                            break
+                        for i in range(1, len(parts), 1) :
+                            if len(fix_for_html(remove_html(parts[i]))) > 0 :
+                                lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
+        if not started :
+            continue
+        if tomorrow in line.lower() or 'streck2.gif' in line or len(line.strip()) < 25 :
+            break
+        tmp = line.strip()
+        tmp = tmp[tmp.lower().index(weekday) + len(weekday):]
+        parts = tmp.split('<BR>')
+        for i in range(1, len(parts), 1) :
+            lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
+
+    lines += restaurant_end()
+    return lines
+
+def parse_alfred(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
+    lines = list()
+    lines += restaurant_start('Alfreds restaurang', 'Huddinge', 
+                              'http://www.alfredsrestaurang.se/', 
+                              'https://www.openstreetmap.org/#map=19/59.21944/17.94074')
+
+    soup = BeautifulSoup(open(filename), 'html.parser')
+
+    try :
+        menu = soup.find_all('div')[85]
+
+        wdigit = get_weekdigit()
+        if wdigit < 5 :
+            base = 3 + 7*wdigit
+            for i in range(4) :
+                lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
+
+    except :
+        pass
+        
+    lines += restaurant_end()
+
+    return lines
+
+def parse_glada(filename) :
+    lines = list()
+    lines += restaurant_start('Den Glada Restaurangen', 'Solna', 
+                              'http://www.dengladarestaurangen.se/', 
+                              'http://www.openstreetmap.org/#map=19/59.35123/18.03006')
+    
+    week = get_week()
+    tomorrow = get_weekday(tomorrow=True)
+    today = get_weekday()
+
+    menu_reached = False
+    start = False
+    for line in open(filename, encoding='utf-8') :
+        if 'Vecka' in line and '</h1>' in line :
+            if str(week) not in line.lower() :
+                pass
+            menu_reached = True
+        if menu_reached and today in line.lower() :
+            start = True
+            continue
+        if not start :
+            continue
+        if tomorrow in line.lower()  or 'i samtliga rätter ingår' in line.lower() :
+            break
+        if not '<em>' in line and not '<p>Vegetariskt<br />' in line :
+            # remove seperate lines for e.g. "Pasta"
+            if len(remove_html(line).split(' ')) > 1 :
+                lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
+        
+    lines += restaurant_end()
+    return lines
+
+def parse_haga(filename) :
+    lines = list()
+    lines += restaurant_start('Haga gatuk&ouml;k', 'Solna', 
+                              'http://orenib.se/haga_gk2.pdf', 
+                              'https://www.openstreetmap.org/#map=19/59.34931/18.02095')
+    lines += restaurant_end()
+    return lines
+    
+def parse_hjulet(filename) :
+    day = get_day()
+    month = get_month()
+    today = get_weekday()
+
+    lines = list()
+    lines += restaurant_start('Hjulet', 'Solna', 
+                              'http://gastrogate.com/restaurang/restauranghjulet/', 
+                              'https://www.openstreetmap.org/#map=19/59.34508/18.02423')
+
+    soup = BeautifulSoup(open(filename), 'html.parser')
+    # find the weekday index
+    day_index = None
+    i = 0
+    try :
+        for header in soup.find_all('table')[0].find_all('th') :
+            if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower() :
+                day_index = i
+            i += 1
+        if day_index != None :
+            menu = soup.find_all('table')[0].find_all('td')[day_index*15:(day_index+1)*15:3]
+            for i in range(len(menu)) :
+                menu[i] = fix_for_html(remove_html(str(menu[i])))
+                if len(menu[i].strip()) > 0 :
+                    lines.append(menu[i] + '<br/>')
+        else :
+            pass
+    except Exception as err :
+        pass
+    lines += restaurant_end()
+
+    return lines
+
+def parse_jons(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    day = get_day()
+    month = get_month()
+    lines = list()
+    lines += restaurant_start('J&ouml;ns Jacob', 'Solna', 
+                              'http://gastrogate.com/restaurang/jonsjacob/', 
+                              'https://www.openstreetmap.org/#map=19/59.34673/18.02465')
+
+    start = False
+    today = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    today_alt = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    current = list()
+    for line in open(filename, encoding='utf8') :
+        if today in line.lower() or today_alt in line.lower() :
+            start = True
+            continue
+        if start and (tomorrow in line.lower() or '<!-- contact -->' in line.lower()) :
+            break
+        if start :
+            tmp = fix_for_html(remove_html(line.strip()))
+            if len(tmp.strip()) > 0 :
+                current.append(tmp.strip())
+            if '</tr>' in line :
+                if len(current) > 0 :
+                    lines.append(' '.join(current) + '<br/>')
+                    current = list()
+
+    lines += restaurant_end()
+    return lines
+
+def parse_jorpes(filename) :
+    lines = list()
+    lines += restaurant_start('Caf&eacute; Erik Jorpes', 'Solna', 
+                              'http://restaurang-ns.com/cafe-erik-jorpes/', 
+                              'https://www.openstreetmap.org/#map=19/59.34851/18.02721')
+
+    lines += restaurant_end()
+    return lines
+
+
+def parse_karolina(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    day = get_day()
+    month = get_month()
+    lines = list()
+    lines += restaurant_start('Restaurang Karolina', 'Solna', 
+                              'http://gastrogate.com/restaurang/ksrestaurangen/', 
+                              'https://www.openstreetmap.org/#map=19/59.35224/18.03103')
+
+    start = False
+    today = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    today_alt = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    current = list()
+    for line in open(filename, encoding='utf8') :
+        if today in line.lower() or today_alt in line.lower() :
+            start = True
+            continue
+        if start and (tomorrow in line.lower() or 'gäller hela veckan' in line.lower()) :
+            break
+        if start :
+            tmp = fix_for_html(remove_html(line))
+            if len(tmp.strip()) > 0 :
+                current.append(tmp.strip())
+            if '</tr>' in line :
+                if len(current) > 0 :
+                    lines.append(' '.join(current) + '<br/>')
+                    current = list()
+
+    lines += restaurant_end()
+    return lines
+
 def parse_konigs(resdata) :
     # [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
     page_req = requests.get(resdata[3])
@@ -155,6 +378,202 @@ def parse_konigs(resdata) :
 
     return lines
 
+def parse_matmakarna(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
+    lines = list()
+    lines += restaurant_start('Restaurang Matmakarna', 'Huddinge', 
+                              'http://www.matmakarna.nu/index.html', 
+                              'https://www.openstreetmap.org/#map=19/59.21872/17.94068')
+    rad_checker = False
+    started = False
+    for line in open(filename, encoding='latin1') :
+        if 'vecka ' in line.lower() and not started and not 'meny' in line.lower():
+            if not str(week) in line :
+                break
+        if weekday.upper() in line and 'START' in line :
+            started = True
+            continue
+        if not started :
+            continue
+        if weekday.upper() in line and 'SLUT' in line :
+            break
+        if '<!-- rad' in line.lower() :
+            rad_checker = True
+            continue
+        if rad_checker :
+            tmp = remove_html(line).strip()
+            if len(tmp) > 0 :
+                lines.append(fix_for_html(tmp) + '<br/>')
+                rad_checker = False
+            else :
+                continue
+        else :
+            continue
+
+    lines += restaurant_end()
+    return lines
+
+def parse_mf(filename) :
+    # Funny fact: W3C validator crashes while analysing this page.
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
+    lines = list()
+    lines += restaurant_start("MFs Kafe & k&ouml;k", 'Huddinge', 
+                              'http://mmcatering.nu/mfs-kafe-kok/', 
+                              'https://www.openstreetmap.org/#map=18/59.21813/17.93887')
+    if weekday == 'måndag' :
+        weekday = 'ndag'
+
+    start = False
+    for line in open(filename, encoding = 'latin1') :
+        if 'meny vecka' in line.lower() :
+            if 'veckans' in line.lower() :
+                continue
+            if not str(week) in line :
+                break
+        if weekday in line.lower() :
+            start = True
+            continue
+        if tomorrow in line.lower() :
+            break
+        if 'Pris' in line and start :
+            break
+        if not start :
+            continue
+        if len(fix_for_html(remove_html(line)).strip()) == 0 :
+            continue
+        else : 
+            lines.append(fix_for_html(remove_html(line)).strip() + '<br/>')
+
+
+    lines += restaurant_end()
+
+    return lines
+
+def parse_mollan(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
+    lines = list()
+    lines += restaurant_start('Mollan', 'Solna', 
+                              'http://mollanasiankok.se/', 
+                              'https://www.openstreetmap.org/#map=19/59.34836/18.02650')
+
+    soup = BeautifulSoup(open(filename), 'html.parser')
+    try :
+        relevant = soup.find_all('div')[24]
+        # check week
+        if not str(week) in str(relevant.find_all('div')[0]) :
+            pass
+        wdigit = get_weekdigit()
+        if wdigit < 5 :
+            base = 2 + 7*wdigit
+            for i in range(6) :
+                lines.append(fix_for_html(remove_html(str(relevant.find_all('p')[base + i]))) + '<br/>')
+    except :
+        pass
+            
+    lines += restaurant_end()
+
+    return lines
+
+def parse_nanna(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    
+    lines = list()
+    lines += restaurant_start('Restaurang Nanna Svartz', 'Solna', 
+                              'http://restaurang-ns.com/restaurang-nanna-svartz/', 
+                              'https://www.openstreetmap.org/#map=19/59.34848/18.02807')
+    start = False
+    for line in open(filename, encoding='utf-8') :
+        if 'meny' in line.lower() and 'vecka' in line.lower() :
+            if not str(week) in line :
+                break
+        # looking for the lines where the menu is listed in bold text
+        if weekday in line.lower() and 'h3' in line.lower() :
+            start = True
+            continue
+        # alternative formatting
+        if weekday in line.lower() and '<strong>' in line.lower() :
+            start = True
+            continue
+        # end of day
+        if start and (tomorrow in line.lower() or '<div class="span6">' in line) :
+            break
+        if start and len(remove_html(line.strip())) > 1 :
+            lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
+
+    lines += restaurant_end()
+
+    return lines
+
+def parse_stories(filename) :
+    lines = list()
+    lines += restaurant_start('Flemingsberg Stories', 'Huddinge', 
+                              'http://www.cafestories.se/', 
+                              'https://www.openstreetmap.org/#map=19/59.22050/17.94205')
+    lines += restaurant_end()
+    return lines
+
+def parse_svarta(filename) :
+    lines = list()
+    lines += restaurant_start('Svarta Räfven', 'Solna',
+                              'http://restaurang-ns.com/svarta-rafven/', 
+                              'https://www.openstreetmap.org/#map=19/59.34851/18.02804')
+    lines += restaurant_end()
+    return lines
+
+def parse_tango(filename) :
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    day = get_day()
+    month = get_month()
+    lines = list()
+    lines += restaurant_start('Restaurang Tango', 'Huddinge', 
+                              'http://gastrogate.com/restaurang/tango/',
+                              'https://www.openstreetmap.org/#map=19/59.22042/17.94013')
+
+    start = False
+    today = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+    today_alt = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
+#    current = list()
+    for line in open(filename, encoding='utf8') :
+        if today in line.lower() or today_alt in line.lower() :
+            start = True
+            continue
+        if start and (tomorrow in line.lower() or 'gäller hela veckan' in line.lower()) :
+            break
+        if start :
+            tmp = fix_for_html(remove_html(line))
+            if len(tmp.strip()) > 4 : # get rid of the line with pricing
+#                current.append(tmp.strip())
+ #           if '</tr>' in line :
+ #               if len(current) > 0 :
+                lines.append(tmp.strip() + '<br/>')
+ #                   current = list()
+
+    lines += restaurant_end()
+    return lines
+
+def parse_subway(filename) :
+    wdigit = get_weekdigit()
+    # sub of the day
+    subotd = {0: 'American Steakhouse Melt', 1: 'Subway Melt', 2: 'Spicy Italian', 3: 'Rostbiff', 4: 'Tonfisk', 5: 'Subway Club', 6: 'Italian B.M.T-', 7: 'American Steakhouse Melt'}
+    lines = list()
+    lines += restaurant_start('Subway', 'Solna', 
+                              'http://subway.se/sv/hem/', 
+                              'https://www.openstreetmap.org/#map=19/59.35084/18.02433')
+    lines.append('<p> Sub of the day: {0}</p>\n'.format(fix_for_html(subotd[wdigit])))
+    lines += restaurant_end()
+    return lines
 ### parsers end ###
 
 def remove_html(text) :
