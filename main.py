@@ -29,10 +29,8 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import codecs
-from datetime import date
 import string
 import sys
-import requests
 
 import parser as ps
 
@@ -96,9 +94,13 @@ def page_start(weekday, day, month) :
     lines.append('')
     return lines
 
-def read_restaurants(filename = 'restaurants.txt') :
-    '''Read a text file with the columns:
-    #identifier	Name	URL	Menu URL	Open Streetmap'''
+def print_usage(supported) :
+    sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
+    sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
+
+def read_restaurants(filename) :
+    '''Read a tsv file with the columns:
+    [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL'''
 
     restaurants = list()
     with open(filename) as infile :
@@ -107,45 +109,38 @@ def read_restaurants(filename = 'restaurants.txt') :
                 continue
             restaurants.append(line.rstrip().split('\t'))
     return restaurants
-
-def print_usage(supported) :
-    sys.stderr.write('Usage: {} restaurant=filename \n'.format(sys.argv[0]))
-    sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
-
+    
 if __name__ == '__main__' :
-    SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons',
-                 'karolina', 'konigs', 'mollan', 'nanna', 'svarta',
-                 'subway', '61an', 'alfred', 'stories','matmakarna',
-                 'mf', 'tango')
-    FUNCTIONS = (ps.parse_jorpes, ps.parse_glada, ps.parse_haga, ps.parse_hjulet, ps.parse_jons,
-                 ps.parse_karolina, ps.parse_konigs, ps.parse_mollan, ps.parse_nanna, ps.parse_svarta,
-                 ps.parse_subway, ps.parse_61an, ps.parse_alfred, ps.parse_stories, ps.parse_matmakarna,
-                 ps.parse_mf, ps.parse_tango)
+#    SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons',
+#                 'karolina', 'konigs', 'mollan', 'nanna', 'svarta',
+#                 'subway', '61an', 'alfred', 'stories','matmakarna',
+#                 'mf', 'tango')
+#    FUNCTIONS = (ps.parse_jorpes, ps.parse_glada, ps.parse_haga, ps.parse_hjulet, ps.parse_jons,
+#                 ps.parse_karolina, ps.parse_konigs, ps.parse_mollan, ps.parse_nanna, ps.parse_svarta,
+#                 ps.parse_subway, ps.parse_61an, ps.parse_alfred, ps.parse_stories, ps.parse_matmakarna,
+#                 ps.parse_mf, ps.parse_tango)
+    SUPPORTED = ['konigs']
+    FUNCTIONS = [ps.parse_konigs]
     
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
         sys.exit()
     
     # get filenames
+    restaurant_data = read_restaurants('restaurants.txt')
     restaurants = list()
-    files = list()
     for param in sys.argv[1:] :
-        parts = param.split('=')
-        if len(parts) != 2 :
-            sys.stderr.write('Error: incorrect parameter: {}\n'.format(param))
-            print_usage(SUPPORTED)
-            sys.exit()            
-        if parts[0] not in SUPPORTED :
+        if param not in SUPPORTED :
             sys.stderr.write('Error: unsupported restaurant: {}\n'.format(parts[0]))
             print_usage(SUPPORTED)
             sys.exit()
-        restaurants.append(parts[0].lower())
-        files.append(parts[1])
+        restaurants.append(param.lower())
 
     print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
     # print restaurants
     for i in range(len(SUPPORTED)) :
         if SUPPORTED[i] in restaurants :
-            print('\n'.join(FUNCTIONS[i](files[restaurants.index(SUPPORTED[i])])))
+            print('\n'.join(FUNCTIONS[i](restaurant_data[[x[0] for x in restaurant_data].index(SUPPORTED[i])])))
 
     print('\n'.join(page_end()))
+    

@@ -29,6 +29,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import codecs
+from datetime import date
 import string
 import requests
 import sys
@@ -81,7 +82,7 @@ def fix_for_html(text) :
     
     return text
 
-# date management start
+### date management start ###
 def get_day() :
     return date.today().day
 
@@ -111,7 +112,50 @@ def get_weekday(lang = 'sv', tomorrow = False) :
         WEEKDAYS = {0: 'monday', 1: 'tuesday', 2: 'wednesday', 3: 'thursday', 
                     4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
     return WEEKDAYS[wdigit]
-# date management end
+### date management end ###
+
+### parsers start ###
+def parse_konigs(resdata) :
+    # [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200 :
+        pass # add error logging later
+    weekday = get_weekday()
+    tomorrow = get_weekday(tomorrow = True)
+    week = get_week()
+    day = get_day()
+    month = get_month()
+    
+    lines = list()
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
+                              resdata[3], resdata[4])
+    start = False
+    menu_passed = False
+    for line in page_req.text.split('\n') :
+        if 'VECKA' in line :
+            if str(week) not in line :
+                break
+        if 'Veckans matsedel:' in line :
+            menu_passed = True
+            continue
+
+        if menu_passed and (weekday in line.lower() or fix_for_html(weekday) in line.lower()) :
+            start = True
+            continue
+        if not start :
+            continue
+        if tomorrow in line.lower() or 'Veckans soppa:' in line :
+            break
+        line = line.replace('<div>', '')
+        line = line.replace('</div>', '')
+        line = line.replace(' ', '')
+        lines.append(fix_for_html(line))
+
+    lines += restaurant_end()
+
+    return lines
+
+### parsers end ###
 
 def remove_html(text) :
     text = text.replace('&nbsp;', ' ')
