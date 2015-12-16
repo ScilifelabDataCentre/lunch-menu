@@ -122,7 +122,7 @@ if __name__ == '__main__' :
               ('tango', ps.parse_tango))
     
     if len(sys.argv) < 2 or '-h' in sys.argv :
-        print_usage(SUPPORTED)
+        print_usage((x[0] for x in MAPPER))
         sys.exit()
     
     # get filenames
