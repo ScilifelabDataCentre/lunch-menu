@@ -129,24 +129,17 @@ def page_start(weekday, day, month) :
     lines.append('<html>')
     lines.append('<head>')
     lines.append('<title>Dagens mat p&aring; KI - {date}</title>'.format(date = fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))))
-    # Google translate support, page must be at correct address for this to work
-    lines.append('''<meta name="google-translate-customization" content="85dd414b95fed0f0-aa01444e15709cd9-gfbbe571cd431d573-13"></meta>''')
-    lines.append('<link href="http://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">')
-    lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
-    lines.append('<style type="text/css"></style>')
     lines.append('</head>')
     lines.append('<body>')
-    # Google translate support continued
-    lines.append('''<div id="google_translate_element"></div><script type="text/javascript">
-    function googleTranslateElementInit() {
-    new google.translate.TranslateElement({pageLanguage: 'sv', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-    }
-    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>''')
     # page formatting
     lines.append('')
     return lines
 
-
+def read_restaurants(filename = 'restaurants.txt') :
+    restaurants = list()
+    with open(filename) as infile :
+        for line in infile :
+            restaurants.append(line.rstrip().split())
 
 def print_usage(supported) :
     sys.stderr.write('Usage: {} restaurant=filename \n'.format(sys.argv[0]))
