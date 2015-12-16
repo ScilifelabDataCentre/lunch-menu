@@ -111,16 +111,17 @@ def read_restaurants(filename) :
     return restaurants
     
 if __name__ == '__main__' :
-#    SUPPORTED = ('jorpes', 'glada', 'haga', 'hjulet', 'jons',
-#                 'karolina', 'konigs', 'mollan', 'nanna', 'svarta',
-#                 'subway', '61an', 'alfred', 'stories','matmakarna',
-#                 'mf', 'tango')
-#    FUNCTIONS = (ps.parse_jorpes, ps.parse_glada, ps.parse_haga, ps.parse_hjulet, ps.parse_jons,
-#                 ps.parse_karolina, ps.parse_konigs, ps.parse_mollan, ps.parse_nanna, ps.parse_svarta,
-#                 ps.parse_subway, ps.parse_61an, ps.parse_alfred, ps.parse_stories, ps.parse_matmakarna,
-#                 ps.parse_mf, ps.parse_tango)
-    SUPPORTED = ['konigs']
-    FUNCTIONS = [ps.parse_konigs]
+    MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
+              ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
+              ('jons', ps.parse_jons), ('karolina', ps.parse_karolina),
+              ('konigs', ps.parse_konigs), ('mollan', ps.parse_mollan),
+              ('nanna', ps.parse_nanna), ('svarta', ps.parse_svarta),
+              ('subway', ps.parse_subway), ('61an', ps.parse_61an),
+              ('alfred', ps.parse_alfred), ('stories', ps.parse_stories),
+              ('matmakarna', ps.parse_matmakarna), ('mf', ps.parse_mf),
+              ('tango', ps.parse_tango))
+    
+    print(str(list(zip(MAPPER, FUNCTIONS))))
     
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage(SUPPORTED)
@@ -130,9 +131,9 @@ if __name__ == '__main__' :
     restaurant_data = read_restaurants('restaurants.txt')
     restaurants = list()
     for param in sys.argv[1:] :
-        if param not in SUPPORTED :
+        if param not in (x[0] for x in MAPPER) :
             sys.stderr.write('Error: unsupported restaurant: {}\n'.format(parts[0]))
-            print_usage(SUPPORTED)
+            print_usage((x[0] for x in MAPPER))
             sys.exit()
         restaurants.append(param.lower())
 
@@ -140,7 +141,7 @@ if __name__ == '__main__' :
     # print restaurants
     for i in range(len(SUPPORTED)) :
         if SUPPORTED[i] in restaurants :
-            print('\n'.join(FUNCTIONS[i](restaurant_data[[x[0] for x in restaurant_data].index(SUPPORTED[i])])))
+            print('\n'.join(FUNCTIONS[i](restaurant_data[[x[0] for x in restaurant_data].index((x[0] for x in MAPPER)[i])])))
 
     print('\n'.join(page_end()))
     
