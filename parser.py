@@ -95,9 +95,6 @@ def get_month() :
               9: 'september', 10: 'oktober', 11: 'november', 12: 'december'}
     return MONTHS[get_monthdigit()]
 
-def get_weekdigit() :
-    return date.today().weekday()
-
 def get_week() :
     return date.today().isocalendar()[1]
 
@@ -112,6 +109,12 @@ def get_weekday(lang = 'sv', tomorrow = False) :
         WEEKDAYS = {0: 'monday', 1: 'tuesday', 2: 'wednesday', 3: 'thursday', 
                     4: 'friday', 5: 'saturday', 6: 'sunday', 7: 'monday'}
     return WEEKDAYS[wdigit]
+
+def get_weekdigit() :
+    return date.today().weekday()
+
+def get_year() :
+    return date.today().year
 ### date management end ###
 
 ### parsers start ###
@@ -122,7 +125,7 @@ def parse_61an(resdata) :
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
 
     started = False
     title_passed = False
@@ -173,7 +176,7 @@ def parse_alfred(resdata) :
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200 :
@@ -199,7 +202,7 @@ def parse_alfred(resdata) :
 def parse_glada(resdata) :
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
 
     week = get_week()
     tomorrow = get_weekday(tomorrow=True)
@@ -233,7 +236,7 @@ def parse_glada(resdata) :
 def parse_haga(resdata) :
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     lines += restaurant_end()
     return lines
     
@@ -244,7 +247,7 @@ def parse_hjulet(resdata) :
 
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200 :
@@ -281,7 +284,7 @@ def parse_jons(resdata) :
     month = get_month()
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     
     start = False
     today = '{wday}  {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
@@ -311,7 +314,7 @@ def parse_jons(resdata) :
 def parse_jorpes(resdata) :
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     lines += restaurant_end()
     return lines
 
@@ -323,7 +326,7 @@ def parse_karolina(resdata) :
     month = get_month()
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     
     start = False
     today = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
@@ -359,7 +362,7 @@ def parse_konigs(resdata) :
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     start = False
     menu_passed = False
     
@@ -396,10 +399,12 @@ def parse_matmakarna(resdata) :
     week = get_week()
     
     lines = list()
+
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     rad_checker = False
     started = False
+    resdata[3] = resdata[3].replace('${week}${year2}', '{week:02d}{year2}'.format(week = get_week(), year2 = get_year() % 100))
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200 :
         pass # add error logging later
@@ -438,7 +443,7 @@ def parse_mf(resdata) :
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     if weekday == 'måndag' :
         weekday = 'ndag'
 
@@ -478,7 +483,7 @@ def parse_mollan(resdata) :
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200 :
@@ -508,7 +513,7 @@ def parse_nanna(resdata) :
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
 
     start = False
     page_req = requests.get(resdata[3])
@@ -539,7 +544,7 @@ def parse_nanna(resdata) :
 def parse_stories(resdata) :
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     lines += restaurant_end()
     return lines
 
@@ -551,7 +556,7 @@ def parse_subway(resdata) :
               7: 'American Steakhouse Melt'}
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
 
     lines.append('<p> Sub of the day: {0}</p>\n'.format(fix_for_html(subotd[wdigit])))
     lines += restaurant_end()
@@ -560,7 +565,7 @@ def parse_subway(resdata) :
 def parse_svarta(resdata) :
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     lines += restaurant_end()
     return lines
 
@@ -571,7 +576,7 @@ def parse_tango(resdata) :
     month = get_month()
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
-                              resdata[3], resdata[4])
+                              resdata[2], resdata[4])
     
     start = False
     today = '{wday} {iday} {mon}'.format(wday = weekday, iday = day, mon = month)
