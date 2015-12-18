@@ -3,7 +3,7 @@
 alfred	Alfreds restaurang	http://www.alfredsrestaurang.se/	http://www.alfredsrestaurang.se/	https://www.openstreetmap.org/#map=19/59.21944/17.94074
 arom	Café Arom	http://aromsh.se/	http://aromsh.se/?page_id=13	http://www.openstreetmap.org/#map=18/59.21955/17.94160
 entre	Café Entré	http://serviceportal.sodexo.se/sv/restaurangsll/Cafeer/ks_solna/	http://serviceportal.sodexo.se/sv/restaurangsll/Cafeer/ks_solna/meny/	http://www.openstreetmap.org/#map=18/59.35228/18.03238
-glada	Den Glada Restaurangen	http://www.dengladarestaurangen.se/	http://www.dengladarestaurangen.se/meny-vecka-${week} http://www.dengladarestaurangen.se/vecka-${week}	http://www.openstreetmap.org/#map=19/59.35123/18.03006
+glada	Den Glada Restaurangen	http://www.dengladarestaurangen.se/	http://www.dengladarestaurangen.se/#!meny/c30g	http://www.openstreetmap.org/#map=19/59.35123/18.03006
 haga	Haga gatukök	http://orenib.se/haga_gk2.pdf	http://orenib.se/haga_gk2.pdf	https://www.openstreetmap.org/#map=19/59.34931/18.02095
 hjulet	Restaurang Hjulet	http://gastrogate.com/restaurang/restauranghjulet/	http://gastrogate.com/restaurang/restauranghjulet/page/3/	https://www.openstreetmap.org/#map=19/59.34508/18.02423
 jons	Jöns Jacob 	http://gastrogate.com/restaurang/jonsjacob/	http://gastrogate.com/restaurang/jonsjacob/page/3/	https://www.openstreetmap.org/#map=19/59.34673/18.02465
@@ -17,4 +17,4 @@ svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-
 subway	Subway	http://subway.se/sv/hem/	http://subway.se/sv/hem/	https://www.openstreetmap.org/#map=19/59.35084/18.02433
 nanna	Restaurang Nanna Svartz	http://restaurang-ns.com/restaurang-nanna-svartz/	http://restaurang-ns.com/restaurang-nanna-svartz/	https://www.openstreetmap.org/#map=19/59.34848/18.02807
 tango	Restaurang Tango	http://gastrogate.com/restaurang/tango/	http://gastrogate.com/restaurang/tango/page/3/	https://www.openstreetmap.org/#map=19/59.22042/17.94013
-stories	Flemmingsberg Stories	http://storiescafe.se/	http://storiescafe.se/	https://www.openstreetmap.org/#map=19/59.22050/17.94205
+stories	Flemmingsberg Stories	http://storiescafe.se/	http://storiescafe.se/h	ittps://www.openstreetmap.org/#map=19/59.22050/17.94205
