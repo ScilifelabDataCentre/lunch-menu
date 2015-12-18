@@ -124,11 +124,16 @@ if __name__ == '__main__' :
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage((x[0] for x in MAPPER))
         sys.exit()
-    
+        
     # get filenames
     restaurant_data = read_restaurants('restaurants.txt')
     restaurants = list()
-    for param in sys.argv[1:] :
+    if 'all' in sys.argv[1:] :
+        inrest = (x[0] for x in MAPPER)
+    else :
+        inrest = sys.argv[1:]
+    
+    for param in inrest :
         if param not in (x[0] for x in MAPPER) :
             sys.stderr.write('Error: unsupported restaurant: {}\n'.format(param))
             print_usage((x[0] for x in MAPPER))
