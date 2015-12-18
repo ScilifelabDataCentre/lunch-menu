@@ -97,6 +97,8 @@ def page_start(weekday, day, month) :
 def print_usage(supported) :
     sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
     sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
+    sys.stderr.write('write all to generate all supported restaurants')
+    sys.stderr.write('-r filepath to use another restaurant list')
 
 def read_restaurants(filename) :
     '''Read a tsv file with the columns:
@@ -124,18 +126,22 @@ if __name__ == '__main__' :
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage((x[0] for x in MAPPER))
         sys.exit()
+
+    if '-r' in sys.argv :
+        RESTAURANTS = sys.argv[sys.argv.index('-r') + 1]
+    else :
+        RESTAURANTS = 'restaurants.txt'
         
     # get filenames
-    restaurant_data = read_restaurants('restaurants.txt')
+    restaurant_data = read_restaurants(RESTAURANTS)
     restaurants = list()
     if 'all' in sys.argv[1:] :
         inrest = (x[0] for x in MAPPER)
     else :
-        inrest = sys.argv[1:]
+        inrest = sys.argv[1:sys.argv.index('-r')] + sys.argv[sys.argv.index('-r')+2:]
     
     for param in inrest :
         if param not in (x[0] for x in MAPPER) :
-            sys.stderr.write('Error: unsupported restaurant: {}\n'.format(param))
             print_usage((x[0] for x in MAPPER))
             sys.exit()
         restaurants.append(param.lower())
