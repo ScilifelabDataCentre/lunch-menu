@@ -88,6 +88,8 @@ def page_start(weekday, day, month) :
     lines.append('<html>')
     lines.append('<head>')
     lines.append('<title>Dagens mat p&aring; KI - {date}</title>'.format(date = fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))))
+    lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
+    lines.append('<style type="text/css"></style>')
     lines.append('</head>')
     lines.append('<body>')
     # page formatting
@@ -97,8 +99,8 @@ def page_start(weekday, day, month) :
 def print_usage(supported) :
     sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
     sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
-    sys.stderr.write('write all to generate all supported restaurants')
-    sys.stderr.write('-r filepath to use another restaurant list')
+    sys.stderr.write('write all to generate all supported restaurants\n')
+    sys.stderr.write('-r filepath to use another restaurant list\n')
 
 def read_restaurants(filename) :
     '''Read a tsv file with the columns:
