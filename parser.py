@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2014-2015, Linus Östberg
+# Copyright (c) 2014-2016, Linus Östberg
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -177,7 +177,7 @@ def parse_glada(resdata) :
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
                               resdata[2], resdata[4])
-
+    
     # No way I'll parse this one. If anyone actually wants to, I'd be happy to accept a patch.
         
     lines += restaurant_end()
