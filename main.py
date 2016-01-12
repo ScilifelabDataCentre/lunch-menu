@@ -139,14 +139,18 @@ if __name__ == '__main__' :
     restaurants = list()
     if 'all' in sys.argv[1:] :
         inrest = (x[0] for x in MAPPER)
-    else :
+    elif '-r' in sys.argv :
         inrest = sys.argv[1:sys.argv.index('-r')] + sys.argv[sys.argv.index('-r')+2:]
+    else :
+        inrest = sys.argv[1:]
     
     for param in inrest :
         if param not in (x[0] for x in MAPPER) :
-            print_usage((x[0] for x in MAPPER))
-            sys.exit()
-        restaurants.append(param.lower())
+            if param != '-r' :
+                print_usage((x[0] for x in MAPPER))
+                sys.exit()
+        if param != '-r' :
+            restaurants.append(param.lower())
 
     print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
     # print restaurants
