@@ -353,36 +353,23 @@ def parse_matmakarna(resdata) :
 
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
                               resdata[2], resdata[4])
-    rad_checker = False
-    started = False
+
     resdata[3] = resdata[3].replace('${week}${year2}', '{week:02d}{year2}'.format(week = get_week(), year2 = get_year() % 100))
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200 :
         pass # add error logging later
-    for line in page_req.text.split('\n') :
-        if 'vecka ' in line.lower() and not started and not 'meny' in line.lower():
-            if not str(week) in line :
-                break
-        if weekday.upper() in line and 'START' in line :
-            started = True
-            continue
-        if not started :
-            continue
-        if weekday.upper() in line and 'SLUT' in line :
-            break
-        if '<!-- rad' in line.lower() :
-            rad_checker = True
-            continue
-        if rad_checker :
-            tmp = remove_html(line).strip()
-            if len(tmp) > 0 :
-                lines.append(fix_for_html(tmp) + '<br/>')
-                rad_checker = False
-            else :
-                continue
-        else :
-            continue
+    
+    soup = BeautifulSoup(page_req.text, 'html.parser')
 
+    relevant = soup.find("table", { "cellpadding" : "2" }).find_all('tr')
+
+    wdigit = get_weekdigit()
+
+    base = 1 + 5*wdigit
+
+    for i in range(base, base+4) :
+        lines.append(fix_for_html(relevant[i].get_text().strip()) + '<br/>')
+    
     lines += restaurant_end()
     return lines
 
