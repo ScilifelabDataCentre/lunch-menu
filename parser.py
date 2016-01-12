@@ -56,6 +56,7 @@ def fix_for_html(text) :
     text = text.replace('´', '&#39;')
     text = text.replace('`', '&#39;')
     text = text.replace('ç', '&ccedil;')
+    text = text.replace('”', '&quot;')
     # MF does for sure not know how to work with text encodings
     text = text.replace('Ã¨', '&egrave;')
     text = text.replace('Ã¤', '&auml;')
@@ -224,19 +225,20 @@ def parse_hjulet(resdata) :
         pass # add error logging later
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
-
-    # find the weekday index
-    day_index = None
-    i = 0
     try :
+        # find the weekday index
+        day_index = None
+        i = 0
         for header in soup.find_all('table')[0].find_all('th') :
             if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower() :
                 day_index = i
             i += 1
+        # get the menu
         if day_index != None :
-            menu = soup.find_all('table')[0].find_all('td')[day_index:(day_index+1):3]
+            menu = soup.find_all('table')[0].find_all('td')[(day_index-1)*3:(day_index)*3]
             for i in range(len(menu)) :
                 menu[i] = fix_for_html(remove_html(str(menu[i])))
+                menu[i] = menu[i].replace('\n', '<br/>')
                 if len(menu[i].strip()) > 0 :
                     lines.append(menu[i] + '<br/>')
         else :
@@ -459,19 +461,20 @@ def parse_mollan(resdata) :
     if page_req.status_code != 200 :
         pass # add error logging later
     soup = BeautifulSoup(page_req.text, 'html.parser')
-    try :
-        relevant = soup.find_all('div')[24]
-        # check week
-        if not str(week) in str(relevant.find_all('div')[0]) :
-            pass
-        wdigit = get_weekdigit()
-        if wdigit < 5 :
-            base = 2 + 7*wdigit
-            for i in range(6) :
-                lines.append(fix_for_html(remove_html(str(relevant.find_all('p')[base + i]))) + '<br/>')
-    except :
-        pass
-            
+
+    # get the right div
+    relevant = soup.find("div", { "class" : "self mobile-leaf mobile-forcehide text textnormal mobile-undersized-upper" })
+    # should be "Vecka " followed by week number
+    if str(week) in relevant.find('span').get_text().strip() :
+        try :
+            wdigit = get_weekdigit()
+            if wdigit < 5 :
+                base = 3 + 7*wdigit
+                for i in range(6) :
+                    lines.append(fix_for_html(remove_html(str(relevant.find_all('span')[base + i]))) + '<br/>')
+        except :
+            pass # add error logging later
+    
     lines += restaurant_end()
 
     return lines
