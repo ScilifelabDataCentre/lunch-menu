@@ -158,14 +158,14 @@ def parse_alfred(resdata) :
     soup = BeautifulSoup(page_req.text, 'html.parser')
 
     try :
-        menu = soup.find_all('div')[85]
-
-        wdigit = get_weekdigit()
-        if wdigit < 5 :
-            base = 3 + 7*wdigit
-            for i in range(4) :
-                lines.append(fix_for_html(remove_html(str(menu.find_all('p')[base + i]))) + '<br/>')
-                
+        relevant = soup.find_all("div", { "class" : "self mobile-leaf text textnormal mobile-undersized-upper" } )[4].find_all('span')
+        # check for correct week
+        if str(week) in relevant[1].get_text() :
+            wdigit = get_weekdigit()
+            if wdigit < 5 :
+                base = 5 + 7*wdigit
+                for i in range(4) :
+                    lines.append(fix_for_html(relevant[base + i].get_text()) + '<br/>')
     except :
         pass
         
