@@ -378,6 +378,7 @@ def parse_mf(resdata) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
     week = get_week()
+    wdigit = get_weekdigit()
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
@@ -389,27 +390,14 @@ def parse_mf(resdata) :
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200 :
         pass # add error logging later
-    for line in page_req.text.split('\n') :
-        if 'meny vecka' in line.lower() :
-            if 'veckans' in line.lower() :
-                continue
-            if not str(week) in line :
-                break
-        if weekday in line.lower() :
-            start = True
-            continue
-        if tomorrow in line.lower() :
-            break
-        if 'Pris' in line and start :
-            break
-        if not start :
-            continue
-        if len(fix_for_html(remove_html(line)).strip()) == 0 :
-            continue
-        else : 
-            lines.append(fix_for_html(remove_html(line)).strip() + '<br/>')
 
+    soup = BeautifulSoup(page_req.text, 'html.parser')
 
+    relevant = soup.find("div", { "class" : "main-content" }).find_all('p')
+    menu = relevant[wdigit].get_text()
+    for entry in menu.split('\n') :
+        lines.append(fix_for_html(entry) + '<br/>')
+        
     lines += restaurant_end()
 
     return lines
