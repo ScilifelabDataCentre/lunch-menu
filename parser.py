@@ -545,11 +545,11 @@ def parse_svarta(resdata) :
     
     relevant = soup.find("div", { "class" : "span6" }).find_all('p')
     # pre
-    lines.append(fix_for_html(relevant[0].get_text().split('\n')[0]))
+    lines.append(fix_for_html(relevant[0].get_text().split('\n')[0]) + '<br/>') 
     # main 
-    lines.append(fix_for_html(relevant[1].get_text().split('\n')[0]))
+    lines.append(fix_for_html(relevant[1].get_text().split('\n')[0]) + '<br/>')
     # dessert
-    lines.append(fix_for_html(relevant[2].get_text().split('\n')[0]))
+    lines.append(fix_for_html(relevant[2].get_text().split('\n')[0]) + '<br/>')
 
     lines += restaurant_end()
 
