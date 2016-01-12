@@ -10,7 +10,7 @@ jons	Jöns Jacob 	http://gastrogate.com/restaurang/jonsjacob/	http://gastrogate.
 jorpes	Café Erik Jorpes	http://restaurang-ns.com/cafe-erik-jorpes/	http://restaurang-ns.com/cafe-erik-jorpes/	https://www.openstreetmap.org/#map=19/59.34851/18.02721
 karolina	Restaurang Karolina	http://gastrogate.com/restaurang/ksrestaurangen/	http://gastrogate.com/restaurang/ksrestaurangen/page/3	https://www.openstreetmap.org/#map=19/59.35224/18.03103
 konigs	Restaurang Königs	http://restaurangkonigs.se/	http://restaurangkonigs.se/	https://www.openstreetmap.org/#map=19/59.34959/18.02343
-matmakarna	Restaurang Matmakarna	http://www.matmakarna.nu/	http://www.matmakarna.nu/Veckomeny_Restaurang_Matmakarna/index_Vecka${week}${year2}.html	https://www.openstreetmap.org/#map=19/59.21872/17.94068
+matmakarna	Restaurang Matmakarna	http://www.matmakarna.nu/	http://www.matmakarna.nu/Veckomeny_Restaurang_Matmakarna/index_Vecka_${week}${year2}.html	https://www.openstreetmap.org/#map=19/59.21872/17.94068
 mf	MFs Kafe & kök	http://mmcatering.nu/mfs-kafe-kok/	http://mmcatering.nu/mfs-kafe-kok/meny	https://www.openstreetmap.org/#map=18/59.21813/17.93887
 mollan	Mollan Asian kök	http://mollanasiankok.se/	http://mollanasiankok.se/vecka%20meny.html	https://www.openstreetmap.org/#map=19/59.34836/18.02650
 svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-ns.com/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804
