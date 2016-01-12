@@ -539,7 +539,20 @@ def parse_svarta(resdata) :
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
                               resdata[2], resdata[4])
+
+    page_req = requests.get(resdata[3])
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    
+    relevant = soup.find("div", { "class" : "span6" }).find_all('p')
+    # pre
+    lines.append(fix_for_html(relevant[0].get_text().split('\n')[0]))
+    # main 
+    lines.append(fix_for_html(relevant[1].get_text().split('\n')[0]))
+    # dessert
+    lines.append(fix_for_html(relevant[2].get_text().split('\n')[0]))
+
     lines += restaurant_end()
+
     return lines
 
 def parse_tango(resdata) :
