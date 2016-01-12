@@ -36,12 +36,6 @@ import sys
 
 from bs4 import BeautifulSoup
 
-class Restaurant() :
-    def __init__(self) :
-        pass
-    def parseToday(self) :
-        pass
-
 def fix_for_html(text) :
     '''HTML formatting of characters'''
     text = text.replace('ö', '&ouml;')
