@@ -117,6 +117,7 @@ def parse_61an(resdata) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
     week = get_week()
+    wdigit = get_weekdigit()
     
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
@@ -128,39 +129,17 @@ def parse_61an(resdata) :
     if page_req.status_code != 200 :
         pass # add error logging later
 
-    for line in page_req.text.split('\n') :
-        if 'vecka' in line.lower() and not title_passed and not 'meny' in line.lower():
-            if not str(week) in line :
-                break
-            title_passed = True
-        if weekday in line.lower() and title_passed :
-            started = True
-            if tomorrow in line.lower() :
-                days = line.split('<STRONG>')
-                if len(days) == 1 :
-                    days = line.split('<strong>')
-                if len(days) == 1 :
-                    break
-                for d in range(len(days)) :
-                    if weekday in days[d].lower() :                        
-                        parts = days[d].split('<br />')
-                        if len(parts) == 1 :
-                            parts = days[d].split('<br>')
-                        if len(parts) == 1 :
-                            break
-                        for i in range(1, len(parts), 1) :
-                            if len(fix_for_html(remove_html(parts[i]))) > 0 :
-                                lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
-        if not started :
-            continue
-        if tomorrow in line.lower() or 'streck2.gif' in line or len(line.strip()) < 25 :
-            break
-        tmp = line.strip()
-        tmp = tmp[tmp.lower().index(weekday) + len(weekday):]
-        parts = tmp.split('<BR>')
-        for i in range(1, len(parts), 1) :
-            lines.append(fix_for_html(remove_html(parts[i]) + '<br/>'))
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    relevant = soup.find("table", { "class" : "lunch_menu" } )
 
+    base = wdigit * 5
+
+    for i in range(base+1, base+5) :
+        res = relevant.find_all('tr')[i].get_text()
+        if tomorrow in res :
+            break
+        lines.append(fix_for_html(remove_html(res)).replace('\n', ' ') + '<br/>')
+        
     lines += restaurant_end()
     return lines
 
