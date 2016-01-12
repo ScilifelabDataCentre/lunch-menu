@@ -198,31 +198,7 @@ def parse_glada(resdata) :
     lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
                               resdata[2], resdata[4])
 
-    week = get_week()
-    tomorrow = get_weekday(tomorrow=True)
-    today = get_weekday()
-
-    menu_reached = False
-    start = False
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200 :
-        pass # add error logging later
-    for line in page_req.text.split('\n') :
-        if 'Vecka' in line and '</h1>' in line :
-            if str(week) not in line.lower() :
-                pass
-            menu_reached = True
-        if menu_reached and today in line.lower() :
-            start = True
-            continue
-        if not start :
-            continue
-        if tomorrow in line.lower()  or 'i samtliga rätter ingår' in line.lower() :
-            break
-        if not '<em>' in line and not '<p>Vegetariskt<br />' in line :
-            # remove seperate lines for e.g. "Pasta"
-            if len(remove_html(line).split(' ')) > 1 :
-                lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
+    # No way I'll parse this one. If anyone actually wants to, I'd be happy to accept a patch.
         
     lines += restaurant_end()
     return lines
