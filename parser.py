@@ -423,7 +423,7 @@ def parse_mollan(resdata) :
         try :
             wdigit = get_weekdigit()
             if wdigit < 5 :
-                base = 3 + 7*wdigit
+                base = 2 + 7*wdigit
                 for i in range(6) :
                     lines.append(fix_for_html(remove_html(str(relevant.find_all('span')[base + i]))) + '<br/>')
         except :
