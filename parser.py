@@ -214,7 +214,7 @@ def parse_hjulet(resdata) :
             i += 1
         # get the menu
         if day_index != None :
-            menu = soup.find_all('table')[0].find_all('td')[(day_index-1)*3:(day_index)*3]
+            menu = soup.find_all('table')[0].find_all('td')[(day_index)*3:(day_index+1)*3]
             for i in range(len(menu)) :
                 menu[i] = fix_for_html(remove_html(str(menu[i])))
                 menu[i] = menu[i].replace('\n', '<br/>')
