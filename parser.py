@@ -175,7 +175,7 @@ def parse_alfred(resdata) :
 
 def parse_glada(resdata) :
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge', 
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
                               resdata[2], resdata[4])
     
     # No way I'll parse this one. If anyone actually wants to, I'd be happy to accept a patch.
