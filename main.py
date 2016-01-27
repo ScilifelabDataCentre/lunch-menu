@@ -34,46 +34,6 @@ import sys
 
 import parser as ps
 
-def fix_for_html(text) :
-    '''HTML formatting of characters'''
-    text = text.replace('ö', '&ouml;')
-    text = text.replace('Ö', '&Ouml;')
-    text = text.replace('å', '&aring;')
-    text = text.replace('Å', '&Aring;')
-    text = text.replace('ä', '&auml;')
-    text = text.replace('Ä', '&Auml;')
-    text = text.replace('é', '&eacute;')
-    text = text.replace('è', '&egrave;')
-    text = text.replace('í', '&iacute;')
-    text = text.replace('ì', '&igrave;')
-    text = text.replace('à', '&agrave;')
-    text = text.replace('á', '&aacute;')
-    text = text.replace('ô', '&ocirc;')
-    text = text.replace('ü', '&uuml;')
-    text = text.replace('Ä', '&Auml;')
-    text = text.replace('´', '&#39;')
-    text = text.replace('`', '&#39;')
-    text = text.replace('ç', '&ccedil;')
-    # MF does for sure not know how to work with text encodings
-    text = text.replace('Ã¨', '&egrave;')
-    text = text.replace('Ã¤', '&auml;')
-    text = text.replace('Ã', '&Auml;')
-    text = text.replace('Ã', '&Auml;')
-    text = text.replace('Ã¶', '&ouml;')
-    text = text.replace('Ã©', '&eacute;')
-    text = text.replace('Ã¥', '&aring;')
-    text = text.replace(' ', '')
-    text = text.replace('Ã', '&Aring')
-    # Karolina
-    text = text.replace('å', '&aring;')
-    text = text.replace('ä', '&auml;')
-    text = text.replace('ö', '&ouml;')
-    text = text.replace('Ä', '&Auml;')
-
-    text = text.strip()
-    
-    return text
-
 # page end, ie closing tags etc
 def page_end() :
     lines = list()
@@ -87,7 +47,7 @@ def page_start(weekday, day, month) :
     lines = list()
     lines.append('<html>')
     lines.append('<head>')
-    lines.append('<title>Dagens mat p&aring; KI - {date}</title>'.format(date = fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))))
+    lines.append('<title>Dagens mat p&aring; KI - {date}</title>'.format(date = ps.fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))))
     lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
     lines.append('<style type="text/css"></style>')
     lines.append('</head>')
@@ -97,12 +57,14 @@ def page_start(weekday, day, month) :
     return lines
 
 def print_usage(supported) :
+    '''Print description of syntax'''
     sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
     sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
     sys.stderr.write('write all to generate all supported restaurants\n')
     sys.stderr.write('-r filepath to use another restaurant list\n')
 
 def read_restaurants(filename) :
+    '''Read the list of restaurants'''
     '''Read a tsv file with the columns:
     [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL'''
 
