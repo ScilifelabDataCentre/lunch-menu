@@ -3,4 +3,7 @@ kimenu
 
 Scripts useful for parsing the menus of the restaurants at Karolinska Institutet and generating a simple html page.
 
-Run main.py to generate the menu.
+Usage:
+main.py restaurant_name > index.html
+
+Supported restaurants are listed in restaurants.txt, accepted parameters are the names in column 1 or all to generate the menu for all restaurants. The terms are also listed when you run ./main.py without any arguments.
