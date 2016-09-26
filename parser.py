@@ -373,35 +373,6 @@ def parse_matmakarna(resdata) :
     lines += restaurant_end()
     return lines
 
-def parse_mf(resdata) :
-    # Funny fact: W3C validator crashes while analysing this page.
-    weekday = get_weekday()
-    tomorrow = get_weekday(tomorrow = True)
-    week = get_week()
-    wdigit = get_weekdigit()
-    
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna', 
-                              resdata[2], resdata[4])
-    if weekday == 'måndag' :
-        weekday = 'ndag'
-
-    start = False
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200 :
-        pass # add error logging later
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
-
-    relevant = soup.find("div", { "class" : "main-content" }).find_all('p')
-    menu = relevant[wdigit].get_text()
-    for entry in menu.split('\n') :
-        lines.append(fix_for_html(entry) + '<br/>')
-        
-    lines += restaurant_end()
-
-    return lines
-
 def parse_mollan(resdata) :
     weekday = get_weekday()
     tomorrow = get_weekday(tomorrow = True)
