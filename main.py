@@ -84,8 +84,7 @@ if __name__ == '__main__' :
               ('nanna', ps.parse_nanna), ('svarta', ps.parse_svarta),
               ('subway', ps.parse_subway), ('61an', ps.parse_61an),
               ('alfred', ps.parse_alfred), ('stories', ps.parse_stories),
-              ('matmakarna', ps.parse_matmakarna), ('mf', ps.parse_mf),
-              ('tango', ps.parse_tango))
+              ('matmakarna', ps.parse_matmakarna), ('tango', ps.parse_tango))
     
     if len(sys.argv) < 2 or '-h' in sys.argv :
         print_usage((x[0] for x in MAPPER))

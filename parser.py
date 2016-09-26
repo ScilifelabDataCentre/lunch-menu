@@ -57,16 +57,6 @@ def fix_for_html(text) :
     text = text.replace('`', '&#39;')
     text = text.replace('ç', '&ccedil;')
     text = text.replace('”', '&quot;')
-    # MF does for sure not know how to work with text encodings
-    text = text.replace('Ã¨', '&egrave;')
-    text = text.replace('Ã¤', '&auml;')
-    text = text.replace('Ã', '&Auml;')
-    text = text.replace('Ã', '&Auml;')
-    text = text.replace('Ã¶', '&ouml;')
-    text = text.replace('Ã©', '&eacute;')
-    text = text.replace('Ã¥', '&aring;')
-    text = text.replace(' ', '')
-    text = text.replace('Ã', '&Aring')
     # Karolina
     text = text.replace('å', '&aring;')
     text = text.replace('ä', '&auml;')
