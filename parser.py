@@ -441,7 +441,7 @@ def parse_mollan(resdata):
     soup = BeautifulSoup(page_req.text, 'html.parser')
 
     # get the right div
-    relevant = soup.find("div", {"class": "self mobile-leaf mobile-forcehide text textnormal mobile-undersized-upper"})
+    relevant = soup.find("div", {"class": "self mobile-leaf text textnormal mobile-undersized-upper"})
     # should be "Vecka " followed by week number
     if str(week) in relevant.find('span').get_text().strip():
         try:
