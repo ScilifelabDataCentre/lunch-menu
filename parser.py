@@ -151,7 +151,7 @@ def parse_61an(resdata):
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     relevant = soup.find("table", {"class": "lunch_menu"})
@@ -180,7 +180,7 @@ def parse_alfred(resdata):
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
     soup = BeautifulSoup(page_req.text, 'html.parser')
 
     try:
@@ -239,7 +239,7 @@ def parse_hjulet(resdata):
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     try:
@@ -285,7 +285,7 @@ def parse_jons(resdata):
     current = list()
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
     for line in page_req.text.split('\n'):
         if today in line.lower() or today_alt in line.lower():
             start = True
@@ -334,7 +334,7 @@ def parse_karolina(resdata):
     current = list()
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
     for line in page_req.text.split('\n'):
         if today in line.lower() or today_alt in line.lower():
             start = True
@@ -370,7 +370,7 @@ def parse_konigs(resdata):
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
     for line in page_req.text.split('\n'):
         if 'VECKA' in line:
             if str(week) not in line:
@@ -408,8 +408,7 @@ def parse_matmakarna(resdata):
     resdata[3] = resdata[3].replace('${week}${year2}', '{week:02d}{year2}'.format(week=get_week(), year2=get_year() % 100))
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
-
+        raise IOError('Bad HTTP responce code')
     soup = BeautifulSoup(page_req.text, 'html.parser')
 
     relevant = soup.find("table", {"cellpadding": "2"}).find_all('tr')
@@ -437,21 +436,22 @@ def parse_mollan(resdata):
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
     soup = BeautifulSoup(page_req.text, 'html.parser')
 
     # get the right div
     relevant = soup.find("div", {"class": "self mobile-leaf text textnormal mobile-undersized-upper"})
     # should be "Vecka " followed by week number
     if str(week) in relevant.find('span').get_text().strip():
-        try:
-            wdigit = get_weekdigit()
-            if wdigit < 5:
-                base = 2 + 7*wdigit
-                for i in range(6):
-                    lines.append(fix_for_html(remove_html(str(relevant.find_all('span')[base + i]))) + '<br/>')
-        except Exception:
-            pass # add error logging later
+#        try:
+#            fix_for_html(remove_html(str(relevant.find_all('span')[base + i]))) + '<br/>')
+#            wdigit = get_weekdigit()
+#            if wdigit < 5:
+#                base = 2 + 7*wdigit
+#                for i in range(6):
+#                    lines.append(
+#        except Exception:
+        pass # add error logging later
 
     lines += restaurant_end()
 
@@ -473,7 +473,7 @@ def parse_nanna(resdata):
     start = False
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
     for line in page_req.text.split('\n'):
         if 'meny' in line.lower() and 'vecka' in line.lower():
             if not str(week) in line:
@@ -565,7 +565,7 @@ def parse_tango(resdata):
 
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
-        pass # add error logging later
+        raise IOError('Bad HTTP responce code')
     for line in page_req.text.split('\n'):
         if today in line.lower() or today_alt in line.lower():
             start = True
