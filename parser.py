@@ -138,66 +138,17 @@ def get_year():
 ### date management end ###
 
 ### parsers start ###
-def parse_61an(resdata):
+def parse_bikupan(resdata):
     '''
-    Parse the menu of Restaurang 61:an
+    Parse the menu of Restaurang Bikupan
     '''
-    tomorrow = get_weekday(tomorrow=True)
-    wdigit = get_weekdigit()
-
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge',
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
-
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     relevant = soup.find("table", {"class": "lunch_menu"})
-
-    base = wdigit * 5
-
-    for i in range(base+1, base+5):
-        res = relevant.find_all('tr')[i].get_text()
-        if tomorrow in res:
-            break
-        lines.append(fix_for_html(remove_html(res)).replace('\n', ' ') + '<br/>')
-
-    lines += restaurant_end()
-    return lines
-
-
-def parse_alfred(resdata):
-    '''
-    Parse the menu of Alfreds restaurang
-    '''
-    week = get_week()
-
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge',
-                              resdata[2], resdata[4])
-
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-    soup = BeautifulSoup(page_req.text, 'html.parser')
-
-    try:
-        relevant = soup.find_all("div", {"class": "self mobile-leaf text textnormal mobile-undersized-upper"})[4].find_all('span')
-        # check for correct week
-        if str(week) in relevant[1].get_text():
-            wdigit = get_weekdigit()
-            if wdigit < 5:
-                base = 5 + 7*wdigit
-                for i in range(4):
-                    lines.append(fix_for_html(relevant[base + i].get_text()) + '<br/>')
-    except:
-        pass
-
-    lines += restaurant_end()
-
-    return lines
+    
 
 
 def parse_glada(resdata):
@@ -354,76 +305,6 @@ def parse_karolina(resdata):
     return lines
 
 
-def parse_konigs(resdata):
-    '''
-    Parse the menu of Restaurang Königs
-    '''
-    weekday = get_weekday()
-    tomorrow = get_weekday(tomorrow=True)
-    week = get_week()
-
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
-    start = False
-    menu_passed = False
-
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-    for line in page_req.text.split('\n'):
-        if 'VECKA' in line:
-            if str(week) not in line:
-                break
-        if 'Veckans matsedel:' in line:
-            menu_passed = True
-            continue
-
-        if menu_passed and (weekday in line.lower() or fix_for_html(weekday) in line.lower()):
-            start = True
-            continue
-        if not start:
-            continue
-        if tomorrow in line.lower() or 'Veckans soppa:' in line:
-            break
-        line = line.replace('<div>', '')
-        line = line.replace('</div>', '')
-        line = line.replace(' ', '')
-        lines.append(fix_for_html(line))
-
-    lines += restaurant_end()
-
-    return lines
-
-
-def parse_matmakarna(resdata):
-    '''
-    Parse the menu of Matmakarna
-    '''
-    lines = list()
-
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge',
-                              resdata[2], resdata[4])
-
-    resdata[3] = resdata[3].replace('${week}${year2}', '{week:02d}{year2}'.format(week=get_week(), year2=get_year() % 100))
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-    soup = BeautifulSoup(page_req.text, 'html.parser')
-
-    relevant = soup.find("table", {"cellpadding": "2"}).find_all('tr')
-
-    wdigit = get_weekdigit()
-
-    base = 1 + 5*wdigit
-
-    for i in range(base, base+4):
-        lines.append(fix_for_html(relevant[i].get_text().strip()) + '<br/>')
-
-    lines += restaurant_end()
-    return lines
-
-
 def parse_mollan(resdata):
     '''
     Parse the menu of Mollan
@@ -497,17 +378,6 @@ def parse_nanna(resdata):
     return lines
 
 
-def parse_stories(resdata):
-    '''
-    Parse the menu of Flemmingsberg Stories
-    '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge',
-                              resdata[2], resdata[4])
-    lines += restaurant_end()
-    return lines
-
-
 def parse_subway(resdata):
     '''
     Print info about Subway
@@ -546,41 +416,7 @@ def parse_svarta(resdata):
 
     return lines
 
-
-def parse_tango(resdata):
-    '''
-    Parse the menu of Restaurang Tango
-    '''
-    weekday = get_weekday()
-    tomorrow = get_weekday(tomorrow=True)
-    day = get_day()
-    month = get_month()
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Huddinge',
-                              resdata[2], resdata[4])
-
-    start = False
-    today = '{wday} {iday} {mon}'.format(wday=weekday, iday=day, mon=month)
-    today_alt = '{wday}  {iday} {mon}'.format(wday=weekday, iday=day, mon=month)
-
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-    for line in page_req.text.split('\n'):
-        if today in line.lower() or today_alt in line.lower():
-            start = True
-            continue
-        if start and (tomorrow in line.lower() or 'gäller hela veckan' in line.lower()):
-            break
-        if start:
-            tmp = fix_for_html(remove_html(line))
-            if len(tmp.strip()) > 4: # get rid of the line with pricing
-                lines.append(tmp.strip() + '<br/>')
-
-    lines += restaurant_end()
-    return lines
 ### parsers end ###
-
 
 def remove_html(text):
     '''
