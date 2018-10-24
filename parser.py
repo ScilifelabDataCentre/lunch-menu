@@ -301,25 +301,12 @@ def parse_mollan(resdata):
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
 
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-    soup = BeautifulSoup(page_req.text, 'html.parser')
-
-    # get the right div
-    relevant = soup.find("div", {"class": "self mobile-leaf text textnormal mobile-undersized-upper"})
-    # should be "Vecka " followed by week number
-    if str(week) in relevant.find('span').get_text().strip():
-#        try:
-#            fix_for_html(remove_html(str(relevant.find_all('span')[base + i]))) + '<br/>')
-#            wdigit = get_weekdigit()
-#            if wdigit < 5:
-#                base = 2 + 7*wdigit
-#                for i in range(6):
-#                    lines.append(
-#        except Exception:
-        pass # add error logging later
-
+    # To be fixed some day. Not fun.
+    #page_req = requests.get(resdata[3])
+    #if page_req.status_code != 200:
+    #    raise IOError('Bad HTTP responce code')
+    #soup = BeautifulSoup(page_req.text, 'html.parser')
+    
     lines += restaurant_end()
 
     return lines
@@ -337,30 +324,12 @@ def parse_nanna(resdata):
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
 
-    start = False
+    # will fix some day. Not fun.
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
-    for line in page_req.text.split('\n'):
-        if 'meny' in line.lower() and 'vecka' in line.lower():
-            if not str(week) in line:
-                break
-        # looking for the lines where the menu is listed in bold text
-        if weekday in line.lower() and 'h3' in line.lower():
-            start = True
-            continue
-        # alternative formatting
-        if weekday in line.lower() and '<strong>' in line.lower():
-            start = True
-            continue
-        # end of day
-        if start and (tomorrow in line.lower() or '<div class="span6">' in line):
-            break
-        if start and len(remove_html(line.strip())) > 1:
-            lines.append(fix_for_html(remove_html(line.strip())) + '<br/>')
-
+    
     lines += restaurant_end()
-
     return lines
 
 
@@ -383,23 +352,10 @@ def parse_svarta(resdata):
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
 
-    page_req = requests.get(resdata[3])
-    soup = BeautifulSoup(page_req.text, 'html.parser')
-
-    try:
-        relevant = soup.find("div", {"class": "span6"}).find_all('p')
-        # pre
-        lines.append(fix_for_html(relevant[0].get_text().split('\n')[0]) + '<br/>')
-        # main
-        lines.append(fix_for_html(relevant[1].get_text().split('\n')[0]) + '<br/>')
-        # dessert
-        lines.append(fix_for_html(relevant[2].get_text().split('\n')[0]) + '<br/>')
-    except AttributeError:
-        # Webpage offline
-        pass
+    # page_req = requests.get(resdata[3])
+    # soup = BeautifulSoup(page_req.text, 'html.parser')
 
     lines += restaurant_end()
-
     return lines
 
 ### parsers end ###
