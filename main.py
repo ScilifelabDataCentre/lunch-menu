@@ -31,9 +31,13 @@
 Main script for choosing what restaurant parsers to use
 '''
 
+import os
 import sys
 
 import parser as ps
+
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
 
 MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
           ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
@@ -51,7 +55,8 @@ def activate_parsers(restaurants, restaurant_data):
     for i in range(len(MAPPER)):
         if MAPPER[i][0] in restaurants:
             try:
-                to_use = restaurant_data[[x[0] for x in restaurant_data].index([x[0] for x in MAPPER][i])]
+                to_use = restaurant_data[[x[0] for x in restaurant_data].index(
+                    [x[0] for x in MAPPER][i])]
                 output.append('\n'.join(MAPPER[i][1](to_use)))
             except Exception as err:
                 sys.stderr.write('E in {}: {}\n'.format(MAPPER[i][0], err))
@@ -125,7 +130,10 @@ def read_restaurants(intext):
 
 
 def gen_ki_menu():
-    restaurant_data = read_restaurants(open('restaurants.txt').read())
+    '''
+    Generate a menu for restaurants at KI
+    '''
+    restaurant_data = read_restaurants(open(REST_FILENAME).read())
     rest_names = [x[0] for x in MAPPER[:10]]
 
     output = ''
@@ -136,7 +144,10 @@ def gen_ki_menu():
 
 
 def gen_uu_menu():
-    restaurant_data = read_restaurants(open('restaurants.txt').read())
+    '''
+    Generate a menu for restaurants at UU
+    '''
+    restaurant_data = read_restaurants(open(REST_FILENAME).read())
     rest_names = [x[0] for x in MAPPER[10:]]
 
     output = ''
@@ -147,18 +158,18 @@ def gen_uu_menu():
     sys.stderr.write(output)
     return output
 
-    
-if __name__ == '__main__':        
+
+if __name__ == '__main__':
     if len(sys.argv) < 2 or '-h' in sys.argv:
         print_usage((x[0] for x in MAPPER))
         sys.exit()
 
-    RESTAURANT_DATA = read_restaurants(open('restaurants.txt').read())
+    RESTAURANT_DATA = read_restaurants(open(REST_FILENAME).read())
     if 'all' in sys.argv[1:]:
         REST_NAMES_IN = (x[0] for x in MAPPER)
     else:
         REST_NAMES_IN = [param for param in sys.argv[1:] if param != '-r']
-        
+
     try:
         REST_NAMES = parse_restaurant_names(REST_NAMES_IN)
     except ValueError as err:

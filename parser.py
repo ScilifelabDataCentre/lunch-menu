@@ -107,6 +107,9 @@ def get_month():
 
 
 def get_week():
+    '''
+    Week number
+    '''
     return date.today().isocalendar()[1]
 
 
@@ -127,6 +130,9 @@ def get_weekday(lang='sv', tomorrow=False):
 
 
 def get_weekdigit():
+    '''
+    Get digit for week (monday = 0)
+    '''
     return date.today().weekday()
 
 
@@ -188,10 +194,6 @@ def parse_hjulet(resdata):
     '''
     Parse the menu of Restaurang Hjulet
     '''
-    day = get_day()
-    month = get_month()
-    today = get_weekday()
-
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
@@ -295,8 +297,6 @@ def parse_mollan(resdata):
     '''
     Parse the menu of Mollan
     '''
-    week = get_week()
-
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
@@ -306,7 +306,7 @@ def parse_mollan(resdata):
     #if page_req.status_code != 200:
     #    raise IOError('Bad HTTP responce code')
     #soup = BeautifulSoup(page_req.text, 'html.parser')
-    
+
     lines += restaurant_end()
 
     return lines
@@ -316,10 +316,6 @@ def parse_nanna(resdata):
     '''
     Parse the menu of Nanna Svartz
     '''
-    weekday = get_weekday()
-    tomorrow = get_weekday(tomorrow=True)
-    week = get_week()
-
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
@@ -328,7 +324,7 @@ def parse_nanna(resdata):
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
-    
+
     lines += restaurant_end()
     return lines
 
@@ -360,20 +356,6 @@ def parse_svarta(resdata):
 
 ### parsers end ###
 
-def remove_html(text):
-    '''
-    Remove HTML tags
-    '''
-    text = text.replace('&nbsp;', ' ')
-    # assumes all < are part of html tags
-    try:
-        while text.count('<') > 0:
-            text = text[:text.index('<')] + text[text.index('>')+1:]
-    except:
-        pass
-    return text
-
-
 def restaurant_end():
     '''
     Finish the tags after the listing of the menu of a restaurant
@@ -390,10 +372,10 @@ def restaurant_start(restaurant, location, home_url, mapurl):
     '''
     lines = list()
     lines.append('<!--{}-->'.format(restaurant))
-    lines.append('''<div class="title"><a href="{url}"> {rest}</a> (<a href="{murl}">{loc}</a>)</div>'''.format(rest=restaurant,
-                                                                                                                url=home_url,
-                                                                                                                loc=location,
-                                                                                                                murl=mapurl))
+    lines.append('<div class="title"><a href="{url}"> {rest}</a>'.format(rest=restaurant,
+                                                                         url=home_url) +
+                 ' (<a href="{murl}">{loc}</a>)</div>'.format(loc=location,
+                                                              murl=mapurl))
     lines.append('<div class="menu">')
     lines.append('<p>')
     return lines
