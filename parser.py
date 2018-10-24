@@ -201,26 +201,10 @@ def parse_hjulet(resdata):
         raise IOError('Bad HTTP responce code')
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
-    try:
-        # find the weekday index
-        day_index = None
-        i = 0
-        for header in soup.find_all('table')[0].find_all('th'):
-            if today in str(header).lower() and str(day) in str(header).lower() and month in str(header).lower():
-                day_index = i
-            i += 1
-        # get the menu
-        if day_index != None:
-            menu = soup.find_all('table')[0].find_all('td')[(day_index)*3:(day_index+1)*3]
-            for i in range(len(menu)):
-                menu[i] = fix_for_html(remove_html(str(menu[i])))
-                menu[i] = menu[i].replace('\n', '<br/>')
-                if menu[i].strip():
-                    lines.append(menu[i] + '<br/>')
-        else:
-            pass
-    except Exception:
-        pass
+    days = soup.find('table', {'class':'table lunch_menu animation'})
+    # they seem to remove all old days, keeping today as [0]; must be confirmed
+    dishes = days.find('td', {'class':'td_title'})
+    lines.append(dishes.get_text().strip().replace('\n', '<br/>'))
     lines += restaurant_end()
 
     return lines
