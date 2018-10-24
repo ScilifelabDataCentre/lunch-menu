@@ -143,12 +143,20 @@ def parse_bikupan(resdata):
     Parse the menu of Restaurang Bikupan
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Uppsala',
                               resdata[2], resdata[4])
 
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200:
+        raise IOError('Bad HTTP responce code')
+
     soup = BeautifulSoup(page_req.text, 'html.parser')
-    relevant = soup.find("table", {"class": "lunch_menu"})
-    
+    relevant = soup.find("div", {"class": "col-md-3 hors-menu text-center"})
+    rel2 = relevant.find_all("div", {"class": "col-xs-10 text-left"})
+    for dish in rel2:
+        lines.append(dish.get_text().strip().replace('\n', ' ') + '<br/>')
+    lines += restaurant_end()
+    return lines
 
 
 def parse_glada(resdata):
