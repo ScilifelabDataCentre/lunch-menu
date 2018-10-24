@@ -33,21 +33,30 @@ Main script for choosing what restaurant parsers to use
 
 import sys
 
-import parser as ps
+import parser_ki as ps_ki
+import rest_data as rd
+
+
+MAPPER = (('jorpes', ps_ki.parse_jorpes), ('glada', ps_ki.parse_glada),
+          ('haga', ps_ki.parse_haga), ('hjulet', ps_ki.parse_hjulet),
+          ('jons', ps_ki.parse_jons), ('karolina', ps_ki.parse_karolina),
+          ('mollan', ps_ki.parse_mollan), ('nanna', ps_ki.parse_nanna),
+          ('svarta', ps_ki.parse_svarta), ('subway', ps_ki.parse_subway))
 
 
 def activate_parsers(restaurants, restaurant_data, mapper):
     '''
     Run the wanted parsers
     '''
-    # print restaurants
+    output = []
     for i in range(len(mapper)):
         if mapper[i][0] in restaurants:
             try:
                 to_use = restaurant_data[[x[0] for x in restaurant_data].index([x[0] for x in mapper][i])]
-                print('\n'.join(mapper[i][1](to_use)))
+                output.append('\n'.join(mapper[i][1](to_use)))
             except Exception as err:
                 sys.stderr.write('E in {}: {}\n'.format(mapper[i][0], err))
+    return '\n'.join(output)
 
 
 def page_end():
@@ -70,7 +79,7 @@ def page_start(weekday, day, month):
     lines = list()
     lines.append('<html>')
     lines.append('<head>')
-    date = ps.fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))
+    date = ps_ki.fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))
     lines.append('<title>Dagens mat p&aring; KI - {}</title>'.format(date))
     lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
     lines.append('<style type="text/css"></style>')
@@ -100,49 +109,42 @@ def print_usage(supported):
     sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
     sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
     sys.stderr.write('write all to generate all supported restaurants\n')
-    sys.stderr.write('-r filepath to use another restaurant list\n')
 
 
-def read_restaurants(filename):
+def read_restaurants(intext):
     '''
     Read the list of restaurants
     Read a tsv file with the columns:
     [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
     '''
     restaurants = list()
-    with open(filename) as infile:
-        for line in infile:
-            if line.lstrip()[0] == '#':
-                continue
-            restaurants.append(line.rstrip().split('\t'))
+    for line in intext.split('\n'):
+        restaurants.append(line.rstrip().split('\t'))
     return restaurants
 
 
-if __name__ == '__main__':
-    MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
-              ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
-              ('jons', ps.parse_jons), ('karolina', ps.parse_karolina),
-              ('konigs', ps.parse_konigs), ('mollan', ps.parse_mollan),
-              ('nanna', ps.parse_nanna), ('svarta', ps.parse_svarta),
-              ('subway', ps.parse_subway), ('61an', ps.parse_61an),
-              ('alfred', ps.parse_alfred), ('stories', ps.parse_stories),
-              ('matmakarna', ps.parse_matmakarna), ('tango', ps.parse_tango))
+def gen_ki_menu():
+    RESTAURANT_DATA = read_restaurants(rd.RAW_REST)
+    REST_NAMES = (x[0] for x in MAPPER)
 
+    output = ''
+    output += '\n'.join(page_start(ps_ki.get_weekday(), str(ps_ki.get_day()), ps_ki.get_month()))
+    output += activate_parsers(REST_NAMES, RESTAURANT_DATA, MAPPER)
+    output += '\n'.join(page_end())
+    return output
+
+    
+if __name__ == '__main__':        
     if len(sys.argv) < 2 or '-h' in sys.argv:
         print_usage((x[0] for x in MAPPER))
         sys.exit()
 
-    if '-r' in sys.argv:
-        RESTAURANTS_FILE = sys.argv[sys.argv.index('-r') + 1]
-    else:
-        RESTAURANTS_FILE = 'restaurants.txt'
-
-    RESTAURANT_DATA = read_restaurants(RESTAURANTS_FILE)
+    RESTAURANT_DATA = read_restaurants(rd.RAW_REST)
     if 'all' in sys.argv[1:]:
         REST_NAMES_IN = (x[0] for x in MAPPER)
     else:
         REST_NAMES_IN = [param for param in sys.argv[1:] if param != '-r']
-
+        
     try:
         REST_NAMES = parse_restaurant_names(REST_NAMES_IN, MAPPER)
     except ValueError as err:
@@ -151,6 +153,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # print the menus
-    print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
-    activate_parsers(REST_NAMES, RESTAURANT_DATA, MAPPER)
+    print('\n'.join(page_start(ps_ki.get_weekday(), str(ps_ki.get_day()), ps_ki.get_month())))
+    print(activate_parsers(REST_NAMES, RESTAURANT_DATA, MAPPER))
     print('\n'.join(page_end()))
+    
