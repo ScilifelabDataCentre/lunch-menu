@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2014-2017, Linus Östberg
+# Copyright (c) 2014-2018, Linus Östberg
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
           ('jons', ps.parse_jons), ('karolina', ps.parse_karolina),
           ('mollan', ps.parse_mollan), ('nanna', ps.parse_nanna),
           ('svarta', ps.parse_svarta), ('subway', ps.parse_subway),
-          ('bikupan', ps.parse_bikupan))
+          ('bikupan', ps.parse_bikupan), ('hubben', ps.parse_hubben))
 
 
 def activate_parsers(restaurants, restaurant_data):
