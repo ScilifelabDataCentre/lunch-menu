@@ -271,35 +271,21 @@ def parse_karolina(resdata):
     '''
     Parse the menu of Restaurang Karolina
     '''
-    weekday = get_weekday()
-    tomorrow = get_weekday(tomorrow=True)
-    day = get_day()
-    month = get_month()
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
 
-    start = False
-    today = '{wday} {iday} {mon}'.format(wday=weekday, iday=day, mon=month)
-    today_alt = '{wday}  {iday} {mon}'.format(wday=weekday, iday=day, mon=month)
-    current = list()
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
-    for line in page_req.text.split('\n'):
-        if today in line.lower() or today_alt in line.lower():
-            start = True
-            continue
-        if start and (tomorrow in line.lower() or 'gäller hela veckan' in line.lower()):
-            break
-        if start:
-            tmp = fix_for_html(remove_html(line))
-            if tmp.strip():
-                current.append(tmp.strip())
-            if '</tr>' in line:
-                if current:
-                    lines.append(' '.join(current) + '<br/>')
-                    current = list()
+
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    days = soup.find('table', {'class':'table lunch_menu animation'})
+    # they seem to remove all old days, keeping today as [0]; must be confirmed
+    day = days.find('tbody', {'class':'lunch-day-content'})
+    dishes = day.find_all('td', {'class':'td_title'})
+    for dish in dishes:
+        lines.append(dish.get_text().strip().split(':')[1] + '<br/>')
 
     lines += restaurant_end()
     return lines
