@@ -72,7 +72,7 @@ def page_end():
     '''
     lines = list()
     lines.append('<div class="endnote">Code available at ' +
-                 '<a href="https://github.com/talavis/kimenu">' +
+                 '<a href="https://github.com/talavis/lunch-menu">' +
                  'Github</a>. Patches are very welcome.</div>')
     lines.append('</body>')
     lines.append('</html>')
