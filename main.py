@@ -47,7 +47,7 @@ MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
           ('mollan', ps.parse_mollan), ('nanna', ps.parse_nanna),
           ('svarta', ps.parse_svarta), ('subway', ps.parse_subway),
           ('bikupan', ps.parse_bikupan), ('dufva', ps.parse_dufva),
-          ('hubben', ps.parse_hubben))
+          ('hubben', ps.parse_hubben), ('rudbeck', ps.parse_rudbeck))
 
 
 def activate_parsers(restaurants, restaurant_data):

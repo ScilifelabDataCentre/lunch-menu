@@ -236,7 +236,6 @@ def parse_hjulet(resdata):
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     days = soup.find('table', {'class':'table lunch_menu animation'})
-    # they seem to remove all old days, keeping today as [0]; must be confirmed
     dishes = days.find('td', {'class':'td_title'})
     lines.append(dishes.get_text().strip().replace('\n', '<br/>'))
     lines += restaurant_end()
@@ -280,7 +279,6 @@ def parse_jons(resdata):
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     days = soup.find('table', {'class':'table lunch_menu animation'})
-    # they seem to remove all old days, keeping today as [0]; must be confirmed
     day = days.find('tbody', {'class':'lunch-day-content'})
     dishes = day.find_all('td', {'class':'td_title'})
     for dish in dishes:
@@ -315,7 +313,6 @@ def parse_karolina(resdata):
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     days = soup.find('table', {'class':'table lunch_menu animation'})
-    # they seem to remove all old days, keeping today as [0]; must be confirmed
     day = days.find('tbody', {'class':'lunch-day-content'})
     dishes = day.find_all('td', {'class':'td_title'})
     for dish in dishes:
@@ -353,9 +350,32 @@ def parse_nanna(resdata):
                               resdata[2], resdata[4])
 
     # will fix some day. Not fun.
+    #page_req = requests.get(resdata[3])
+    #if page_req.status_code != 200:
+    #    raise IOError('Bad HTTP responce code')
+
+    lines += restaurant_end()
+    return lines
+
+
+def parse_rudbeck(resdata):
+    '''
+    Parse the menu of Bistro Rudbeck
+    '''
+    lines = list()
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
+                              resdata[2], resdata[4])
+
     page_req = requests.get(resdata[3])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
+
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    days = soup.find_all('div', {'class':'container-fluid no-print'})
+    day = days[get_weekdigit()]
+    dishes = day.find_all('span')[3:]
+    for dish in dishes:
+        lines.append(dish.get_text().strip() + '<br/>')
 
     lines += restaurant_end()
     return lines
