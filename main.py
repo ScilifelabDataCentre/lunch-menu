@@ -39,12 +39,15 @@ import parser as ps
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
 
+
+# works as ordered dict as well, but must be _ordered_
 MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
           ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
           ('jons', ps.parse_jons), ('karolina', ps.parse_karolina),
           ('mollan', ps.parse_mollan), ('nanna', ps.parse_nanna),
           ('svarta', ps.parse_svarta), ('subway', ps.parse_subway),
-          ('bikupan', ps.parse_bikupan), ('hubben', ps.parse_hubben))
+          ('bikupan', ps.parse_bikupan), ('dufva', ps.parse_dufva),
+          ('hubben', ps.parse_hubben))
 
 
 def activate_parsers(restaurants, restaurant_data):

@@ -165,6 +165,38 @@ def parse_bikupan(resdata):
     return lines
 
 
+def parse_dufva(resdata):
+    '''
+    Parse the menu of Sven Dufva
+    '''
+    lines = list()
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Uppsala',
+                              resdata[2], resdata[4])
+
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200:
+        raise IOError('Bad HTTP responce code')
+
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    relevant = soup.find("div", {"id": "post"})
+    menu_lines = relevant.get_text().split('\n')
+    dag = get_weekday()
+    started = False
+    for line in menu_lines:
+        if not line:
+            continue
+        if line.lower() == dag:
+            started = True
+            continue
+        if started:
+            if line[0] != '-':
+                lines.append(line.strip() + '<br/>')
+            else:
+                break
+    lines += restaurant_end()
+    return lines
+
+
 def parse_glada(resdata):
     '''
     Parse the menu of Glada restaurangen
