@@ -66,6 +66,36 @@ def activate_parsers(restaurants, restaurant_data):
     return '\n'.join(output)
 
 
+def gen_ki_menu():
+    '''
+    Generate a menu for restaurants at KI
+    '''
+    restaurant_data = read_restaurants(open(REST_FILENAME).read())
+    rest_names = [x[0] for x in MAPPER[:10]]
+
+    output = ''
+    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
+    output += activate_parsers(rest_names, restaurant_data)
+    output += '\n'.join(page_end())
+    return output
+
+
+def gen_uu_menu():
+    '''
+    Generate a menu for restaurants at UU
+    '''
+    restaurant_data = read_restaurants(open(REST_FILENAME).read())
+    rest_names = [x[0] for x in MAPPER[10:]]
+
+    output = ''
+    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
+    output += activate_parsers(rest_names, restaurant_data)
+    output += '\n'.join(page_end())
+
+    sys.stderr.write(output)
+    return output
+
+
 def page_end():
     '''
     Print the closure of tags etc
@@ -130,36 +160,6 @@ def read_restaurants(intext):
             continue
         restaurants.append(line.rstrip().split('\t'))
     return restaurants
-
-
-def gen_ki_menu():
-    '''
-    Generate a menu for restaurants at KI
-    '''
-    restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[:10]]
-
-    output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(rest_names, restaurant_data)
-    output += '\n'.join(page_end())
-    return output
-
-
-def gen_uu_menu():
-    '''
-    Generate a menu for restaurants at UU
-    '''
-    restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[10:]]
-
-    output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(rest_names, restaurant_data)
-    output += '\n'.join(page_end())
-
-    sys.stderr.write(output)
-    return output
 
 
 if __name__ == '__main__':
