@@ -229,15 +229,17 @@ def parse_hjulet(resdata):
     lines = list()
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
+    try:
+        page_req = requests.get(resdata[3])
+        if page_req.status_code != 200:
+            raise IOError('Bad HTTP responce code')
 
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
-    days = soup.find('table', {'class':'table lunch_menu animation'})
-    dishes = days.find('td', {'class':'td_title'})
-    lines.append(dishes.get_text().strip().replace('\n', '<br/>'))
+        soup = BeautifulSoup(page_req.text, 'html.parser')
+        days = soup.find('table', {'class':'table lunch_menu animation'})
+        dishes = days.find('td', {'class':'td_title'})
+        lines.append(dishes.get_text().strip().replace('\n', '<br/>'))
+    except Exception as err:
+        sys.stderr.write(err)
     lines += restaurant_end()
 
     return lines
@@ -307,16 +309,20 @@ def parse_karolina(resdata):
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
 
-    page_req = requests.get(resdata[3])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
+    try:
+        page_req = requests.get(resdata[3])
+        if page_req.status_code != 200:
+            raise IOError('Bad HTTP responce code')
 
-    soup = BeautifulSoup(page_req.text, 'html.parser')
-    days = soup.find('table', {'class':'table lunch_menu animation'})
-    day = days.find('tbody', {'class':'lunch-day-content'})
-    dishes = day.find_all('td', {'class':'td_title'})
-    for dish in dishes:
-        lines.append(dish.get_text().strip().split(':')[1] + '<br/>')
+        soup = BeautifulSoup(page_req.text, 'html.parser')
+        days = soup.find('table', {'class':'table lunch_menu animation'})
+        day = days.find('tbody', {'class':'lunch-day-content'})
+        dishes = day.find_all('td', {'class':'td_title'})
+        for dish in dishes:
+            lines.append(dish.get_text().strip().split(':')[1] + '<br/>')
+
+    except Exception as err:
+        sys.stderr.write(err)
 
     lines += restaurant_end()
     return lines
