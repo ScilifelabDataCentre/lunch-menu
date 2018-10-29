@@ -32,6 +32,7 @@ Parsers of the menu pages for the restaurants at Karolinska Institutet
 '''
 
 from datetime import date
+import sys
 
 import requests
 from bs4 import BeautifulSoup
@@ -323,6 +324,42 @@ def parse_karolina(resdata):
 
     except Exception as err:
         sys.stderr.write(err)
+
+    lines += restaurant_end()
+    return lines
+
+
+def parse_livet(resdata):
+    '''
+    Parse the menu of Livet [restaurant]
+    '''
+    lines = list()
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
+                              resdata[2], resdata[4])
+
+    try:
+        page_req = requests.get(resdata[3])
+        if page_req.status_code != 200:
+            raise IOError('Bad HTTP responce code')
+
+        soup = BeautifulSoup(page_req.text, 'html.parser')
+        days = soup.find('div', {'class':'property--xhtml-string'})
+        started = False
+        for row in days.find_all('p'):
+            if get_weekday() in row.get_text().lower():
+                started = True
+                continue
+            if get_weekday(tomorrow=True) in row.get_text().lower():
+                break
+            if started:
+                dish = row.find('b')
+                dish_text = dish.get_text().replace('\xa0', '')
+                if dish_text:
+                    lines.append(dish_text + '<br/>')
+
+
+    except Exception as err:
+        sys.stderr.write('E: Livet: {}'.format(err))
 
     lines += restaurant_end()
     return lines

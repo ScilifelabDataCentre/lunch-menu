@@ -44,10 +44,11 @@ REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
 MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
           ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
           ('jons', ps.parse_jons), ('karolina', ps.parse_karolina),
-          ('mollan', ps.parse_mollan), ('nanna', ps.parse_nanna),
-          ('svarta', ps.parse_svarta), ('subway', ps.parse_subway),
-          ('bikupan', ps.parse_bikupan), ('dufva', ps.parse_dufva),
-          ('hubben', ps.parse_hubben), ('rudbeck', ps.parse_rudbeck))
+          ('livet', ps.parse_livet), ('mollan', ps.parse_mollan),
+          ('nanna', ps.parse_nanna), ('svarta', ps.parse_svarta),
+          ('subway', ps.parse_subway), ('bikupan', ps.parse_bikupan),
+          ('dufva', ps.parse_dufva),  ('hubben', ps.parse_hubben),
+          ('rudbeck', ps.parse_rudbeck))
 
 
 def activate_parsers(restaurants, restaurant_data):
@@ -71,7 +72,7 @@ def gen_ki_menu():
     Generate a menu for restaurants at KI
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[:10]]
+    rest_names = [x[0] for x in MAPPER[:11]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
@@ -85,7 +86,7 @@ def gen_uu_menu():
     Generate a menu for restaurants at UU
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[10:]]
+    rest_names = [x[0] for x in MAPPER[11:]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))

@@ -6,6 +6,7 @@ hjulet	Restaurang Hjulet	http://gastrogate.com/restaurang/restauranghjulet/	http
 jons	Jöns Jacob 	http://gastrogate.com/restaurang/jonsjacob/	https://jonsjacob.gastrogate.com/lunch/	https://www.openstreetmap.org/#map=19/59.34673/18.02465
 jorpes	Café Erik Jorpes	http://restaurang-ns.com/cafe-erik-jorpes/	http://restaurang-ns.com/cafe-erik-jorpes/	https://www.openstreetmap.org/#map=19/59.34851/18.02721
 karolina	Restaurang Karolina	http://gastrogate.com/restaurang/ksrestaurangen/	https://ksrestaurangen.gastrogate.com/lunch/	https://www.openstreetmap.org/#map=19/59.35224/18.03103
+livet	Livet [Restaurant]	https://www.livetbrand.com/livet-restaurant/	https://www.livetbrand.com/livet-restaurant/	https://www.openstreetmap.org/#map=19/59.34853/18.02989
 mollan	Mollan Asian kök	http://mollanasiankok.se/	http://mollanasiankok.se/vecka%20meny.html	https://www.openstreetmap.org/#map=19/59.34836/18.02650
 svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-ns.com/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804
 subway	Subway	http://subway.se/sv/hem/	http://subway.se/sv/hem/	https://www.openstreetmap.org/#map=19/59.35084/18.02433
