@@ -68,8 +68,8 @@ def fix_for_html(text):
     text = text.replace('Ã¶', '&ouml;')
     text = text.replace('Ã©', '&eacute;')
     text = text.replace('Ã¥', '&aring;')
-    text = text.replace(' ', '')
     text = text.replace('Ã', '&Aring')
+    text = text.replace('â', '&mdash;')
     # Karolina
     text = text.replace('å', '&aring;')
     text = text.replace('ä', '&auml;')
@@ -374,10 +374,22 @@ def parse_mollan(resdata):
                               resdata[2], resdata[4])
 
     # To be fixed some day. Not fun.
-    #page_req = requests.get(resdata[3])
-    #if page_req.status_code != 200:
-    #    raise IOError('Bad HTTP responce code')
-    #soup = BeautifulSoup(page_req.text, 'html.parser')
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200:
+        raise IOError('Bad HTTP responce code')
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    relevant = soup.find_all('span', {'class': 'mobile-undersized-upper'})
+    wday = fix_for_html(get_weekday())
+    started = False
+    for tag in relevant:
+        if 'bold' in tag['style']:
+            if wday in tag.get_text().lower():
+                started = True
+                continue
+            if started:
+                break
+        if started:
+            lines.append(fix_for_html(tag.get_text()) + '<br/>')
 
     lines += restaurant_end()
 
