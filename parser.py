@@ -32,8 +32,10 @@ Parsers of the menu pages for the restaurants at Karolinska Institutet
 '''
 
 from datetime import date
+import io
 import sys
 
+import PyPDF2
 import requests
 from bs4 import BeautifulSoup
 
@@ -311,16 +313,22 @@ def parse_karolina(resdata):
                               resdata[2], resdata[4])
 
     try:
-        page_req = requests.get(resdata[3])
+        page_req = requests.get(resdata[3] + f'Meny vecka {get_week()}.pdf')
+        sys.stderr.write(resdata[3] + f'Meny vecka {get_week()}.pdf' + '\n')
         if page_req.status_code != 200:
             raise IOError('Bad HTTP responce code')
-        soup = BeautifulSoup(page_req.text, 'html.parser')
-        days = soup.find('table', {'class':'table lunch_menu animation'})
-        day = days.find('tbody', {'class':'lunch-day-content'})
-        dishes = day.find_all('td', {'class':'td_title'})
-        for dish in dishes:
-            lines.append(dish.get_text().strip().split(':')[1] + '<br/>')
 
+        kpdf = PyPDF2.PdfFileReader(io.BytesIO(a.content))
+        text = kpdf.getPage(0).extractText().split('\n')
+        digit = -1
+        for line in text:
+            if 'TRADITIONELL' in line:
+                digit += 1
+            if digit == get_weekdigit():
+                lines.append(line)
+                if not line.isupper():
+                    lines.append('<br/>')
+                
     except Exception as err:
         sys.stderr.write(str(err) + '\n')
 
