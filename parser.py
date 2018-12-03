@@ -314,11 +314,10 @@ def parse_karolina(resdata):
 
     try:
         page_req = requests.get(resdata[3] + f'Meny vecka {get_week()}.pdf')
-        sys.stderr.write(resdata[3] + f'Meny vecka {get_week()}.pdf' + '\n')
         if page_req.status_code != 200:
             raise IOError('Bad HTTP responce code')
 
-        kpdf = PyPDF2.PdfFileReader(io.BytesIO(a.content))
+        kpdf = PyPDF2.PdfFileReader(io.BytesIO(page_req.content))
         text = kpdf.getPage(0).extractText().split('\n')
         digit = -1
         for line in text:
