@@ -163,7 +163,7 @@ def parse_bikupan(resdata):
     relevant = soup.find("div", {"class": "col-md-3 hors-menu text-center"})
     dishes = relevant.find_all("div", {"class": "col-xs-10 text-left"})
     for dish in dishes:
-        lines.append(dish.get_text().strip().replace('\n', ' ') + '<br/>')
+        lines.append('        <li>'+dish.get_text().strip().replace('\n', ' ') + '</li>')
     lines += restaurant_end()
     return lines
 
@@ -193,7 +193,7 @@ def parse_dufva(resdata):
             continue
         if started:
             if line[0] != '-':
-                lines.append(line.strip() + '<br/>')
+                lines.append('        <li>'+line.strip() + '</li>')
             else:
                 break
     lines += restaurant_end()
@@ -240,7 +240,7 @@ def parse_hjulet(resdata):
         soup = BeautifulSoup(page_req.text, 'html.parser')
         days = soup.find('table', {'class':'table lunch_menu animation'})
         dishes = days.find('td', {'class':'td_title'})
-        lines.append(dishes.get_text().strip().replace('\n', '<br/>'))
+        lines.append('        <li>'+dishes.get_text().strip().replace('\n', '</li>\n      <li>'))
     except Exception as err:
         sys.stderr.write(err)
     lines += restaurant_end()
@@ -265,7 +265,7 @@ def parse_hubben(resdata):
     current = days[get_weekdigit()]
     dishes = current.find_all('div', {'class': 'element description col-md-4 col-print-5'})
     for dish in dishes:
-        lines.append(dish.get_text().strip().replace('\n', ' ') + '<br/>')
+        lines.append('        <li>'+dish.get_text().strip().replace('\n', ' ') + '</li>')
     lines += restaurant_end()
     return lines
 
@@ -287,7 +287,7 @@ def parse_jons(resdata):
     day = days.find('tbody', {'class':'lunch-day-content'})
     dishes = day.find_all('td', {'class':'td_title'})
     for dish in dishes:
-        lines.append(dish.get_text().strip().split('\n')[1] + '<br/>')
+        lines.append('        <li>'+dish.get_text().strip().split('\n')[1] + '</li>')
 
     lines += restaurant_end()
     return lines
@@ -324,9 +324,9 @@ def parse_karolina(resdata):
             if 'TRADITIONELL' in line:
                 digit += 1
             if digit == get_weekdigit():
-                lines.append(line)
+                lines.append('        <li>'+line)
                 if not line.isupper():
-                    lines.append('<br/>')
+                    lines.append('        <br/>')
                 
     except Exception as err:
         sys.stderr.write(str(err) + '\n')
@@ -361,7 +361,7 @@ def parse_livet(resdata):
                 dish = row.find('b')
                 dish_text = dish.get_text().replace('\xa0', '')
                 if dish_text:
-                    lines.append(dish_text + '<br/>')
+                    lines.append('        <li>'+dish_text + '</li>')
 
 
     except Exception as err:
@@ -395,7 +395,7 @@ def parse_mollan(resdata):
             if started:
                 break
         if started:
-            lines.append(fix_for_html(tag.get_text()) + '<br/>')
+            lines.append(fix_for_html('        <li>'+tag.get_text()) + '</li>')
 
     lines += restaurant_end()
 
@@ -436,7 +436,7 @@ def parse_rudbeck(resdata):
     day = days[get_weekdigit()]
     dishes = day.find_all('span')[3:]
     for dish in dishes:
-        lines.append(dish.get_text().strip() + '<br/>')
+        lines.append('        <li>'+dish.get_text().strip() + '</li>')
 
     lines += restaurant_end()
     return lines
@@ -469,26 +469,23 @@ def parse_svarta(resdata):
 
 ### parsers end ###
 
-def restaurant_end():
-    '''
-    Finish the tags after the listing of the menu of a restaurant
-    '''
-    lines = list()
-    lines.append('</p>')
-    lines.append('</div>')
-    return lines
-
-
 def restaurant_start(restaurant, location, home_url, mapurl):
     ''''
     Start the listing of the menu of a restaurant
     '''
-    lines = list()
-    lines.append('<!--{}-->'.format(restaurant))
-    lines.append('<div class="title"><a href="{url}"> {rest}</a>'.format(rest=restaurant,
-                                                                         url=home_url) +
-                 ' (<a href="{murl}">{loc}</a>)</div>'.format(loc=location,
-                                                              murl=mapurl))
-    lines.append('<div class="menu">')
-    lines.append('<p>')
-    return lines
+
+    return ["""
+    <!--{rest}-->
+    <div class="title"><a href="{url}">{rest} </a>(<a href="{murl}">{loc}</a>)</div>
+    <div class="menu">
+      <ul>""".format(rest=restaurant, url=home_url, loc=location, murl=mapurl)]
+
+
+def restaurant_end():
+    '''
+    Finish the tags after the listing of the menu of a restaurant
+    '''
+
+    return ["""      </ul>
+    </div>
+    """]

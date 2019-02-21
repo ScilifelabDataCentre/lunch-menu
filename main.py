@@ -35,6 +35,8 @@ import os
 import sys
 
 import parser as ps
+from IPython.core.debugger import Tracer
+
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
@@ -97,35 +99,66 @@ def gen_uu_menu():
     return output
 
 
-def page_end():
-    '''
-    Print the closure of tags etc
-    '''
-    lines = list()
-    lines.append('<div class="endnote">Code available at ' +
-                 '<a href="https://github.com/talavis/lunch-menu">' +
-                 'Github</a>. Patches are very welcome.</div>')
-    lines.append('</body>')
-    lines.append('</html>')
-    return lines
-
-
 def page_start(weekday, day, month):
     '''
     Print the initialisation of the page
     '''
-    lines = list()
-    lines.append('<html>')
-    lines.append('<head>')
     date = ps.fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))
-    lines.append('<title>Dagens mat - {}</title>'.format(date))
-    lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
-    lines.append('<style type="text/css"></style>')
-    lines.append('</head>')
-    lines.append('<body>')
-    # page formatting
-    lines.append('')
-    return lines
+
+    return ["""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Dagens mat - {}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="static/normalize.css">
+  <link rel="stylesheet" href="static/skeleton.css">
+  <link rel="stylesheet" href="static/custom.css">
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="../../dist/images/favicon.png">
+
+</head>
+<body>
+  <div class="gradient">
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->""".format(date)]
+
+
+def page_end():
+    '''
+    Print the closure of tags etc
+    '''
+
+    return ["""    <div class="endnote">Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>. Patches are very welcome.</div>
+    
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  </div>
+</body>
+</html>
+    """]
 
 
 def parse_restaurant_names(rest_names):
