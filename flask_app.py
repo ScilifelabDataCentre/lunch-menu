@@ -58,16 +58,6 @@ def display_available():
 </body>
 </html>
     """
-    content = ('<html>' +
-               '<head>' +
-               '<title>Restaurant Menu Parser</title>' +
-               '</head>' +
-               '<body>' +
-               '<p><a href="ki">KI (Solna)</a></p>' + 
-               '<p><a href="uu">UU (BMC)</a></p>' +
-               '</body>' +
-               '</html>')
-    return content
 
 @app.route('/ki')
 @cache.cached(timeout=3600)
