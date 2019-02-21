@@ -74,8 +74,9 @@ def gen_ki_menu():
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
     rest_names = [x[0] for x in MAPPER[:11]]
 
+    date = ps.fix_for_html(ps.get_weekday().capitalize() + ' ' + str(ps.get_day()) + ' ' + str(ps.get_month()))
     output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
+    output += '\n'.join(page_start("Dagens mat - {}".format(date)))
     output += activate_parsers(rest_names, restaurant_data)
     output += '\n'.join(page_end())
     return output
@@ -88,8 +89,9 @@ def gen_uu_menu():
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
     rest_names = [x[0] for x in MAPPER[11:]]
 
+    date = ps.fix_for_html(ps.get_weekday().capitalize() + ' ' + str(ps.get_day()) + ' ' + str(ps.get_month()))
     output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
+    output += '\n'.join(page_start("Dagens mat - {}".format(date)))
     output += activate_parsers(rest_names, restaurant_data)
     output += '\n'.join(page_end())
 
@@ -97,11 +99,10 @@ def gen_uu_menu():
     return output
 
 
-def page_start(weekday, day, month):
+def page_start(title):
     '''
     Print the initialisation of the page
     '''
-    date = ps.fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))
 
     return ["""
 <!DOCTYPE html>
@@ -111,7 +112,7 @@ def page_start(weekday, day, month):
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>Dagens mat - {}</title>
+  <title>{}</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -135,13 +136,13 @@ def page_start(weekday, day, month):
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="../../dist/images/favicon.png">
+  <link rel="icon" type="image/png" href="static/favicon.png">
 
 </head>
 <body>
   <div class="gradient">
     <!-- Primary Page Layout
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->""".format(date)]
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->""".format(title)]
 
 
 def page_end():
@@ -213,6 +214,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # print the menus
-    print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
+    date = ps.fix_for_html(ps.get_weekday().capitalize() + ' ' + str(ps.get_day()) + ' ' + str(ps.get_month()))
+    print('\n'.join(page_start("Dagens mat - {}".format(date))))
     print(activate_parsers(REST_NAMES, RESTAURANT_DATA))
     print('\n'.join(page_end()))
