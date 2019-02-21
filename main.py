@@ -35,8 +35,6 @@ import os
 import sys
 
 import parser as ps
-from IPython.core.debugger import Tracer
-
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
