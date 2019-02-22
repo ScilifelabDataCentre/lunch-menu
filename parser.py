@@ -327,7 +327,6 @@ def parse_karolina(resdata, prefix="", suffix=""):
                 lines.append(prefix + line)
                 if not line.isupper():
                     lines[-1] += suffix
-                    #lines.append(" "*prefix.count(" ") + suffix)
                 
     except Exception as err:
         sys.stderr.write(str(err) + '\n')
