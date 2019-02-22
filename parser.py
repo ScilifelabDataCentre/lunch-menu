@@ -240,7 +240,7 @@ def parse_hjulet(resdata, prefix="", suffix=""):
         soup = BeautifulSoup(page_req.text, 'html.parser')
         days = soup.find('table', {'class':'table lunch_menu animation'})
         dishes = days.find('td', {'class':'td_title'})
-        lines.append(prefix + dishes.get_text().strip().replace('\n', suffix))
+        lines.append(prefix + dishes.get_text().strip().replace('\n', suffix+'\n'+prefix))
     except Exception as err:
         sys.stderr.write(err)
     lines += restaurant_end()
