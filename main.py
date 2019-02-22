@@ -61,7 +61,7 @@ def activate_parsers(restaurants, restaurant_data):
             try:
                 to_use = restaurant_data[[x[0] for x in restaurant_data].index(
                     [x[0] for x in MAPPER][i])]
-                output.append('\n'.join(MAPPER[i][1](to_use)))
+                output.append('\n'.join(MAPPER[i][1](to_use, prefix="        ", suffix="<br>")))
             except Exception as err:
                 sys.stderr.write('E in {}: {}\n'.format(MAPPER[i][0], err))
     return '\n'.join(output)
@@ -74,8 +74,9 @@ def gen_ki_menu():
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
     rest_names = [x[0] for x in MAPPER[:11]]
 
+    date = ps.fix_for_html(ps.get_weekday().capitalize() + ' ' + str(ps.get_day()) + ' ' + str(ps.get_month()))
     output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
+    output += '\n'.join(page_start("Dagens mat - {}".format(date)))
     output += activate_parsers(rest_names, restaurant_data)
     output += '\n'.join(page_end())
     return output
@@ -88,8 +89,9 @@ def gen_uu_menu():
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
     rest_names = [x[0] for x in MAPPER[11:]]
 
+    date = ps.fix_for_html(ps.get_weekday().capitalize() + ' ' + str(ps.get_day()) + ' ' + str(ps.get_month()))
     output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
+    output += '\n'.join(page_start("Dagens mat - {}".format(date)))
     output += activate_parsers(rest_names, restaurant_data)
     output += '\n'.join(page_end())
 
@@ -97,35 +99,30 @@ def gen_uu_menu():
     return output
 
 
+def page_start(title=''):
+    '''
+    Print the initialisation of the page
+    '''
+    return ["""<html>
+  <head>
+    <title>{}</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <style type="text/css"></style>
+  </head>
+  <body>
+    """.format(title)]
+
+
 def page_end():
     '''
     Print the closure of tags etc
     '''
-    lines = list()
-    lines.append('<div class="endnote">Code available at ' +
-                 '<a href="https://github.com/talavis/lunch-menu">' +
-                 'Github</a>. Patches are very welcome.</div>')
-    lines.append('</body>')
-    lines.append('</html>')
-    return lines
+    return ["""
 
-
-def page_start(weekday, day, month):
-    '''
-    Print the initialisation of the page
-    '''
-    lines = list()
-    lines.append('<html>')
-    lines.append('<head>')
-    date = ps.fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))
-    lines.append('<title>Dagens mat - {}</title>'.format(date))
-    lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
-    lines.append('<style type="text/css"></style>')
-    lines.append('</head>')
-    lines.append('<body>')
-    # page formatting
-    lines.append('')
-    return lines
+    <div class="endnote">Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>. Patches are very welcome.</div>
+  </body>
+</html>
+    """]
 
 
 def parse_restaurant_names(rest_names):
@@ -182,6 +179,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # print the menus
-    print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
+    date = ps.fix_for_html(ps.get_weekday().capitalize() + ' ' + str(ps.get_day()) + ' ' + str(ps.get_month()))
+    print('\n'.join(page_start("Dagens mat - {}".format(date))))
     print(activate_parsers(REST_NAMES, RESTAURANT_DATA))
     print('\n'.join(page_end()))
