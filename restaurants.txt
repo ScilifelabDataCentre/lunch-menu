@@ -10,7 +10,7 @@ livet	Livet [Restaurant]	https://www.livetbrand.com/livet-restaurant/	https://ww
 mollan	Mollan Asian kök	http://mollanasiankok.se/	http://mollanasiankok.se/vecka%20meny.html	https://www.openstreetmap.org/#map=19/59.34836/18.02650
 svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-ns.com/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804
 subway	Subway	http://subway.se/sv/hem/	http://subway.se/sv/hem/	https://www.openstreetmap.org/#map=19/59.35084/18.02433
-nanna	Restaurang Nanna Svartz	http://restaurang-ns.com/restaurang-nanna-svartz/	http://restaurang-ns.com/restaurang-nanna-svartz/	https://www.openstreetmap.org/#map=19/59.34848/18.02807
+nanna	Restaurang Nanna Svartz	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	https://www.openstreetmap.org/#map=19/59.34848/18.02807
 # UU
 bikupan	Restaurang Bikupan	http://www.hors.se/restaurang/restaurang-bikupan/	http://www.hors.se/restaurang/restaurang-bikupan/	https://www.openstreetmap.org/#map=18/59.84186/17.63407
 dufva	Sven Dufva	http://svendufva.se/	http://svendufva.se/#lunch	https://www.openstreetmap.org/#map=19/59.84298/17.64096
