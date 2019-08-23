@@ -42,7 +42,7 @@ REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
 # works as ordered dict as well, but must be _ordered_
 MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
           ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
-          ('jons', ps.parse_jons), ('livet', ps.parse_livet,
+          ('jons', ps.parse_jons), ('livet', ps.parse_livet),
           ('mollan', ps.parse_mollan), ('nanna', ps.parse_nanna),
           ('svarta', ps.parse_svarta), ('subway', ps.parse_subway),
           ('bikupan', ps.parse_bikupan), ('dufva', ps.parse_dufva),
