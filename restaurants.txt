@@ -2,10 +2,9 @@
 # KI
 glada	Den Glada Restaurangen	http://www.dengladarestaurangen.se/	http://www.dengladarestaurangen.se/#!meny/c30g	http://www.openstreetmap.org/#map=19/59.35123/18.03006
 haga	Haga gatukök	http://orenib.se/haga_gk2.pdf	http://orenib.se/haga_gk2.pdf	https://www.openstreetmap.org/#map=19/59.34931/18.02095
-hjulet	Restaurang Hjulet	http://gastrogate.com/restaurang/restauranghjulet/	http://gastrogate.com/restaurang/restauranghjulet/page/3/	https://www.openstreetmap.org/#map=19/59.34508/18.02423
+hjulet	Restaurang Hjulet	http://www.restauranghjulet.se	http://www.restauranghjulet.se	https://www.openstreetmap.org/#map=19/59.34508/18.02423
 jons	Jöns Jacob 	http://gastrogate.com/restaurang/jonsjacob/	https://jonsjacob.gastrogate.com/lunch/	https://www.openstreetmap.org/#map=19/59.34673/18.02465
 jorpes	Café Erik Jorpes	http://restaurang-ns.com/cafe-erik-jorpes/	http://restaurang-ns.com/cafe-erik-jorpes/	https://www.openstreetmap.org/#map=19/59.34851/18.02721
-karolina	Restaurang Karolina	http://cateringkarolinska.sodexo.se/	http://cateringkarolinska.sodexo.se/userfiles/files/	https://www.openstreetmap.org/#map=19/59.35224/18.03103
 livet	Livet [Restaurant]	https://www.livetbrand.com/livet-restaurant/	https://www.livetbrand.com/livet-restaurant/	https://www.openstreetmap.org/#map=19/59.34853/18.02989
 mollan	Mollan Asian kök	http://mollanasiankok.se/	http://mollanasiankok.se/vecka%20meny.html	https://www.openstreetmap.org/#map=19/59.34836/18.02650
 svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-ns.com/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804
