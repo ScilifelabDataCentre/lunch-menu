@@ -39,11 +39,10 @@ import parser as ps
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
 
-
 # works as ordered dict as well, but must be _ordered_
 MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
           ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
-          ('jons', ps.parse_jons),
+          ('jons', ps.parse_jons), ('livet', ps.parse_livet,
           ('mollan', ps.parse_mollan), ('nanna', ps.parse_nanna),
           ('svarta', ps.parse_svarta), ('subway', ps.parse_subway),
           ('bikupan', ps.parse_bikupan), ('dufva', ps.parse_dufva),
@@ -137,7 +136,7 @@ def gen_ki_menu():
     Generate a menu for restaurants at KI
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[:9]]
+    rest_names = [x[0] for x in MAPPER[:10]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
@@ -151,7 +150,7 @@ def gen_uu_menu():
     Generate a menu for restaurants at UU
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[9:]]
+    rest_names = [x[0] for x in MAPPER[10:]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
