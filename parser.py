@@ -376,12 +376,32 @@ def parse_nanna(resdata):
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
 
-    # will fix some day. Not fun.
-    #page_req = requests.get(resdata[3])
-    #if page_req.status_code != 200:
-    #    raise IOError('Bad HTTP responce code')
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200:
+        raise IOError('Bad HTTP responce code')
+
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    current_week = False
+    for tag in soup.find_all('strong'):
+        if tag.find(text=re.compile('MATSEDEL V\.' + str(get_week()))):
+            current_week = True
+
+    if current_week:
+        started = False
+        for par in soup.find_all('p'):
+            if started:
+                if (par.find(text=re.compile(get_weekday(tomorrow=True).capitalize())) or
+                    par.find(text=re.compile('^Priser'))):
+                    break
+                text = par.text.strip()
+                if text:
+                    lines.append(text + '<br/>')
+            if par.find(text=re.compile(get_weekday().capitalize())):
+                started = True
+    
 
     lines += restaurant_end()
+
     return lines
 
 
