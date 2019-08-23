@@ -137,7 +137,7 @@ def gen_ki_menu():
     Generate a menu for restaurants at KI
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[:10]]
+    rest_names = [x[0] for x in MAPPER[:9]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
@@ -151,7 +151,7 @@ def gen_uu_menu():
     Generate a menu for restaurants at UU
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[10:]]
+    rest_names = [x[0] for x in MAPPER[9:]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
