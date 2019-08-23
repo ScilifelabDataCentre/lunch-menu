@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2014-2018, Linus Östberg
+# Copyright (c) 2014-2019, Linus Östberg
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -347,11 +347,21 @@ def parse_mollan(resdata):
     lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
                               resdata[2], resdata[4])
 
-    # To be fixed some day. Not fun.
-    #page_req = requests.get(resdata[3])
-    #if page_req.status_code != 200:
-    #    raise IOError('Bad HTTP responce code')
-    #soup = BeautifulSoup(page_req.text, 'html.parser')
+    page_req = requests.get(resdata[3])
+    if page_req.status_code != 200:
+        raise IOError('Bad HTTP responce code')
+
+    soup = BeautifulSoup(page_req.text, 'html.parser')
+    current_week = False
+    for span in soup.find_all('span'):
+        if span.find(text=re.compile('Vecka.*' + str(get_week()))):
+            current_week = True
+
+    if current_week:
+        days = soup.find_all('ol')
+        today = days[get_weekdigit()]
+        for entry in [fix_for_html(entry.text) for entry in today.find_all('li')]:
+            lines.append(entry + '<br/>')
 
     lines += restaurant_end()
 
