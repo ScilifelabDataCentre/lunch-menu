@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2014-2018, Linus Östberg
+# Copyright (c) 2014-2019, Linus Östberg
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -40,13 +40,18 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
 
 # works as ordered dict as well, but must be _ordered_
-MAPPER = (('jorpes', ps.parse_jorpes), ('glada', ps.parse_glada),
-          ('haga', ps.parse_haga), ('hjulet', ps.parse_hjulet),
-          ('jons', ps.parse_jons), ('livet', ps.parse_livet),
-          ('mollan', ps.parse_mollan), ('nanna', ps.parse_nanna),
-          ('svarta', ps.parse_svarta), ('subway', ps.parse_subway),
-          ('bikupan', ps.parse_bikupan), ('dufva', ps.parse_dufva),
-          ('hubben', ps.parse_hubben), ('rudbeck', ps.parse_rudbeck))
+MAPPER = {'jorpes': ps.parse_jorpes, 'glada': ps.parse_glada,
+          'haga': ps.parse_haga, 'hjulet': ps.parse_hjulet,
+          'jons': ps.parse_jons, 'livet': ps.parse_livet,
+          'mollan': ps.parse_mollan, 'nanna': ps.parse_nanna,
+          'svarta': ps.parse_svarta, 'subway': ps.parse_subway,
+          'bikupan': ps.parse_bikupan, 'dufva': ps.parse_dufva,
+          'hubben': ps.parse_hubben, 'rudbeck': ps.parse_rudbeck}
+
+KI = ('jorpes', 'glada', 'haga', 'hjulet', 'jons',
+      'livet', 'mollan', 'nanna', 'svarta', 'subway')
+
+UU = ('bikupan', 'dufva', 'hubben', 'rudbeck')
 
 
 def activate_parsers(restaurants, restaurant_data):
@@ -54,14 +59,11 @@ def activate_parsers(restaurants, restaurant_data):
     Run the wanted parsers
     '''
     output = []
-    for i in range(len(MAPPER)):
-        if MAPPER[i][0] in restaurants:
-            try:
-                to_use = restaurant_data[[x[0] for x in restaurant_data].index(
-                    [x[0] for x in MAPPER][i])]
-                output.append('\n'.join(MAPPER[i][1](to_use)))
-            except Exception as err:
-                sys.stderr.write('E in {}: {}\n'.format(MAPPER[i][0], err))
+    for restaurant in restaurants:
+        try:
+            output.append('\n'.join(MAPPER[restaurant](restaurant_data[restaurant])))
+        except Exception as err:
+            sys.stderr.write(f'E in {restaurant}: {err}\n')
     return '\n'.join(output)
 
 
@@ -102,7 +104,7 @@ def parse_restaurant_names(rest_names):
     '''
     restaurants = list()
     for param in rest_names:
-        if param not in (x[0] for x in MAPPER):
+        if param not in KI and param not in UU:
             raise ValueError('{} not a valid restaurant'.format(param))
         restaurants.append(param.lower())
     return restaurants
@@ -123,11 +125,12 @@ def read_restaurants(intext):
     Read a tsv file with the columns:
     [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
     '''
-    restaurants = list()
+    restaurants = {}
     for line in intext.split('\n'):
         if not line or line[0] == '#':
             continue
-        restaurants.append(line.rstrip().split('\t'))
+        cols = line.rstrip().split('\t')
+        restaurants[cols[0]] = cols
     return restaurants
 
 
@@ -157,25 +160,25 @@ def gen_uu_menu():
     output += activate_parsers(rest_names, restaurant_data)
     output += '\n'.join(page_end())
 
-    sys.stderr.write(output)
+    sys.stderr.write(output + '\n')
     return output
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2 or '-h' in sys.argv:
-        print_usage((x[0] for x in MAPPER))
+        print_usage(KI + UU)
         sys.exit()
 
     RESTAURANT_DATA = read_restaurants(open(REST_FILENAME).read())
     if 'all' in sys.argv[1:]:
-        REST_NAMES_IN = (x[0] for x in MAPPER)
+        REST_NAMES_IN = KI + UU
     else:
         REST_NAMES_IN = [param for param in sys.argv[1:] if param != '-r']
 
     try:
         REST_NAMES = parse_restaurant_names(REST_NAMES_IN)
     except ValueError as err:
-        sys.stderr.write('E: {}'.format(err))
+        sys.stderr.write('E: {}\n'.format(err))
         print_usage((x[0] for x in MAPPER))
         sys.exit(1)
 
