@@ -264,7 +264,7 @@ def parse_hubben(resdata):
         raise IOError('Bad HTTP responce code')
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
-    days = soup.find_all("he", {"class": "day"})
+    days = soup.find_all("div", {"class": "day"})
     current = days[get_weekdigit()]
     dishes = current.find_all('div', {'class': 'element description col-md-4 col-print-5'})
     for dish in dishes:
