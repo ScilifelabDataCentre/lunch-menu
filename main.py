@@ -139,11 +139,10 @@ def gen_ki_menu():
     Generate a menu for restaurants at KI
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[:10]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(rest_names, restaurant_data)
+    output += activate_parsers(KI, restaurant_data)
     output += '\n'.join(page_end())
     return output
 
@@ -153,11 +152,10 @@ def gen_uu_menu():
     Generate a menu for restaurants at UU
     '''
     restaurant_data = read_restaurants(open(REST_FILENAME).read())
-    rest_names = [x[0] for x in MAPPER[10:]]
 
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(rest_names, restaurant_data)
+    output += activate_parsers(UU, restaurant_data)
     output += '\n'.join(page_end())
 
     sys.stderr.write(output + '\n')
@@ -169,14 +167,19 @@ if __name__ == '__main__':
         print_usage(KI + UU)
         sys.exit()
 
+    rest_names_in = tuple()
     RESTAURANT_DATA = read_restaurants(open(REST_FILENAME).read())
     if 'all' in sys.argv[1:]:
-        REST_NAMES_IN = KI + UU
+        rest_names_in += KI + UU
+    elif 'ki'in sys.argv[1:]:
+        rest_names_in += KI
+    elif 'uu'in sys.argv[1:]:
+        rest_names_in += UU
     else:
-        REST_NAMES_IN = [param for param in sys.argv[1:] if param != '-r']
+        rest_names_in = [param for param in sys.argv[1:] if param != '-r']
 
     try:
-        REST_NAMES = parse_restaurant_names(REST_NAMES_IN)
+        REST_NAMES = parse_restaurant_names(rest_names_in)
     except ValueError as err:
         sys.stderr.write('E: {}\n'.format(err))
         print_usage((x[0] for x in MAPPER))
