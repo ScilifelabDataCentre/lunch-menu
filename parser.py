@@ -290,7 +290,9 @@ def parse_jons(resdata):
     day = days.find('tbody', {'class':'lunch-day-content'})
     dishes = day.find_all('td', {'class':'td_title'})
     for dish in dishes:
-        lines.append(dish.get_text().strip().split('\n')[1] + '<br/>')
+        dish_data = ' '.join([text for text in dish.get_text().strip().split('\n')[1:] if text])
+        if dish_data:
+            lines.append(dish_data + '<br/>')
 
     lines += restaurant_end()
     return lines
