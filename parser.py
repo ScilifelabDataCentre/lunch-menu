@@ -395,9 +395,12 @@ def parse_nanna(resdata):
                 if (par.find(text=re.compile(get_weekday(tomorrow=True).capitalize())) or
                     par.find(text=re.compile('^Priser'))):
                     break
-                text = par.text.strip()
-                if text:
-                    lines.append(text + '<br/>')
+                dish_parts = [text for text in par.text.replace('\xa0', '').strip().split(' ')
+                              if text]
+                if dish_parts and dish_parts[0] in ('Vegetarisk', 'Kött', 'Sallad', 'Fisk'):
+                    dish_text = ' '.join(dish_parts[1:])
+                    if dish_text:
+                        lines.append(dish_text + '<br/>')
             if par.find(text=re.compile(get_weekday().capitalize())):
                 started = True
     
