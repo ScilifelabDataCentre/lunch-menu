@@ -325,11 +325,11 @@ def parse_livet(resdata):
     started = False
     for par in soup.find_all('p'):
         if started:
+            if par.find(text=re.compile(get_weekday(tomorrow=True).capitalize())):
+                break
             if par.find(text=re.compile('&nbsp;')):
                 break
-            text = ' '.join([par.text.strip() for par in par.find_all('strong')])
-            if not text:
-                break
+            text = par.find(text=True, recursive=False)
             lines.append(text + '<br/>')
             continue
         if par.find(text=re.compile(get_weekday().capitalize() +
