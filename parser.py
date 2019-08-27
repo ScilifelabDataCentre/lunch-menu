@@ -415,7 +415,7 @@ def parse_rudbeck(resdata):
     Parse the menu of Bistro Rudbeck
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
+    lines += restaurant_start(fix_for_html(resdata[1]), 'Uppsala',
                               resdata[2], resdata[4])
 
     page_req = requests.get(resdata[3])

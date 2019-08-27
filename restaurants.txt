@@ -14,4 +14,4 @@ nanna	Restaurang Nanna Svartz	http://restaurang-ns.ki.se/restaurang-nanna-svartz
 bikupan	Restaurang Bikupan	http://www.hors.se/restaurang/restaurang-bikupan/	http://www.hors.se/restaurang/restaurang-bikupan/	https://www.openstreetmap.org/#map=18/59.84186/17.63407
 dufva	Sven Dufva	http://svendufva.se/	http://svendufva.se/#lunch	https://www.openstreetmap.org/#map=19/59.84298/17.64096
 hubben	Restaurang Hubben	https://vasakronan.foodbycoor.se/hubben	https://vasakronan.foodbycoor.se/hubben/restaurangen/restaurangens-meny	https://www.openstreetmap.org/#map=18/59.84334/17.64074
-rudbeck	Bistro Rudbeck	http://www.compass-group.se/restauranger/Bistro-Rudbeck-Uppsala-/	https://eurest.mashie.com/public/menu/restaurang+kannan/cb061efe?country=se	https://www.openstreetmap.org/#map=19/59.84518/17.63968
+rudbeck	Bistro Rudbeck	https://www.compass-group.se/MatDryck/Restauranger/uppsala/bistro-rudbeck/	https://eurest.mashie.com/public/menu/restaurang+kannan/cb061efe?country=se	https://www.openstreetmap.org/#map=19/59.84518/17.63968
