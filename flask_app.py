@@ -18,8 +18,8 @@ def display_available():
                '<title>Restaurant Menu Parser</title>' +
                '</head>' +
                '<body>' +
-               '<p><a href="ki">KI (Solna)</a></p>' + 
-               '<p><a href="uu">UU (BMC)</a></p>' +
+               '<p><a href="ki">Campus Solna (KI)</a></p>' + 
+               '<p><a href="uu">Campus Uppsala (BMC)</a></p>' +
                '</body>' +
                '</html>')
     return content
