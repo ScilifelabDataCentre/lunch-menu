@@ -3,10 +3,6 @@ from flask_caching import Cache
 
 import main
 
-from flask import Flask
-from flask_caching import Cache
-
-import main
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
@@ -18,7 +14,7 @@ def display_available():
                '<title>Restaurant Menu Parser</title>' +
                '</head>' +
                '<body>' +
-               '<p><a href="ki">Campus Solna (KI)</a></p>' + 
+               '<p><a href="ki">Campus Solna (KI)</a></p>' +
                '<p><a href="uu">Campus Uppsala (BMC)</a></p>' +
                '</body>' +
                '</html>')
