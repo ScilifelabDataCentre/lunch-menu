@@ -323,7 +323,7 @@ def parse_livet(resdata):
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     started = False
-    for par in soup.find_all('p'):
+    for par in soup.find_all(('h3', 'p')):
         if started:
             if par.find(text=re.compile(get_weekday(tomorrow=True).capitalize())):
                 break
