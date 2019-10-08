@@ -7,7 +7,6 @@ jorpes	Café Erik Jorpes	https://restaurang-ns.ki.se/cafe-erik-jorpes/	https://r
 livet	Livet [Restaurant]	https://www.livetbrand.com/livet-restaurant/	https://www.livetbrand.com/livet-restaurant/	https://www.openstreetmap.org/#map=19/59.34853/18.02989	ki
 mollan	Mollan Asian kök	http://mollanasiankok.se/	http://mollanasiankok.se/vecka%20meny.html	https://www.openstreetmap.org/#map=19/59.34836/18.02650	ki
 svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-ns.com/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804	ki
-subway	Subway	http://subway.se/sv/hem/	http://subway.se/sv/hem/	https://www.openstreetmap.org/#map=19/59.35084/18.02433	ki
 nanna	Restaurang Nanna Svartz	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	https://www.openstreetmap.org/#map=19/59.34848/18.02807	ki
 bikupan	Restaurang Bikupan	http://www.hors.se/restaurang/restaurang-bikupan/	http://www.hors.se/restaurang/restaurang-bikupan/	https://www.openstreetmap.org/#map=18/59.84186/17.63407	uu
 dufva	Sven Dufva	http://svendufva.se/	http://svendufva.se/#lunch	https://www.openstreetmap.org/#map=19/59.84298/17.64096	uu

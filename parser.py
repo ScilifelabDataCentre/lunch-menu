@@ -433,23 +433,6 @@ def parse_rudbeck(resdata):
     return lines
 
 
-def parse_subway(resdata):
-    '''
-    Print info about Subway
-    '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
-
-    sotd = {0: 'American Steakhouse melt', 1: 'Melt', 2: 'Spicy Italian',
-            3: 'Kycklingbröst', 4: 'Tonfisk', 5: 'Skinka', 6: 'Italian B.M.T.'}
-
-    lines.append(f'Sub of the day: {sotd[get_weekdigit()]}<br/>')
-    
-    lines += restaurant_end()
-    return lines
-
-
 def parse_svarta(resdata):
     '''
     Parse the menu of Svarta Räfven
