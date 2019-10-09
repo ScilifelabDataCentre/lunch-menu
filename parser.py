@@ -150,10 +150,10 @@ def parse_bikupan(resdata):
     Parse the menu of Restaurang Bikupan
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Uppsala',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -171,10 +171,10 @@ def parse_dufva(resdata):
     Parse the menu of Sven Dufva
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Uppsala',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -203,8 +203,8 @@ def parse_glada(resdata):
     Parse the menu of Glada restaurangen
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
 
     # No way I'll parse this one. If anyone actually wants to, I'd be happy to accept a patch.
 
@@ -217,8 +217,8 @@ def parse_haga(resdata):
     Print a link to the menu of Haga gatukök
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
     lines += restaurant_end()
     return lines
 
@@ -228,10 +228,10 @@ def parse_hjulet(resdata):
     Parse the menu of Restaurang Hjulet
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -239,7 +239,6 @@ def parse_hjulet(resdata):
 
     for header in soup.find_all('h4'):
         if header.find(text=re.compile('LUNCH MENY')) and str(get_week()) in header.text:
-            day_text = ''
             # Will fail if the day is in a non-menu paragraph
             for par in soup.find_all('p'):
                 if par.find(text=re.compile('^' + get_weekday().capitalize())):
@@ -256,10 +255,10 @@ def parse_hubben(resdata):
     Parse the menu of Restaurang Hubben
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Uppsala',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -278,10 +277,10 @@ def parse_jons(resdata):
     Parse the menu of Jöns Jacob
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -303,8 +302,8 @@ def parse_jorpes(resdata):
     Parse the menu of Resturang Jorpes
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
     lines += restaurant_end()
     return lines
 
@@ -314,10 +313,10 @@ def parse_livet(resdata):
     Parse the menu of Livet
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -346,10 +345,10 @@ def parse_mollan(resdata):
     Parse the menu of Mollan
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -375,17 +374,17 @@ def parse_nanna(resdata):
     Parse the menu of Nanna Svartz
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
     soup = BeautifulSoup(page_req.text, 'html.parser')
     current_week = False
     for tag in soup.find_all('strong'):
-        if tag.find(text=re.compile('MATSEDEL V\.' + str(get_week()))):
+        if tag.find(text=re.compile(r'MATSEDEL V\.' + str(get_week()))):
             current_week = True
 
     if current_week:
@@ -393,7 +392,7 @@ def parse_nanna(resdata):
         for par in soup.find_all('p'):
             if started:
                 if (par.find(text=re.compile(get_weekday(tomorrow=True).capitalize())) or
-                    par.find(text=re.compile('^Priser'))):
+                    par.find(text=re.compile(r'^Priser'))):
                     break
                 dish_parts = [text for text in par.text.replace('\xa0', '').strip().split(' ')
                               if text]
@@ -403,7 +402,7 @@ def parse_nanna(resdata):
                         lines.append(dish_text + '<br/>')
             if par.find(text=re.compile(get_weekday().capitalize())):
                 started = True
-    
+
 
     lines += restaurant_end()
 
@@ -415,10 +414,10 @@ def parse_rudbeck(resdata):
     Parse the menu of Bistro Rudbeck
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Uppsala',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
+                              resdata['url'], resdata['osm'])
 
-    page_req = requests.get(resdata[3])
+    page_req = requests.get(resdata['menu_url'])
     if page_req.status_code != 200:
         raise IOError('Bad HTTP responce code')
 
@@ -438,10 +437,10 @@ def parse_svarta(resdata):
     Parse the menu of Svarta Räfven
     '''
     lines = list()
-    lines += restaurant_start(fix_for_html(resdata[1]), 'Solna',
-                              resdata[2], resdata[4])
+    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
+                              resdata['url'], resdata['osm'])
 
-    # page_req = requests.get(resdata[3])
+    # page_req = requests.get(resdata['menu_url'])
     # soup = BeautifulSoup(page_req.text, 'html.parser')
 
     lines += restaurant_end()

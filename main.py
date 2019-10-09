@@ -39,6 +39,25 @@ import parser as ps
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
 
+def read_restaurants(intext):
+    '''
+    Read the list of restaurants
+    Read a tsv file with the columns:
+    [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
+    '''
+    restaurants = {}
+    col_names = ('campus', 'identifier', 'name', 'url', 'menu_url', 'osm')
+    for line in intext.split('\n'):
+        if not line or line[0] == '#':
+            continue
+        cols = line.rstrip().split('\t')
+        values = dict(zip(col_names, cols))
+        restaurants[values['identifier']] = values
+    return restaurants
+
+
+REST_DATA = read_restaurants(open(REST_FILENAME).read())
+
 # works as ordered dict as well, but must be _ordered_
 MAPPER = {'jorpes': ps.parse_jorpes, 'glada': ps.parse_glada,
           'haga': ps.parse_haga, 'hjulet': ps.parse_hjulet,
@@ -65,6 +84,13 @@ def activate_parsers(restaurants, restaurant_data):
         except Exception as err:
             sys.stderr.write(f'E in {restaurant}: {err}\n')
     return '\n'.join(output)
+
+
+def list_restaurants():
+    '''
+    List all supported restaurants.
+    '''
+    return REST_DATA
 
 
 def page_end():
@@ -116,33 +142,16 @@ def print_usage(supported):
     '''
     sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
     sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
-    sys.stderr.write('write all to generate all supported restaurants\n')
-
-
-def read_restaurants(intext):
-    '''
-    Read the list of restaurants
-    Read a tsv file with the columns:
-    [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
-    '''
-    restaurants = {}
-    for line in intext.split('\n'):
-        if not line or line[0] == '#':
-            continue
-        cols = line.rstrip().split('\t')
-        restaurants[cols[0]] = cols
-    return restaurants
+    sys.stderr.write('Write all to generate all supported restaurants\n')
 
 
 def gen_ki_menu():
     '''
     Generate a menu for restaurants at KI
     '''
-    restaurant_data = read_restaurants(open(REST_FILENAME).read())
-
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(KI, restaurant_data)
+    output += activate_parsers(KI, REST_DATA)
     output += '\n'.join(page_end())
     return output
 
@@ -151,11 +160,9 @@ def gen_uu_menu():
     '''
     Generate a menu for restaurants at UU
     '''
-    restaurant_data = read_restaurants(open(REST_FILENAME).read())
-
     output = ''
     output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(UU, restaurant_data)
+    output += activate_parsers(UU, REST_DATA)
     output += '\n'.join(page_end())
 
     sys.stderr.write(output + '\n')
@@ -167,25 +174,24 @@ if __name__ == '__main__':
         print_usage(KI + UU)
         sys.exit()
 
-    rest_names_in = tuple()
-    RESTAURANT_DATA = read_restaurants(open(REST_FILENAME).read())
+    REST_NAMES_IN = tuple()
     if 'all' in sys.argv[1:]:
-        rest_names_in += KI + UU
+        REST_NAMES_IN += KI + UU
     elif 'ki'in sys.argv[1:]:
-        rest_names_in += KI
+        REST_NAMES_IN += KI
     elif 'uu'in sys.argv[1:]:
-        rest_names_in += UU
+        REST_NAMES_IN += UU
     else:
-        rest_names_in = [param for param in sys.argv[1:] if param != '-r']
+        REST_NAMES_IN = [param for param in sys.argv[1:] if param != '-r']
 
     try:
-        REST_NAMES = parse_restaurant_names(rest_names_in)
+        REST_NAMES = parse_restaurant_names(REST_NAMES_IN)
     except ValueError as err:
         sys.stderr.write('E: {}\n'.format(err))
-        print_usage((x[0] for x in MAPPER))
+        print_usage((x for x in MAPPER))
         sys.exit(1)
 
     # print the menus
     print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
-    print(activate_parsers(REST_NAMES, RESTAURANT_DATA))
+    print(activate_parsers(REST_NAMES, REST_DATA))
     print('\n'.join(page_end()))
