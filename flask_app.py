@@ -20,6 +20,11 @@ def display_available():
                '</html>')
     return content
 
+@app.route('/api/restaurants')
+@cache.cached(timeout=3600)
+def api_list_restaurants():
+    return main.list_restaurants()
+
 @app.route('/ki')
 @cache.cached(timeout=3600)
 def make_menu_ki():
