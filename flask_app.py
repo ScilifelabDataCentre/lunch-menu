@@ -7,6 +7,7 @@ import main
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
+
 @app.route('/')
 def display_available():
     content = ('<html>' +
@@ -20,15 +21,27 @@ def display_available():
                '</html>')
     return content
 
+
 @app.route('/api/restaurants')
 @cache.cached(timeout=3600)
 def api_list_restaurants():
     return main.list_restaurants()
 
+
+@app.route('/api/restaurant/<name>')
+@cache.cached(timeout=3600)
+def api_get_restaurant(name):
+    data = main.get_restaurant(name)
+    if not data:
+        abort(404)
+    return data
+
+
 @app.route('/ki')
 @cache.cached(timeout=3600)
 def make_menu_ki():
     return main.gen_ki_menu()
+
 
 @app.route('/uu')
 @cache.cached(timeout=3600)
