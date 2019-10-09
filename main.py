@@ -43,7 +43,7 @@ def read_restaurants(intext):
     '''
     Read the list of restaurants
     Read a tsv file with the columns:
-    [0] identifier [1] Name [2] URL [3] Menu URL [4] OSM URL
+    [0] campus [1] identifier [2] Name [3] URL [4] Menu URL [5] OSM URL
     '''
     restaurants = {}
     col_names = ('campus', 'identifier', 'name', 'url', 'menu_url', 'osm')
@@ -80,10 +80,27 @@ def activate_parsers(restaurants, restaurant_data):
     output = []
     for restaurant in restaurants:
         try:
-            output.append('\n'.join(MAPPER[restaurant](restaurant_data[restaurant])))
+            data = MAPPER[restaurant](restaurant_data[restaurant])
         except Exception as err:
             sys.stderr.write(f'E in {restaurant}: {err}\n')
+        output.append(f'''<div class="title"><a href="{data['url']}">{data['title']}</a>''')
+        output.append(f'''(<a href="{data['map_url']}">{data['location']}</a>)</div>''')
+        output.append('<div class="menu">')
+        output.append('<p>')
+        output.append('<br />\n'.join(data['menu']))
+        output.append('</p>')
+        output.append('</div>')
     return '\n'.join(output)
+
+
+def get_restaurant(name: str) -> dict:
+    """
+    Request the menu of a restaurant
+    """
+    if name in MAPPER:
+        return MAPPER[name](REST_DATA[name])
+    else:
+        return {}
 
 
 def list_restaurants():

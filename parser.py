@@ -38,6 +38,31 @@ import requests
 from bs4 import BeautifulSoup
 
 
+def restaurant(func):
+    """
+    Decorator to use for restaurants.
+    """
+    def helper(res_data):
+        data = {'title': res_data['name'],
+                'location': res_data['campus'],
+                'url': res_data['url'],
+                'map_url': res_data['osm']}
+        data.update(func(res_data))
+        return data
+
+    return helper
+
+def get_parser(url: str) -> BeautifulSoup:
+    """
+    Request page and create Beautifulsoup object
+    """
+    page_req = requests.get(url)
+    if page_req.status_code != 200:
+        raise IOError('Bad HTTP responce code')
+
+    return BeautifulSoup(page_req.text, 'html.parser')
+
+
 def fix_for_html(text):
     '''
     HTML formatting of characters
@@ -145,45 +170,33 @@ def get_year():
 ### date management end ###
 
 ### parsers start ###
-def parse_bikupan(resdata):
+@restaurant
+def parse_bikupan(res_data: dict) -> dict:
     '''
     Parse the menu of Restaurang Bikupan
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
-                              resdata['url'], resdata['osm'])
-
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
     relevant = soup.find("div", {"class": "col-md-3 hors-menu text-center"})
     dishes = relevant.find_all("div", {"class": "col-xs-10 text-left"})
     for dish in dishes:
-        lines.append(dish.get_text().strip().replace('\n', ' ') + '<br/>')
-    lines += restaurant_end()
-    return lines
+        data['menu'].append(dish.get_text().strip().replace('\n', ' '))
+    return data
 
 
-def parse_dufva(resdata):
+@restaurant
+def parse_dufva(res_data):
     '''
     Parse the menu of Sven Dufva
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
-                              resdata['url'], resdata['osm'])
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
     relevant = soup.find("div", {"id": "post"})
-    menu_lines = relevant.get_text().split('\n')
+    menu_data = relevant.get_text().split('\n')
     dag = get_weekday()
     started = False
-    for line in menu_lines:
+    for line in menu_data:
         if not line:
             continue
         if line.lower() == dag:
@@ -191,136 +204,102 @@ def parse_dufva(resdata):
             continue
         if started:
             if line[0] != '-':
-                lines.append(line.strip() + '<br/>')
+                data['menu'].append(line.strip())
             else:
                 break
-    lines += restaurant_end()
-    return lines
+    return data
 
 
-def parse_glada(resdata):
+@restaurant
+def parse_glada(res_data):
     '''
     Parse the menu of Glada restaurangen
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
-
+    data = {'menu': []}
     # No way I'll parse this one. If anyone actually wants to, I'd be happy to accept a patch.
-
-    lines += restaurant_end()
-    return lines
+    return data
 
 
-def parse_haga(resdata):
+@restaurant
+def parse_haga(res_data):
     '''
     Print a link to the menu of Haga gatukök
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
-    lines += restaurant_end()
-    return lines
+    return {'menu': []}
 
 
-def parse_hjulet(resdata):
+@restaurant
+def parse_hjulet(res_data):
     '''
     Parse the menu of Restaurang Hjulet
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
-
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
     for header in soup.find_all('h4'):
         if header.find(text=re.compile('LUNCH MENY')) and str(get_week()) in header.text:
             # Will fail if the day is in a non-menu paragraph
             for par in soup.find_all('p'):
                 if par.find(text=re.compile('^' + get_weekday().capitalize())):
-                    lines.append('<br/>\n'.join(par.text.split('\n')[1:]))
+                    data['menu'] += par.text.split('\n')[1:]
                     break
 
-    lines += restaurant_end()
-
-    return lines
+    return data
 
 
-def parse_hubben(resdata):
+@restaurant
+def parse_hubben(res_data):
     '''
     Parse the menu of Restaurang Hubben
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
-                              resdata['url'], resdata['osm'])
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
     days = soup.find_all("div", {"class": "day"})
     current = days[get_weekdigit()]
     dishes = current.find_all('div', {'class': 'element description col-md-4 col-print-5'})
     for dish in dishes:
-        lines.append(dish.get_text().strip().replace('\n', ' ') + '<br/>')
-    lines += restaurant_end()
-    return lines
+        data['menu'].append(dish.get_text().strip().replace('\n', ' '))
+
+    return data
 
 
-def parse_jons(resdata):
+@restaurant
+def parse_jons(res_data):
     '''
     Parse the menu of Jöns Jacob
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
     days = soup.find('table', {'class':'table lunch_menu animation'})
     day = days.find('tbody', {'class':'lunch-day-content'})
     dishes = day.find_all('td', {'class':'td_title'})
     for dish in dishes:
         dish_data = ' '.join([text for text in dish.get_text().strip().split('\n')[1:] if text])
         if dish_data:
-            lines.append(dish_data + '<br/>')
+            data['menu'].append(dish_data)
 
-    lines += restaurant_end()
-    return lines
+    return data
 
 
-def parse_jorpes(resdata):
+@restaurant
+def parse_jorpes(res_data):
     '''
     Parse the menu of Resturang Jorpes
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
-    lines += restaurant_end()
-    return lines
+    data = {'menu': []}
+    return data
 
 
-def parse_livet(resdata):
+@restaurant
+def parse_livet(res_data):
     '''
     Parse the menu of Livet
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
     started = False
     for par in soup.find_all(('h3', 'p')):
         if started:
@@ -329,30 +308,24 @@ def parse_livet(resdata):
             if par.find(text=re.compile('&nbsp;')):
                 break
             text = par.find(text=True, recursive=False)
-            lines.append(text + '<br/>')
+            data['menu'].append(text)
             continue
         if par.find(text=re.compile(get_weekday().capitalize() +
                                     '.*' +
                                     str(get_day()))):
             started = True
 
-    lines += restaurant_end()
-    return lines
+    return data
 
 
-def parse_mollan(resdata):
+@restaurant
+def parse_mollan(res_data):
     '''
     Parse the menu of Mollan
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
     current_week = False
     for span in soup.find_all('span'):
         if span.find(text=re.compile('Vecka.*' + str(get_week()))):
@@ -362,26 +335,20 @@ def parse_mollan(resdata):
         days = soup.find_all('ol')
         today = days[get_weekdigit()]
         for entry in [fix_for_html(entry.text) for entry in today.find_all('li')]:
-            lines.append(entry + '<br/>')
-
-    lines += restaurant_end()
-
-    return lines
+            data['menu'].append(entry)
 
 
-def parse_nanna(resdata):
+    return data
+
+
+@restaurant
+def parse_nanna(res_data):
     '''
     Parse the menu of Nanna Svartz
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
     current_week = False
     for tag in soup.find_all('strong'):
         if tag.find(text=re.compile(r'MATSEDEL V\.' + str(get_week()))):
@@ -399,75 +366,33 @@ def parse_nanna(resdata):
                 if dish_parts and dish_parts[0] in ('Vegetarisk', 'Kött', 'Sallad', 'Fisk'):
                     dish_text = ' '.join(dish_parts[1:])
                     if dish_text:
-                        lines.append(dish_text + '<br/>')
+                        data['menu'].append(dish_text)
             if par.find(text=re.compile(get_weekday().capitalize())):
                 started = True
 
-
-    lines += restaurant_end()
-
-    return lines
+    return data
 
 
-def parse_rudbeck(resdata):
+@restaurant
+def parse_rudbeck(res_data):
     '''
     Parse the menu of Bistro Rudbeck
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Uppsala',
-                              resdata['url'], resdata['osm'])
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
 
-    page_req = requests.get(resdata['menu_url'])
-    if page_req.status_code != 200:
-        raise IOError('Bad HTTP responce code')
-
-    soup = BeautifulSoup(page_req.text, 'html.parser')
     days = soup.find_all('div', {'class':'container-fluid no-print'})
     day = days[get_weekdigit()]
     dishes = day.find_all('span')[3:]
     for dish in dishes:
-        lines.append(dish.get_text().strip() + '<br/>')
+        data['menu'].append(dish.get_text().strip())
 
-    lines += restaurant_end()
-    return lines
+    return data
 
 
-def parse_svarta(resdata):
+@restaurant
+def parse_svarta(res_data):
     '''
     Parse the menu of Svarta Räfven
     '''
-    lines = list()
-    lines += restaurant_start(fix_for_html(resdata['name']), 'Solna',
-                              resdata['url'], resdata['osm'])
-
-    # page_req = requests.get(resdata['menu_url'])
-    # soup = BeautifulSoup(page_req.text, 'html.parser')
-
-    lines += restaurant_end()
-    return lines
-
-### parsers end ###
-
-def restaurant_end():
-    '''
-    Finish the tags after the listing of the menu of a restaurant
-    '''
-    lines = list()
-    lines.append('</p>')
-    lines.append('</div>')
-    return lines
-
-
-def restaurant_start(restaurant, location, home_url, mapurl):
-    ''''
-    Start the listing of the menu of a restaurant
-    '''
-    lines = list()
-    lines.append('<!--{}-->'.format(restaurant))
-    lines.append('<div class="title"><a href="{url}"> {rest}</a>'.format(rest=restaurant,
-                                                                         url=home_url) +
-                 ' (<a href="{murl}">{loc}</a>)</div>'.format(loc=location,
-                                                              murl=mapurl))
-    lines.append('<div class="menu">')
-    lines.append('<p>')
-    return lines
+    return {'menu': []}
