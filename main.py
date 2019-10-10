@@ -107,7 +107,7 @@ def list_restaurants():
     '''
     List all supported restaurants.
     '''
-    return REST_DATA
+    return list(REST_DATA.values())
 
 
 def page_end():
