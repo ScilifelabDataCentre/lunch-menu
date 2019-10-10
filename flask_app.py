@@ -1,3 +1,5 @@
+import json
+
 from flask import abort
 from flask import Flask
 from flask_caching import Cache
@@ -26,7 +28,7 @@ def display_available():
 @app.route('/api/restaurants')
 @cache.cached(timeout=3600)
 def api_list_restaurants():
-    return main.list_restaurants()
+    return json.dumps(main.list_restaurants())
 
 
 @app.route('/api/restaurant/<name>')
@@ -35,7 +37,7 @@ def api_get_restaurant(name):
     data = main.get_restaurant(name)
     if not data:
         abort(404)
-    return data
+    return json.dumps(data)
 
 
 @app.route('/ki')
