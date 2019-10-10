@@ -11,8 +11,8 @@ export default {
 }
 </script>
 
-<style>
-#menu {
-    text-align: left;
+<style scoped>
+.menu {
+    color: #2c3e50;
 }
 </style>
