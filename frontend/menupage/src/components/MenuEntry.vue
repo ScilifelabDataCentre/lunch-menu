@@ -1,11 +1,18 @@
 <template>
-<li class="menu">
-</li>
+<div class="menu">
+  {{ dish }}
+</div>
 </template>
 
 <script>
 export default {
   name: 'MenuEntry',
-  props: ["menu"],
+  props: ["dish"],
 }
 </script>
+
+<style>
+#menu {
+    text-align: left;
+}
+</style>
