@@ -23,7 +23,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:3333/api/restaurants')
+      .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
       .then(response => (this.restaurants = response.data))
   }
 }
