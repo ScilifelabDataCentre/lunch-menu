@@ -3,3 +3,4 @@ PyPDF2
 requests
 flask
 flask-caching
+flask-cors

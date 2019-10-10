@@ -3,13 +3,14 @@ import json
 from flask import abort
 from flask import Flask
 from flask_caching import Cache
+from flask_cors import CORS
 
 import main
 
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
-
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/')
 def display_available():
