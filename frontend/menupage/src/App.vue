@@ -1,7 +1,9 @@
 <template>
-  <div id="app">
-    <restaurant-entry v-for="restaurant in restaurants" :key="restaurant.name" :restaurant-info="restaurant"/>
-  </div>
+<div id="app">
+  <h1>Restaurants</h1>
+  <restaurant-entry v-for="restaurant in restaurants" :key="restaurant.name" :restaurant_info="restaurant" :is_active="isActive(restaurant)">
+  </restaurant-entry>
+</div>
 </template>
 
 <script>
@@ -11,17 +13,23 @@ import RestaurantEntry from './components/RestaurantEntry.vue'
 export default {
   name: 'app',
   components: {
-    'restaruant-entry': RestaurantEntry
+    'restaurant-entry': RestaurantEntry
   },
   data () {
     return {
-      restaurants: null
+      restaurants: null,
+      active: ['bikupan', 'hjulet']
+    }
+  },
+  methods: {
+    isActive: function (restaurant) {
+      return this.active.includes(restaurant.identifier)
     }
   },
   mounted () {
     axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then(response => (this.restaurants = response))
+      .get('http://localhost:3333/api/restaurants')
+      .then(response => (this.restaurants = response.data))
   }
 }
 </script>
