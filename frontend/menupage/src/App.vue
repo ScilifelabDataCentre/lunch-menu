@@ -1,17 +1,27 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <restaurant-entry v-for="restaurant in restaurants" :key="restaurant.name" :restaurant-info="restaurant"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
+import RestaurantEntry from './components/RestaurantEntry.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    'restaruant-entry': RestaurantEntry
+  },
+  data () {
+    return {
+      restaurants: null
+    }
+  },
+  mounted () {
+    axios
+      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+      .then(response => (this.restaurants = response))
   }
 }
 </script>
