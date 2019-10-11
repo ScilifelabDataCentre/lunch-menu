@@ -49,8 +49,11 @@ def restaurant(func):
                 'map_url': res_data['osm']}
         data.update(func(res_data))
         return data
+    helper.__name__ = func.__name__
+    helper.__doc__ = func.__doc__
 
     return helper
+
 
 def get_parser(url: str) -> BeautifulSoup:
     """
