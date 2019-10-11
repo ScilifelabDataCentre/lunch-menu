@@ -3,6 +3,9 @@
   <div v-if="!restaurants">Waiting for data from API...</div>
   <restaurant-entry v-for="restaurant in sortedSolna" :key="restaurant.name" :restaurant_info="restaurant">
   </restaurant-entry>
+  <div id="spacer">
+    <hr id="location_divider" />
+  </div>
   <restaurant-entry v-for="restaurant in sortedUppsala" :key="restaurant.name" :restaurant_info="restaurant">
   </restaurant-entry>
   <div class="endnote">Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>.
@@ -54,14 +57,22 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
+    margin-top: 50px;
     letter-spacing: 0.01em;
-
-    .endnote {
-        font-size: 10px;
-        padding: 25px 0px 0px 0px;
-    }
-
-    font-family: 
 }
+
+.endnote {
+    font-size: 10px;
+    padding: 25px 0px 0px 0px;
+}
+
+
+#spacer {
+    padding: 25px 0px;
+}
+
+#location_divider {
+    width: 120px;
+}
+
 </style>
