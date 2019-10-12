@@ -1,10 +1,10 @@
 <template>
 <div id="app">
-  <div v-if="!restaurants">Waiting for data from API...</div>
+  <div v-if="restaurants.length == 0">Waiting for data from API...</div>
   <restaurant-entry v-for="restaurant in sortedSolna" :key="restaurant.name" :restaurant_info="restaurant">
   </restaurant-entry>
   <div id="spacer">
-    <hr id="location_divider" />
+    <hr id="location_divider" v-if="sortedSolna.length != 0 && sortedUppsala.length != 0" />
   </div>
   <restaurant-entry v-for="restaurant in sortedUppsala" :key="restaurant.name" :restaurant_info="restaurant">
   </restaurant-entry>
@@ -25,7 +25,7 @@ export default {
   },
   data () {
     return {
-      restaurants: null,
+      restaurants: [],
       active: ['bikupan', 'hjulet']
     }
   },
