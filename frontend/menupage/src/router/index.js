@@ -5,6 +5,7 @@ import RestaurantList from '../components/RestaurantList.vue'
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {
       path: '/solna',
@@ -22,6 +23,7 @@ const router = new VueRouter({
       path: '/',
       component: RestaurantList,
       props: { list_type: 'both' },
+      alias: ['*']
     },
   ]
 });

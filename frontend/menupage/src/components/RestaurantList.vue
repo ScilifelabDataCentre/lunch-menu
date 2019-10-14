@@ -24,18 +24,21 @@ import RestaurantEntry from './RestaurantEntry.vue'
 
 export default {
   name: 'RestaurantList',
+  props: ['list_type'],
   components: {
     'restaurant-entry': RestaurantEntry
   },
-  data () {
-    return {
-      list_type: null,
-      active: []
-    }
-  },
   computed: {
-    ...mapGetters(['restaurants', 'sortedSolna', 'sortedUppsala'])
-  },
+    ...mapGetters(['restaurants']),
+    sortedSolna () {
+      let chosen = this.restaurants.filter((rest) => rest.campus == 'Solna')
+      return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+    },
+    sortedUppsala () {
+      let chosen = this.restaurants.filter((rest) => rest.campus == 'Uppsala')
+      return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+    }
+  }
 }
 </script>
 

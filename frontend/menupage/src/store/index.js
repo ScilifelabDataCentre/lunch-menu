@@ -18,20 +18,14 @@ const actions = {
   getRestaurants ({ commit }) {
     axios
       .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
-      .then((response) => { commit('UPDATE_RESTAURANTS', response.data) });
-  },
+      .then((response) => {
+        commit('UPDATE_RESTAURANTS', response.data);
+      });
+  }
 }
 
 const getters = {
-  restaurants: state => state.restaurants,
-  sortedSolna () {
-    let chosen = this.restaurants.filter((rest) => rest.campus == 'Solna')
-    return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-  },
-  sortedUppsala () {
-    let chosen = this.restaurants.filter((rest) => rest.campus == 'Uppsala')
-    return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-  }
+  restaurants: state => state.restaurants
 }
 
 const store = new Vuex.Store({

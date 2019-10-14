@@ -9,15 +9,19 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
   name: 'app',
   data () {
     return {
-      restaurants: [],
       active: ['bikupan', 'hjulet']
     }
   },
-  created() {
+  computed: {
+    ...mapGetters(['restaurants']),
+  },
+  created () {
     this.$store.dispatch('getRestaurants');
   }
 }
