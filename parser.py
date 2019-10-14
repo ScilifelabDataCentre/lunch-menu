@@ -66,43 +66,18 @@ def get_parser(url: str) -> BeautifulSoup:
     return BeautifulSoup(page_req.text, 'html.parser')
 
 
-def fix_for_html(text):
+def fix_bad_symbols(text):
     '''
     HTML formatting of characters
     '''
-    text = text.replace('ö', '&ouml;')
-    text = text.replace('Ö', '&Ouml;')
-    text = text.replace('å', '&aring;')
-    text = text.replace('Å', '&Aring;')
-    text = text.replace('ä', '&auml;')
-    text = text.replace('Ä', '&Auml;')
-    text = text.replace('é', '&eacute;')
-    text = text.replace('è', '&egrave;')
-    text = text.replace('í', '&iacute;')
-    text = text.replace('ì', '&igrave;')
-    text = text.replace('à', '&agrave;')
-    text = text.replace('á', '&aacute;')
-    text = text.replace('ô', '&ocirc;')
-    text = text.replace('ü', '&uuml;')
-    text = text.replace('Ä', '&Auml;')
-    text = text.replace('´', '&#39;')
-    text = text.replace('`', '&#39;')
-    text = text.replace('ç', '&ccedil;')
-    text = text.replace('”', '&quot;')
-    text = text.replace('Ã¨', '&egrave;')
-    text = text.replace('Ã¤', '&auml;')
-    text = text.replace('Ã', '&Auml;')
-    text = text.replace('Ã', '&Auml;')
-    text = text.replace('Ã¶', '&ouml;')
-    text = text.replace('Ã©', '&eacute;')
-    text = text.replace('Ã¥', '&aring;')
-    text = text.replace(' ', '')
-    text = text.replace('Ã', '&Aring')
-    # Karolina
-    text = text.replace('å', '&aring;')
-    text = text.replace('ä', '&auml;')
-    text = text.replace('ö', '&ouml;')
-    text = text.replace('Ä', '&Auml;')
+    text = text.replace('Ã¨', 'è')
+    text = text.replace('Ã¤', 'ä')
+    text = text.replace('Ã', 'Ä')
+    text = text.replace('Ã', 'Ä')
+    text = text.replace('Ã¶', 'ö')
+    text = text.replace('Ã©', 'é')
+    text = text.replace('Ã¥', 'å')
+    text = text.replace('Ã', 'Å')
 
     text = text.strip()
 
@@ -338,7 +313,7 @@ def parse_mollan(res_data):
     if current_week:
         days = soup.find_all('ol')
         today = days[get_weekdigit()]
-        for entry in [entry.text for entry in today.find_all('li')]:
+        for entry in [fix_bad_symbols(entry.text) for entry in today.find_all('li')]:
             data['menu'].append(entry)
 
 

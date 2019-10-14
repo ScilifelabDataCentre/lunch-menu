@@ -130,7 +130,7 @@ def page_start(weekday, day, month):
     lines = list()
     lines.append('<html>')
     lines.append('<head>')
-    date = ps.fix_for_html(weekday.capitalize() + ' ' + str(day) + ' ' + str(month))
+    date = weekday.capitalize() + ' ' + str(day) + ' ' + str(month)
     lines.append('<title>Dagens mat - {}</title>'.format(date))
     lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
     lines.append('<style type="text/css"></style>')
