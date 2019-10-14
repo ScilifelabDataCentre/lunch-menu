@@ -338,7 +338,7 @@ def parse_mollan(res_data):
     if current_week:
         days = soup.find_all('ol')
         today = days[get_weekdigit()]
-        for entry in [fix_for_html(entry.text) for entry in today.find_all('li')]:
+        for entry in [entry.text for entry in today.find_all('li')]:
             data['menu'].append(entry)
 
 
