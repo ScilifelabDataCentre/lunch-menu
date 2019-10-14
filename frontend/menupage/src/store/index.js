@@ -18,7 +18,7 @@ const actions = {
   getRestaurants ({ commit }) {
     axios
       .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
-      .then(commit('UPDATE_RESTAURANTS', response.data))
+      .then((response) => { commit('UPDATE_RESTAURANTS', response.data) });
   },
 }
 
@@ -40,3 +40,5 @@ const store = new Vuex.Store({
   actions,
   getters
 })
+
+export default store

@@ -1,13 +1,7 @@
 <template>
 <div id="app">
   <div v-if="restaurants.length == 0">Waiting for data from API...</div>
-  <restaurant-entry v-for="restaurant in sortedSolna" :key="restaurant.name" :restaurant_info="restaurant">
-  </restaurant-entry>
-  <div id="spacer">
-    <hr id="location_divider" v-if="sortedSolna.length != 0 && sortedUppsala.length != 0" />
-  </div>
-  <restaurant-entry v-for="restaurant in sortedUppsala" :key="restaurant.name" :restaurant_info="restaurant">
-  </restaurant-entry>
+  <router-view></router-view>
   <div class="endnote">Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>.
     Patches are very welcome.
   </div>
@@ -15,35 +9,16 @@
 </template>
 
 <script>
-import axios from 'axios';
-import RestaurantEntry from './components/RestaurantEntry.vue'
-
 export default {
   name: 'app',
-  components: {
-    'restaurant-entry': RestaurantEntry
-  },
   data () {
     return {
       restaurants: [],
       active: ['bikupan', 'hjulet']
     }
   },
-  computed: {
-    sortedSolna () {
-      let chosen = this.restaurants.filter((rest) => rest.campus == 'Solna')
-      return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-    },
-    sortedUppsala () {
-      let chosen = this.restaurants.filter((rest) => rest.campus == 'Uppsala')
-      return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-    }
-  },
-
-  mounted () {
-    axios
-      .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
-      .then(response => (this.restaurants = response.data))
+  created() {
+    this.$store.dispatch('getRestaurants');
   }
 }
 </script>
