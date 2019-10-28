@@ -2,7 +2,7 @@
 <div id="app">
   <div v-if="restaurants.length == 0">Waiting for data from API...</div>
   <router-view></router-view>
-  <div class="endnote">Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>.
+  <div class="endnote">Made by <a href="https://www.scilifelab.se/data/">SciLifeLab Data centre</a>. Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>.
     Patches are very welcome.
   </div>
 </div>
