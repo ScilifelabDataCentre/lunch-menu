@@ -2,8 +2,7 @@
 <div id="app">
   <div v-if="restaurants.length == 0">Waiting for data from API...</div>
   <router-view></router-view>
-  <div class="endnote">Made by <a href="https://www.scilifelab.se/data/">SciLifeLab Data centre</a>. Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>.
-    Patches are very welcome.
+  <div class="endnote">Provided by <a href="https://www.scilifelab.se/data/">SciLifeLab Data Centre</a>. Code available at <a href="https://github.com/talavis/lunch-menu">Github</a>.
   </div>
 </div>
 </template>
@@ -39,6 +38,18 @@ export default {
     margin-top: 50px;
     letter-spacing: 0.01em;
 }
+
+a {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
 
 .endnote {
     font-size: 10px;
