@@ -4,7 +4,7 @@ Solna	haga	Haga gatukök	http://orenib.se/haga_gk2.pdf	http://orenib.se/haga_gk2
 Solna	hjulet	Restaurang Hjulet	http://www.restauranghjulet.se	http://www.restauranghjulet.se	https://www.openstreetmap.org/#map=19/59.34508/18.02423
 Solna	jons	Jöns Jacob 	http://gastrogate.com/restaurang/jonsjacob/	https://jonsjacob.gastrogate.com/lunch/	https://www.openstreetmap.org/#map=19/59.34673/18.02465
 Solna	jorpes	Café Erik Jorpes	https://restaurang-ns.ki.se/cafe-erik-jorpes/	https://restaurang-ns.ki.se/cafe-erik-jorpes/	https://www.openstreetmap.org/#map=19/59.34851/18.02721
-Solna	livet	Livet [Restaurant]	https://www.livetbrand.com/livet-restaurant/	https://www.livetbrand.com/livet-restaurant/	https://www.openstreetmap.org/#map=19/59.34853/18.02989
+Solna	livet	Livet [Restaurant]	https://www.livetbrand.com/har-finns-livet/stockholm-solna/livet-restaurant-solna/	https://www.livetbrand.com/har-finns-livet/stockholm-solna/livet-restaurant-solna/	https://www.openstreetmap.org/#map=19/59.34853/18.02989
 Solna	mollan	Mollan Asian kök	http://mollanasiankok.se/	http://mollanasiankok.se/vecka%20meny.html	https://www.openstreetmap.org/#map=19/59.34836/18.02650
 Solna	svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-ns.com/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804
 Solna	nanna	Restaurang Nanna Svartz	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	https://www.openstreetmap.org/#map=19/59.34848/18.02807
