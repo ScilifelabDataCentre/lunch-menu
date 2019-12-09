@@ -13,12 +13,12 @@
         </a>
 
         <div class="navbar-dropdown">
-          <router-link to="/" class="navbar-item">All</router-link>
-          <router-link to="/solna" class="navbar-item">Solna</router-link>
-          <router-link to="/bmc" class="navbar-item">Uppsala (BMC)</router-link>
+          <router-link :to="{name: 'all'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'all'}">All</router-link>
+          <router-link :to="{name: 'solna'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'solna'}">Solna</router-link>
+          <router-link :to="{name: 'uppsala'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'uppsala'}">Uppsala (BMC)</router-link>
         </div>
       </div>
-    +</nav>
+    </nav>
 
     <div class="notification is-info" v-if="!loaded && !error">Waiting for data from API...</div>
     <div class="notification is-danger" v-if="(loaded && restaurants.length === 0) || error">Failed to load data from API: {{ error }}</div>
@@ -50,6 +50,7 @@ export default {
   },
   computed: {
     ...mapGetters(['restaurants']),
+    
   },
   created () {
     this.$store.dispatch('getRestaurants')
@@ -73,18 +74,6 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
 }
-
-a {
-    color: #2c3e50;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-    font-weight: bold;
-}
-
 
 .endnote {
     font-size: 10px;

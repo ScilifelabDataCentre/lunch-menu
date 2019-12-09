@@ -9,18 +9,21 @@ const router = new VueRouter({
   base: '/menu/',
   routes: [
     {
+      name: 'solna',
       path: '/solna',
       component: RestaurantList,
       props: { list_type: 'solna' },
       alias: ['/ki']
     },
     {
+      name: 'uppsala',
       path: '/uppsala',
       component: RestaurantList,
       props: { list_type: 'uppsala' },
       alias: ['/uu', '/bmc']
     },
     {
+      name: 'all',
       path: '/',
       component: RestaurantList,
       props: { list_type: 'both' },
