@@ -1,7 +1,4 @@
-import json
-
-from flask import abort
-from flask import Flask
+from flask import Flask, abort, jsonify
 from flask_caching import Cache
 from flask_cors import CORS
 
@@ -29,7 +26,7 @@ def display_available():
 @app.route('/api/restaurants')
 @cache.cached(timeout=3600)
 def api_list_restaurants():
-    return json.dumps(main.list_restaurants())
+    return jsonify(main.list_restaurants())
 
 
 @app.route('/api/restaurant/<name>')
@@ -38,7 +35,7 @@ def api_get_restaurant(name):
     data = main.get_restaurant(name)
     if not data:
         abort(404)
-    return json.dumps(data)
+    return jsonify(data)
 
 
 @app.route('/ki')
