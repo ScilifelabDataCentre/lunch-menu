@@ -6,7 +6,6 @@
   <div v-for="dish in dishes" :key="dish">
     {{ dish }}
   </div>
-  </menu-entry>
 </div>
 </template>
 

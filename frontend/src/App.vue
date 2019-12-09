@@ -16,7 +16,10 @@
           <router-link :to="{name: 'all'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'all'}">All</router-link>
           <router-link :to="{name: 'solna'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'solna'}">Solna</router-link>
           <router-link :to="{name: 'uppsala'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'uppsala'}">Uppsala (BMC)</router-link>
+          <hr class="navbar-divider">
+          <a class="navbar-item" @click="saveLocation">Remember location</a>
         </div>
+        
       </div>
     </nav>
 
@@ -41,6 +44,7 @@ import {mapGetters} from 'vuex';
 
 export default {
   name: 'app',
+
   data () {
     return {
       loaded: false,
@@ -48,11 +52,22 @@ export default {
       today: null,
     }
   },
+
   computed: {
     ...mapGetters(['restaurants']),
     
   },
+
   created () {
+    let location = this.$cookies.get("location");
+    if (location) {
+      if (['all', 'solna', 'uppsala'].includes(location)) {
+        if (this.$route.name != location) {
+          this.$router.push({name: location});
+        }
+      }
+    }
+    
     this.$store.dispatch('getRestaurants')
       .then(() => this.loaded = true)
       .catch((err) => this.error = err);
@@ -65,6 +80,12 @@ export default {
     let day = new Date();
     this.today = days[day.getDay()] + ' ' + day.getDate() + ' ' + months[day.getMonth()];
   },
+
+  methods: {
+    saveLocation() {
+      this.$cookies.set("location", this.$route.name, '5y');
+    },
+  }
 }
 </script>
 
