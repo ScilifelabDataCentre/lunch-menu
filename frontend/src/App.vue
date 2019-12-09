@@ -19,12 +19,12 @@
           <hr class="navbar-divider">
           <a class="navbar-item" @click="saveLocation">Remember location</a>
         </div>
-        
       </div>
     </nav>
 
-    <div class="notification is-info" v-if="!loaded && !error">Waiting for data from API...</div>
-    <div class="notification is-danger" v-if="(loaded && restaurants.length === 0) || error">Failed to load data from API: {{ error }}</div>
+    <div v-if="notification" :class="{notification: true, 'is-info': !error, 'is-danger': error}">
+      {{ notification }}
+    </div>
     <router-view></router-view>
     <footer class="footer">
       <div>
@@ -48,8 +48,9 @@ export default {
   data () {
     return {
       loaded: false,
-      error: null,
+      error: false,
       today: null,
+      notification: "Waiting for data from API...",
     }
   },
 
@@ -69,8 +70,11 @@ export default {
     }
     
     this.$store.dispatch('getRestaurants')
-      .then(() => this.loaded = true)
-      .catch((err) => this.error = err);
+      .then(() => this.notification = "")
+      .catch((error) => {
+        this.error = true;
+        this.notification = "Failed to load data from API: " + error;
+      });
 
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = ['January', 'February', 'March',
@@ -84,6 +88,8 @@ export default {
   methods: {
     saveLocation() {
       this.$cookies.set("location", this.$route.name, '5y');
+      this.notification = "Location saved";
+      window.setTimeout(() => this.notification = "", 3000);
     },
   }
 }
