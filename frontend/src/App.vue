@@ -1,6 +1,7 @@
 <template>
-<div id="app">
-  <div v-if="restaurants.length == 0">Waiting for data from API...</div>
+<div id="app" class="container">
+  <div class="notification is-info" v-if="!loaded && !error">Waiting for data from API...</div>
+  <div class="notification is-danger" v-if="(loaded && restaurants.length === 0) || error">Failed to load data from API: {{ error }}</div>
   <router-view></router-view>
   <div class="endnote">Provided by <a href="https://www.scilifelab.se/data/">SciLifeLab Data Centre</a>. Code, issues, and requests for new restaurants at <a href="https://github.com/ScilifelabDataCentre/lunch-menu">Github</a>.
   </div>
@@ -14,15 +15,19 @@ export default {
   name: 'app',
   data () {
     return {
-      active: ['bikupan', 'hjulet']
+      active: ['bikupan', 'hjulet'],
+      loaded: false,
+      error: null,
     }
   },
   computed: {
     ...mapGetters(['restaurants']),
   },
   created () {
-    this.$store.dispatch('getRestaurants');
-  }
+    this.$store.dispatch('getRestaurants')
+      .then(() => this.loaded = true)
+      .catch((err) => this.error = err);
+  },
 }
 </script>
 

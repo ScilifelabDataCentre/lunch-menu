@@ -1,6 +1,6 @@
 <template>
 <div class="restaurant">
-  <div class="title"><a :href="restaurant_info.url">{{ restaurant_info.name }}</a>
+  <div class="title is-5"><a :href="restaurant_info.url">{{ restaurant_info.name }}</a>
     (<a :href="restaurant_info.osm">{{ restaurant_info.campus }}</a>)
   </div>
   <menu-entry v-for="dish in dishes" :key="dish" :dish="dish">

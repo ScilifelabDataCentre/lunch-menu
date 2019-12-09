@@ -14,13 +14,17 @@ const mutations = {
   }
 }
 
-const actions = {
+const actions = {  
   getRestaurants ({ commit }) {
-    axios
-      .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
-      .then((response) => {
-        commit('UPDATE_RESTAURANTS', response.data);
-      });
+    return new Promise((resolve, reject) => {
+      axios
+        .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
+        .then((response) => {
+          commit('UPDATE_RESTAURANTS', response.data);
+          resolve(response);
+        })
+        .catch((error) => reject(error));
+    });
   }
 }
 

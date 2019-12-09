@@ -30,10 +30,12 @@ export default {
   },
   computed: {
     ...mapGetters(['restaurants']),
+    
     sortedSolna () {
       let chosen = this.restaurants.filter((rest) => rest.campus == 'Solna')
       return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
     },
+
     sortedUppsala () {
       let chosen = this.restaurants.filter((rest) => rest.campus == 'Uppsala')
       return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
