@@ -1,13 +1,13 @@
 <template>
 <div id="restaurant-list">
-  <section class="section" id="solna-restaurants" v-if="list_type === 'both' || list_type === 'solna'">
+  <section class="section" id="solna-restaurants" v-if="(list_type === 'both' || list_type === 'solna') && sortedSolna.length > 0">
     <h4 class="title is-4">Solna</h4>
     <restaurant-entry v-for="restaurant in sortedSolna"
                       :key="restaurant.name"
                       :restaurant_info="restaurant">
     </restaurant-entry>
   </section>
-  <section class="section" id="uppsala-restaurants" v-if="list_type === 'both' || list_type === 'uppsala'">
+  <section class="section" id="uppsala-restaurants" v-if="(list_type === 'both' || list_type === 'uppsala') && sortedUppsala.length > 0">
     <h4 class="title is-4">Uppsala(BMC)</h4>
     <restaurant-entry v-for="restaurant in sortedUppsala"
                       :key="restaurant.name"
