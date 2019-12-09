@@ -1,10 +1,38 @@
 <template>
-<div id="app" class="container">
-  <div class="notification is-info" v-if="!loaded && !error">Waiting for data from API...</div>
-  <div class="notification is-danger" v-if="(loaded && restaurants.length === 0) || error">Failed to load data from API: {{ error }}</div>
-  <router-view></router-view>
-  <div class="endnote">Provided by <a href="https://www.scilifelab.se/data/">SciLifeLab Data Centre</a>. Code, issues, and requests for new restaurants at <a href="https://github.com/ScilifelabDataCentre/lunch-menu">Github</a>.
+<div id="app">  
+  <div class="container">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-start">
+        <div class="navbar-item"> 
+          {{today}}
+        </div>
+      </div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Location
+        </a>
+
+        <div class="navbar-dropdown">
+          <router-link to="/" class="navbar-item">All</router-link>
+          <router-link to="/solna" class="navbar-item">Solna</router-link>
+          <router-link to="/bmc" class="navbar-item">Uppsala (BMC)</router-link>
+        </div>
+      </div>
+    +</nav>
+
+    <div class="notification is-info" v-if="!loaded && !error">Waiting for data from API...</div>
+    <div class="notification is-danger" v-if="(loaded && restaurants.length === 0) || error">Failed to load data from API: {{ error }}</div>
+    <router-view></router-view>
+    <footer class="footer">
+      <div>
+        Provided by <a href="https://www.scilifelab.se/data/">SciLifeLab Data Centre</a>
+      </div>.
+      <div>
+        Code, issues, and requests for new restaurants at <a href="https://github.com/ScilifelabDataCentre/lunch-menu">Github</a>
+      </div>
+    </footer>
   </div>
+
 </div>
 </template>
 
@@ -15,9 +43,9 @@ export default {
   name: 'app',
   data () {
     return {
-      active: ['bikupan', 'hjulet'],
       loaded: false,
       error: null,
+      today: null,
     }
   },
   computed: {
@@ -27,21 +55,23 @@ export default {
     this.$store.dispatch('getRestaurants')
       .then(() => this.loaded = true)
       .catch((err) => this.error = err);
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March',
+                    'April', 'May', 'June',
+                    'July', 'August', 'September',
+                    'October', 'November', 'December'];
+    let day = new Date();
+    this.today = days[day.getDay()] + ' ' + day.getDate() + ' ' + months[day.getMonth()];
   },
 }
 </script>
 
 <style>
 #app {
-    height:100%;
-    font-size:14px;
-    font-family:'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
-    margin-top: 50px;
-    letter-spacing: 0.01em;
 }
 
 a {
@@ -60,7 +90,6 @@ a:hover {
     font-size: 10px;
     padding: 25px 0px 0px 0px;
 }
-
 
 #spacer {
     padding: 25px 0px;
