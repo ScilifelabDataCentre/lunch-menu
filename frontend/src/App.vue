@@ -61,7 +61,8 @@ export default {
 
   created () {
     let location = this.$cookies.get("location");
-    if (location) {
+    this.error = location;
+    if (this.$route.path === '/' && location) {
       if (['all', 'solna', 'uppsala'].includes(location)) {
         if (this.$route.name != location) {
           this.$router.push({name: location});
