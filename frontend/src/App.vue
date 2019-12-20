@@ -40,9 +40,7 @@
     </div>
     <router-view></router-view>
     <footer class="footer">
-      <div>
-        Provided by <a href="https://www.scilifelab.se/data/">SciLifeLab Data Centre</a>
-      </div>.
+      <a href="https://www.scilifelab.se/data/"><img :src="require('./assets/img/data-centre-logo.png')" class="logo" /></a>
       <div>
         Code, issues, and requests for new restaurants at <a href="https://github.com/ScilifelabDataCentre/lunch-menu">Github</a>
       </div>
@@ -117,17 +115,9 @@ export default {
     text-align: center;
 }
 
-.endnote {
-    font-size: 10px;
-    padding: 25px 0px 0px 0px;
-}
-
-#spacer {
-    padding: 25px 0px;
-}
-
-#location_divider {
-    width: 120px;
+.logo {
+    padding-bottom: 1em;
+    height: 5em;
 }
 
 </style>
