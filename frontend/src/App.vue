@@ -2,22 +2,35 @@
 <div id="app">  
   <div class="container">
     <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-start">
+      <div class="navbar-brand">
         <div class="navbar-item"> 
           {{today}}
         </div>
-      </div>
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          Location
+        <a role="button"
+           class="navbar-burger"
+           aria-label="menu"
+           aria-expanded="false"
+           @click="showMenu = !showMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </a>
+      </div>
+      <div id="navbarMenu" :class="{'navbar-menu': true, 'is-active': showMenu}">
+        <div class="navbar-end">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Location
+            </a>
 
-        <div class="navbar-dropdown">
-          <router-link :to="{name: 'all'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'all'}">All</router-link>
-          <router-link :to="{name: 'solna'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'solna'}">Solna</router-link>
-          <router-link :to="{name: 'uppsala'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'uppsala'}">Uppsala (BMC)</router-link>
-          <hr class="navbar-divider">
-          <a class="navbar-item" @click="saveLocation">Remember location</a>
+            <div class="navbar-dropdown">
+              <router-link :to="{name: 'all'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'all'}">All</router-link>
+              <router-link :to="{name: 'solna'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'solna'}">Solna</router-link>
+              <router-link :to="{name: 'uppsala'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'uppsala'}">Uppsala (BMC)</router-link>
+              <hr class="navbar-divider">
+              <a class="navbar-item" @click="saveLocation">Remember location</a>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -50,6 +63,7 @@ export default {
       loaded: false,
       error: false,
       today: null,
+      showMenu: false,
       notification: "Waiting for data from API...",
     }
   },
