@@ -1,5 +1,4 @@
 beautifulsoup4
-PyPDF2
 requests
 flask
 flask-caching
