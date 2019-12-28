@@ -35,9 +35,11 @@
       </div>
     </nav>
 
-    <div v-if="notification" :class="{notification: true, 'is-info': !error, 'is-danger': error}">
-      {{ notification }}
-    </div>
+    <transition name="notification-fade">
+      <div v-if="notification" :class="{notification: true, 'is-info': !error, 'is-danger': error}">
+        {{ notification }}
+      </div>
+    </transition>
     <router-view></router-view>
     <footer class="footer">
       <a href="https://www.scilifelab.se/data/"><img :src="require('./assets/img/data-centre-logo.png')" class="logo" /></a>
@@ -73,7 +75,6 @@ export default {
 
   created () {
     let location = this.$cookies.get("location");
-    this.error = location;
     if (this.$route.path === '/' && location) {
       if (['all', 'solna', 'uppsala'].includes(location)) {
         if (this.$route.name != location) {
@@ -118,6 +119,14 @@ export default {
 .logo {
     padding-bottom: 1em;
     height: 5em;
+}
+
+.notification-fade-enter-active, .notification-fade-leave-active {
+    transition: opacity .5s;
+}
+
+.notification-fade-enter, .notification-fade-leave-to {
+    opacity: 0;
 }
 
 </style>
