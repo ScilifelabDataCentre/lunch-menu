@@ -1,0 +1,16 @@
+FROM node:latest as build
+
+COPY . /code
+WORKDIR /code/frontend
+
+RUN npm install -g yarn
+RUN yarn install
+
+CMD ["yarn", "build"]
+
+
+FROM nginx:alpine
+
+COPY --from=build /code/frontend/dist/ /usr/share/nginx/html/
+
+EXPOSE 80
