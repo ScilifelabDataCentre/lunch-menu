@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: menu-deployment
+spec:
+  selector:
+    matchLabels:
+      app: lunch-menu
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: lunch-menu
+    spec:
+      containers:
+      - name: menu-frontend
+        image: talavis/menu-frontend
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 80
+        env:
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: lunch-menu-conf
+              key: api-url
+      - name: menu-backend
+        image: talavis/menu-backend
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 8000
