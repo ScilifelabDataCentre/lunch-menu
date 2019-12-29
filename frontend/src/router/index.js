@@ -5,8 +5,8 @@ import RestaurantList from '../components/RestaurantList.vue'
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  mode: 'hash',
-  base: '/menu/',
+  mode: 'history',
+  base: '/',
   routes: [
     {
       name: 'solna',
