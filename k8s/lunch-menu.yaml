@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: menu-frontend
-        image: talavis/menu-frontend
+        image: scilifelabdatacentre/menu-frontend
         imagePullPolicy: "Always"
         ports:
         - containerPort: 80
@@ -25,7 +25,7 @@ spec:
               name: lunch-menu-conf
               key: api-url
       - name: menu-backend
-        image: talavis/menu-backend
+        image: scilifelabdatacentre/menu-backend
         imagePullPolicy: "Always"
         ports:
         - containerPort: 8000
