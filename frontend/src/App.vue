@@ -40,7 +40,7 @@
         {{ notification }}
       </div>
     </transition>
-    <router-view></router-view>
+    <router-view :restaurants="restaurants"></router-view>
     <footer class="footer">
       <a href="https://www.scilifelab.se/data/"><img :src="require('./assets/img/data-centre-logo.png')" class="logo" /></a>
       <div>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'app',
@@ -65,12 +65,8 @@ export default {
       today: null,
       showMenu: false,
       notification: "Waiting for data from API...",
+      restaurants: [],
     }
-  },
-
-  computed: {
-    ...mapGetters(['restaurants']),
-    
   },
 
   created () {
@@ -82,9 +78,12 @@ export default {
         }
       }
     }
-    
-    this.$store.dispatch('getRestaurants')
-      .then(() => this.notification = "")
+
+    axios
+      .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
+      .then((response) => {
+          this.restaurants = response.data;
+      })
       .catch((error) => {
         this.error = true;
         this.notification = "Failed to load data from API: " + error;

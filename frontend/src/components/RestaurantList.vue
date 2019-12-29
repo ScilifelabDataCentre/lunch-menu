@@ -18,18 +18,18 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
 import RestaurantEntry from './RestaurantEntry.vue'
 
 export default {
   name: 'RestaurantList',
-  props: ['list_type'],
+
+  props: ['list_type', 'restaurants'],
+
   components: {
     'restaurant-entry': RestaurantEntry
   },
+
   computed: {
-    ...mapGetters(['restaurants']),
-    
     sortedSolna () {
       let chosen = this.restaurants.filter((rest) => rest.campus == 'Solna')
       return chosen.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
