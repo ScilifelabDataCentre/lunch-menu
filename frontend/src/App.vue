@@ -22,7 +22,6 @@
             <a class="navbar-link">
               Location
             </a>
-
             <div class="navbar-dropdown">
               <router-link :to="{name: 'all'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'all'}">All</router-link>
               <router-link :to="{name: 'solna'}" :class="{'navbar-item': true, 'is-active':this.$route.name === 'solna'}">Solna</router-link>
@@ -40,7 +39,9 @@
         {{ notification }}
       </div>
     </transition>
+
     <router-view :restaurants="restaurants"></router-view>
+
     <footer class="footer">
       <a href="https://www.scilifelab.se/data/"><img :src="require('./assets/img/data-centre-logo.png')" class="logo" /></a>
       <div>
@@ -60,7 +61,6 @@ export default {
 
   data () {
     return {
-      loaded: false,
       error: false,
       today: null,
       showMenu: false,
@@ -80,9 +80,10 @@ export default {
     }
 
     axios
-      .get('http://scilifelab-lunches.herokuapp.com/api/restaurants')
+      .get(process.env.VUE_APP_API_URL + '/api/restaurants')
       .then((response) => {
-          this.restaurants = response.data;
+        this.restaurants = response.data;
+        this.notification = ""
       })
       .catch((error) => {
         this.error = true;

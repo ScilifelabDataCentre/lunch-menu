@@ -22,7 +22,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://scilifelab-lunches.herokuapp.com/api/restaurant/' +
+      .get(process.env.VUE_APP_API_URL + '/api/restaurant/' +
            this.restaurant_info['identifier'])
       .then(response => (this.dishes = response.data.menu))
   }
