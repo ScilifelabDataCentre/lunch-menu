@@ -298,29 +298,6 @@ def parse_livet(res_data):
 
 
 @restaurant
-def parse_mollan(res_data):
-    '''
-    Parse the menu of Mollan
-    '''
-    data = {'menu': []}
-    soup = get_parser(res_data['menu_url'])
-
-    current_week = False
-    for span in soup.find_all('span'):
-        if span.find(text=re.compile('Vecka.*' + str(get_week()))):
-            current_week = True
-
-    if current_week:
-        days = soup.find_all('ol')
-        today = days[get_weekdigit()]
-        for entry in [fix_bad_symbols(entry.text) for entry in today.find_all('li')]:
-            data['menu'].append(entry)
-
-
-    return data
-
-
-@restaurant
 def parse_nanna(res_data):
     '''
     Parse the menu of Nanna Svartz
