@@ -80,7 +80,7 @@ export default {
     }
 
     axios
-      .get(process.env.VUE_APP_API_URL + '/api/restaurants')
+      .get(process.env.VUE_APP_API_URL + '/restaurants')
       .then((response) => {
         this.restaurants = response.data;
         this.notification = ""
