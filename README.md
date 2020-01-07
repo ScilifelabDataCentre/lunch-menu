@@ -15,8 +15,8 @@ It can be run via flask (`FLASK_APP=flask_app.py flask run`).
 
 ## Supported endpoints in the flask application:
 
-- `/api/restaurants` (json): List all supported restaurants
-- `/api/restaurant/<identifier>` (json): Retrieve menu for a restaurant (identifier can be obtained from the above request).
+- `/restaurants` (json): List all supported restaurants
+- `/restaurant/<identifier>` (json): Retrieve menu for a restaurant (identifier can be obtained from the above request).
 - `/ki` (html): Menu page for restaurants in Solna (KI)
 - `/uu` (html): Menu page for restaurants in Uppsala (BMC)
 
@@ -24,6 +24,11 @@ It can be run via flask (`FLASK_APP=flask_app.py flask run`).
 
 - [Flask app](http://scilifelab-lunches.herokuapp.com/)
 - [Vue frontend](http://talavis.eu/menu/)
+
+## Containers:
+
+- [Backend](https://hub.docker.com/repository/docker/scilifelabdatacentre/menu-backend)
+- [Frontend hosted in nginx](https://hub.docker.com/repository/docker/scilifelabdatacentre/menu-frontend)
 
 ## Feedback
 Bugs and requests for new restaurants or features should be submitted as issues.
