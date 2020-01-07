@@ -103,7 +103,7 @@ export default {
     saveLocation() {
       this.$cookies.set("location", this.$route.name, '5y');
       this.notification = "Location saved";
-      window.setTimeout(() => this.notification = "", 3000);
+      window.setTimeout(() => this.notification = "", 2000);
     },
   }
 }
