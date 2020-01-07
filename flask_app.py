@@ -7,7 +7,7 @@ import main
 
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def display_available():
@@ -23,13 +23,13 @@ def display_available():
     return content
 
 
-@app.route('/api/restaurants')
+@app.route('/restaurants')
 @cache.cached(timeout=3600)
 def api_list_restaurants():
     return jsonify(main.list_restaurants())
 
 
-@app.route('/api/restaurant/<name>')
+@app.route('/restaurant/<name>')
 @cache.cached(timeout=3600)
 def api_get_restaurant(name):
     data = main.get_restaurant(name)
