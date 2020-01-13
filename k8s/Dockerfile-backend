@@ -1,4 +1,4 @@
-FROM python:latest as build
+FROM python:alpine as build
 
 RUN mkdir /code
 COPY ./*.py /code/
