@@ -38,7 +38,7 @@ import requests
 import requests_cache
 import json
 
-import parser as ps
+import lunch_menu.parser as ps
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 REST_FILENAME = os.path.join(__location__, 'restaurants.txt')
@@ -198,11 +198,6 @@ def gen_uu_menu():
     Generate a menu for restaurants at UU
     '''
     return gen_menu(UU, REST_DATA)
-
-
-SLACK_HELP = '''Send to a particular slack channel instead of writing to stdout.
-  You must also set the environment variable LUNCH_MENU_SLACK_WEBHOOK.
-
 
 
 @click.command()

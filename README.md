@@ -3,9 +3,21 @@ lunch-parser
 
 Parser for the menus of the restaurants near Campus Solna of Karolinska Institutet and BMC of Uppsala University.
 
+## Installing
+
+In a python3+ environment, run:
+
+```
+pip install -e .
+```
+
 ## Using the python backend
 
-Usage: `python3 main.py restaurant_name > index.html`
+Usage:
+
+```
+lunch-menu restaurant_name > index.html
+```
 
 The supported restaurants are also listed when you run main.py without any arguments.
 
@@ -38,7 +50,7 @@ Then run e.g. as a cron job:
 
 ```
 export LUNCH_MENU_SLACK_WEBHOOK=https://hooks.slack.com/services/A_VERY_SECRET_KEY
-python % --slack-channel food uu
+lunch-menu --slack-channel food uu
 ```
 
 ## Feedback
