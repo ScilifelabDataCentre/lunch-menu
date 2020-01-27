@@ -28,5 +28,18 @@ It can be run via flask (`FLASK_APP=flask_app.py flask run`).
 - [Backend](https://hub.docker.com/repository/docker/scilifelabdatacentre/menu-backend)
 - [Frontend hosted in nginx](https://hub.docker.com/repository/docker/scilifelabdatacentre/menu-frontend)
 
+## Slack integration:
+
+Set up an incoming webhook for Slack:
+
+https://slack.com/intl/en-se/help/articles/115005265063-Incoming-WebHooks-for-Slack
+
+Then run e.g. as a cron job:
+
+```
+export LUNCH_MENU_SLACK_WEBHOOK=https://hooks.slack.com/services/A_VERY_SECRET_KEY
+python % --slack-channel food uu
+```
+
 ## Feedback
 Bugs and requests for new restaurants or features should be submitted as issues.

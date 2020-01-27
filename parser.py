@@ -208,6 +208,8 @@ def parse_dufva(res_data):
     dag = get_weekday()
     started = False
     for line in menu_data:
+        if line.strip() == "Vi har alltid veckans sallad, paj och soppa":
+            continue
         if not line:
             continue
         if line.lower() == dag:

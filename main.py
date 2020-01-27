@@ -31,8 +31,12 @@
 Main script for choosing what restaurant parsers to use
 '''
 
+import click
 import os
 import sys
+import requests
+import requests_cache
+import json
 
 import parser as ps
 
@@ -72,29 +76,47 @@ KI = ('jorpes', 'glada', 'haga', 'hjulet', 'jons',
 
 UU = ('bikupan', 'dufva', 'hubben', 'rudbeck', 'tallrik')
 
+ALL = KI + UU
 
-def activate_parsers(restaurants, restaurant_data):
+
+def build_output(data, fmt):
+    output = list()
+    if fmt == 'html':
+        output.append(f'''<div class="title"><a href="{data['url']}">{data['title']}</a>''')
+        output.append(f'''(<a href="{data['map_url']}">{data['location']}</a>)</div>''')
+        output.append('<div class="menu">')
+        output.append('<p>')
+        output.append('<br />\n'.join(data['menu']))
+        output.append('</p>')
+        output.append('</div>')
+    elif fmt == 'markdown':
+        # Simple markdown like format, for example slack or a terminal:
+        output.append(f'*{data["title"]}*')
+        for menu in data['menu']:
+            output.append('> {}'.format(menu))
+    else:
+        raise NotImplementedError(fmt)
+    return '\n'.join(output)
+
+
+def activate_parsers(restaurants, restaurant_data, fmt='html'):
     '''
     Run the wanted parsers
     '''
     output = []
     for restaurant in restaurants:
-        data = MAPPER[restaurant](restaurant_data[restaurant])
-        output.append(f'''<div class="title"><a href="{data['url']}">{data['title']}</a>''')
-        output.append(f'''(<a href="{data['map_url']}">{data['location']}</a>)</div>''')
-        if 'menu' in data:
-            output.append('<div class="menu">')
-            output.append('<p>')
-            output.append('<br />\n'.join(data['menu']))
-            output.append('</p>')
-        output.append('</div>')
-    return '\n'.join(output)
+        try:
+            data = MAPPER[restaurant](restaurant_data[restaurant])
+        except Exception as err:
+            sys.stderr.write(f'E in {restaurant}: {err}\n')
+        output.append(build_output(data, fmt))
+    return output
 
 
 def get_restaurant(name: str) -> dict:
-    """
+    '''
     Request the menu of a restaurant
-    """
+    '''
     if name in MAPPER:
         return MAPPER[name](REST_DATA[name])
     else:
@@ -145,59 +167,68 @@ def parse_restaurant_names(rest_names):
     '''
     restaurants = list()
     for param in rest_names:
-        if param not in KI and param not in UU:
+        if param not in ALL:
             raise ValueError('{} not a valid restaurant'.format(param))
         restaurants.append(param.lower())
     return restaurants
 
+def gen_menu(restaurants, restaurant_data, fmt):
+    data = activate_parsers(restaurants, restaurant_data, fmt)
 
-def print_usage(supported):
-    '''
-    Print description of syntax
-    '''
-    sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
-    sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
-    sys.stderr.write('Write all to generate all supported restaurants\n')
+    output = list()
+    if fmt == 'html':
+        output.extend(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
+        output.extend(data)
+        output.extend(page_end())
+    else:
+        output.extend(data)
+    return '\n'.join(output)
+
 
 
 def gen_ki_menu():
     '''
     Generate a menu for restaurants at KI
     '''
-    output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(KI, REST_DATA)
-    output += '\n'.join(page_end())
-    return output
+    return gen_menu(KI, REST_DATA)
 
 
 def gen_uu_menu():
     '''
     Generate a menu for restaurants at UU
     '''
-    output = ''
-    output += '\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(UU, REST_DATA)
-    output += '\n'.join(page_end())
-
-    sys.stderr.write(output + '\n')
-    return output
+    return gen_menu(UU, REST_DATA)
 
 
-if __name__ == '__main__':
-    if len(sys.argv) < 2 or '-h' in sys.argv:
-        print_usage(KI + UU)
-        sys.exit()
+SLACK_HELP = '''Send to a particular slack channel instead of writing to stdout.
+  You must also set the environment variable LUNCH_MENU_SLACK_WEBHOOK.
+
+
+
+@click.command()
+@click.option('--cache/--no-cache', default=False, help='Cache web request for debugging')
+@click.option('--slack-channel', help='Sends the data to the specified channel')
+@click.option('--slack-user', help='Slack user that posts the message', default='lunchbot')
+@click.option('--slack-emoji', help='Emoji for the post', default=':croissant:')
+@click.option('--fmt', default='html', type=click.Choice(('html', 'markdown')), help='The format of the output')
+@click.argument('restaurants', nargs=-1, type=click.Choice(('all', 'ki', 'uu') + ALL))
+def main(restaurants, cache, slack_channel, slack_user, slack_emoji, fmt):
+    '''Generates a report for the selected restaurant(s)'''
+
+    if cache:
+        # Caches all web requests in the file demo_cache. Just for testing.
+        requests_cache.install_cache('.devcache')
 
     REST_NAMES_IN = tuple()
-    if 'all' in sys.argv[1:]:
-        REST_NAMES_IN += KI + UU
-    elif 'ki'in sys.argv[1:]:
+    if 'all' in restaurants:
+        REST_NAMES_IN += ALL
+    elif 'ki' in restaurants:
         REST_NAMES_IN += KI
-    elif 'uu'in sys.argv[1:]:
+    elif 'uu' in restaurants:
         REST_NAMES_IN += UU
     else:
-        REST_NAMES_IN = [param for param in sys.argv[1:] if param != '-r']
+        # NOTE: There was some undocumented -r flag here
+        REST_NAMES_IN = restaurants
 
     try:
         REST_NAMES = parse_restaurant_names(REST_NAMES_IN)
@@ -206,7 +237,26 @@ if __name__ == '__main__':
         print_usage((x for x in MAPPER))
         sys.exit(1)
 
-    # print the menus
-    print('\n'.join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
-    print(activate_parsers(REST_NAMES, REST_DATA))
-    print('\n'.join(page_end()))
+    if slack_channel:
+        fmt = 'markdown'
+
+    menu = gen_menu(REST_NAMES, REST_DATA, fmt)
+
+    if slack_channel:
+        if slack_channel.startswith('#'):
+            slack_channel = '#' + slack_channel
+        URL = os.environ['LUNCH_MENU_SLACK_WEBHOOK']
+        post_payload = {'channel': slack_channel,
+                        'username': slack_user,
+                        'icon_emoji': slack_emoji,
+                        'text': menu}
+        post_response = requests.post(URL, data=json.dumps(post_payload))
+        print('Response[{}]: {}'.format(post_response.status_code, post_response.text))
+    else:
+        print(menu)
+
+
+
+if __name__ == '__main__':
+    main()
+

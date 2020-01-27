@@ -1,5 +1,7 @@
 beautifulsoup4
 requests
+requests-cache
 flask
 flask-caching
 flask-cors
+click
