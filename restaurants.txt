@@ -5,7 +5,7 @@ Solna	hjulet	Restaurang Hjulet	http://www.restauranghjulet.se	http://www.restaur
 Solna	jons	Jöns Jacob 	http://gastrogate.com/restaurang/jonsjacob/	https://jonsjacob.gastrogate.com/lunch/	https://www.openstreetmap.org/#map=19/59.34673/18.02465
 Solna	jorpes	Café Erik Jorpes	https://restaurang-ns.ki.se/cafe-erik-jorpes/	https://restaurang-ns.ki.se/cafe-erik-jorpes/	https://www.openstreetmap.org/#map=19/59.34851/18.02721
 Solna	livet	Livet [Restaurant]	https://www.livetbrand.com/har-finns-livet/stockholm-solna/livet-restaurant-solna/	https://www.livetbrand.com/har-finns-livet/stockholm-solna/livet-restaurant-solna/	https://www.openstreetmap.org/#map=19/59.34853/18.02989
-Solna	svarta	Svarta Räfven	http://restaurang-ns.com/svarta-rafven/	http://restaurang-ns.com/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804
+Solna	svarta	Svarta Räfven	https://restaurang-ns.ki.se/svarta-rafven/	https://restaurang-ns.ki.se/svarta-rafven/	https://www.openstreetmap.org/#map=19/59.34851/18.02804
 Solna	nanna	Restaurang Nanna Svartz	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	http://restaurang-ns.ki.se/restaurang-nanna-svartz/	https://www.openstreetmap.org/#map=19/59.34848/18.02807
 Uppsala	bikupan	Restaurang Bikupan	http://www.hors.se/restaurang/restaurang-bikupan/	http://www.hors.se/restaurang/restaurang-bikupan/	https://www.openstreetmap.org/#map=18/59.84186/17.63407
 Uppsala	dufva	Sven Dufva	http://svendufva.se/	http://svendufva.se/#lunch	https://www.openstreetmap.org/#map=19/59.84298/17.64096
