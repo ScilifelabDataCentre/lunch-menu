@@ -286,9 +286,7 @@ def parse_livet(res_data):
             if text:
                 data['menu'].append(text)
             continue
-        if par.find(text=re.compile(get_weekday().capitalize() +
-                                    '.*' +
-                                    str(get_day()))):
+        if par.find(text=re.compile(get_weekday().capitalize())):
             started = True
 
     return data
