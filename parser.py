@@ -253,10 +253,7 @@ def parse_jons(res_data):
     days = soup.find('table', {'class':'table lunch_menu animation'})
     day = days.find('tbody', {'class':'lunch-day-content'})
     dishes = day.find_all('td', {'class':'td_title'})
-    for dish in dishes:
-        dish_data = ' '.join([text for text in dish.get_text().strip().split('\n')[1:] if text])
-        if dish_data:
-            data['menu'].append(dish_data)
+    data['menu'] += [dish.text.strip() for dish in dishes if dish.text.strip()]
 
     return data
 
