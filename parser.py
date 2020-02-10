@@ -300,27 +300,33 @@ def parse_nanna(res_data):
     data = {'menu': []}
     soup = get_parser(res_data['menu_url'])
 
+    menu_part = soup.find_all('div', {'class': 'entry-content'})[0]
+
     current_week = False
-    for tag in soup.find_all('strong'):
+    for tag in menu_part.find_all('strong'):
         if tag.find(text=re.compile(r'MATSEDEL V\.' + str(get_week()))):
             current_week = True
+            break
 
     if current_week:
         started = False
-        for par in soup.find_all('p'):
+        dishes = []
+        for par in menu_part.find_all(('li', 'strong')):
             if started:
                 if (par.find(text=re.compile(get_weekday(tomorrow=True).capitalize())) or
                     par.find(text=re.compile(r'^Priser'))):
                     break
-                dish_parts = [text for text in par.text.replace('\xa0', '').strip().split(' ')
-                              if text]
-                if dish_parts and dish_parts[0] in ('Vegetarisk', 'Kött', 'Sallad', 'Fisk'):
-                    dish_text = ' '.join(dish_parts[1:])
-                    if dish_text:
-                        data['menu'].append(dish_text)
+                # Since they mess up the page now and then,
+                # day may show up twice because it is both <li> and <strong>
+                if par.find(text=re.compile(get_weekday().capitalize())):
+                    continue
+                dish_text = par.text.replace('\xa0', '')
+                if dish_text:
+                    dishes.append(dish_text)
             if par.find(text=re.compile(get_weekday().capitalize())):
                 started = True
 
+        data['menu'] = dishes[::2]  # get rid of entries in English
     return data
 
 
