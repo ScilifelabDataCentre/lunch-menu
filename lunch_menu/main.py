@@ -107,9 +107,9 @@ def activate_parsers(restaurants, restaurant_data, fmt='html'):
     for restaurant in restaurants:
         try:
             data = MAPPER[restaurant](restaurant_data[restaurant])
+            output.append(build_output(data, fmt))
         except Exception as err:
-            sys.stderr.write(f'E in {restaurant}: {err}\n')
-        output.append(build_output(data, fmt))
+            output.append(f'E in {restaurant}: {err}\n')
     return output
 
 
