@@ -31,6 +31,7 @@
 Parsers of the menu pages for the restaurants at Karolinska Institutet
 '''
 
+import datetime
 from datetime import date
 import re
 
@@ -153,11 +154,25 @@ def parse_bikupan(res_data: dict) -> dict:
     '''
     Parse the menu of Restaurang Bikupan
     '''
+
+    def find_todays_menu(week):
+        today = datetime.datetime.today()
+        today = (today.month, today.day)
+        for day_menu in week:
+            # We expect day to contain text similar to `Måndag 10/2`
+            date = day_menu.find("h6").text.split(" ")[1]
+            day, month = date.split("/")
+            if (int(month), int(day)) == today:
+                return day_menu.find_all("p")
+        raise Exception("Can't find today's menu")
+
     data = {'menu': []}
     soup = get_parser(res_data['menu_url'])
-    relevant = soup.find("div", {"class": "col-md-3 hors-menu text-center"})
-    dishes = relevant.find_all("div", {"class": "col-xs-10 text-left"})
-    for dish in dishes:
+    relevant = soup.find("div", {"class": "menu-container"})
+    week = relevant.find_all("div", {"class": "menu-item"})
+    menu = find_todays_menu(week)
+
+    for dish in menu:
         data['menu'].append(dish.get_text().strip().replace('\n', ' '))
     return data
 
