@@ -34,6 +34,7 @@ Parsers of the menu pages for the restaurants at Karolinska Institutet
 import datetime
 from datetime import date
 import re
+import sys
 
 import requests
 from bs4 import BeautifulSoup
@@ -48,7 +49,11 @@ def restaurant(func):
                 'location': res_data['campus'],
                 'url': res_data['url'],
                 'map_url': res_data['osm']}
-        data.update(func(res_data))
+        try:
+            data.update(func(res_data))
+        except Exception as err:
+            sys.stderr.write(f'E in {func.__name__}: {err}\n')
+            pass
         return data
     helper.__name__ = func.__name__
     helper.__doc__ = func.__doc__

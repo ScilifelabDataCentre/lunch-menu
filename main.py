@@ -78,16 +78,14 @@ def activate_parsers(restaurants, restaurant_data):
     '''
     output = []
     for restaurant in restaurants:
-        try:
-            data = MAPPER[restaurant](restaurant_data[restaurant])
-        except Exception as err:
-            sys.stderr.write(f'E in {restaurant}: {err}\n')
+        data = MAPPER[restaurant](restaurant_data[restaurant])
         output.append(f'''<div class="title"><a href="{data['url']}">{data['title']}</a>''')
         output.append(f'''(<a href="{data['map_url']}">{data['location']}</a>)</div>''')
-        output.append('<div class="menu">')
-        output.append('<p>')
-        output.append('<br />\n'.join(data['menu']))
-        output.append('</p>')
+        if 'menu' in data:
+            output.append('<div class="menu">')
+            output.append('<p>')
+            output.append('<br />\n'.join(data['menu']))
+            output.append('</p>')
         output.append('</div>')
     return '\n'.join(output)
 
