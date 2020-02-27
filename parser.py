@@ -38,6 +38,7 @@ import sys
 
 import requests
 from bs4 import BeautifulSoup
+from collections import defaultdict
 
 
 def restaurant(func):
@@ -160,25 +161,37 @@ def parse_bikupan(res_data: dict) -> dict:
     Parse the menu of Restaurang Bikupan
     '''
 
-    def find_todays_menu(week):
+    def fmt_paragraph(p):
+        return p.get_text().strip().replace('\n', ' ')
+
+    def find_todays_menu(menus):
         today = datetime.datetime.today()
         today = (today.month, today.day)
-        for day_menu in week:
+        for day_menu in menus:
             # We expect day to contain text similar to `Måndag 10/2`
-            date = day_menu.find("h6").text.split(" ")[1]
-            day, month = date.split("/")
+            date = day_menu.find('h6').text.split(' ')[1]
+            day, month = date.split('/')
             if (int(month), int(day)) == today:
-                return day_menu.find_all("p")
+                menu = list()
+                # Bikupan has both English and Swedish, we are only showing Swedish:
+                courses = defaultdict(list)
+                for p in day_menu.find_all('p'):
+                    if 'class' in p.attrs and p['class'][0] == 'eng-meny':
+                        courses['english'].append(p)
+                    else:
+                        courses['swedish'].append(p)
+                for sv in courses['swedish']:
+                    menu.append(fmt_paragraph(sv))
+                return menu
         raise Exception("Can't find today's menu")
 
     data = {'menu': []}
     soup = get_parser(res_data['menu_url'])
-    relevant = soup.find("div", {"class": "menu-container"})
-    week = relevant.find_all("div", {"class": "menu-item"})
-    menu = find_todays_menu(week)
+    menus = soup.find_all('div', {'class': 'menu-item'})
+    menu = list(find_todays_menu(menus))
 
-    for dish in menu:
-        data['menu'].append(dish.get_text().strip().replace('\n', ' '))
+    for course in menu:
+        data['menu'].append(course)
     return data
 
 
