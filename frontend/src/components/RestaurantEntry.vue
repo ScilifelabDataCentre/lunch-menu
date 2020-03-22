@@ -3,8 +3,8 @@
   <div class="title is-5"><a :href="restaurant_info.url">{{ restaurant_info.name }}</a>
     (<a :href="restaurant_info.osm">map</a>)
   </div>
-  <div v-for="dish in dishes" :key="dish">
-    {{ dish }}
+  <div v-for="entry in dishes" :key="entry">
+    {{ entry.dish }}
   </div>
 </div>
 </template>
@@ -24,9 +24,8 @@ export default {
     axios
       .get(process.env.VUE_APP_API_URL + '/restaurant/' +
            this.restaurant_info['identifier'])
-      .then(response => (this.dishes = response.data.menu))
+      .then(response => (this.dishes = response.data.restaurant.menu))
   }
-
 }
 </script>
 
