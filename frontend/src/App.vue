@@ -43,7 +43,7 @@
     <router-view :restaurants="restaurants"></router-view>
 
     <footer class="footer">
-      <a href="https://www.scilifelab.se/data/"><img :src="require('./assets/img/data-centre-logo.png')" class="logo" /></a>
+      <a href="https://www.scilifelab.se/data/"><img :src="require('./assets/img/data-centre-logo.svg')" class="logo" /></a>
       <div>
         Code, issues, and requests for new restaurants at <a href="https://github.com/ScilifelabDataCentre/lunch-menu">Github</a>
       </div>
