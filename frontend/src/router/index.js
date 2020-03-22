@@ -27,7 +27,7 @@ const router = new VueRouter({
       path: '/',
       component: RestaurantList,
       props: { list_type: 'both' },
-      alias: ['*']
+      alias: ['all']
     },
   ]
 });
