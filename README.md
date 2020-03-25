@@ -15,15 +15,13 @@ It can be run via flask (`FLASK_APP=flask_app.py flask run`).
 
 ## Supported endpoints in the flask application:
 
-- `/restaurants` (json): List all supported restaurants
-- `/restaurant/<identifier>` (json): Retrieve menu for a restaurant (identifier can be obtained from the above request).
-- `/ki` (html): Menu page for restaurants in Solna (KI)
-- `/uu` (html): Menu page for restaurants in Uppsala (BMC)
+- `/restaurant/` (json): List all supported restaurants
+- `/restaurant/<identifier>/` (json): Retrieve menu for a restaurant (identifier can be obtained from the above request).
 
 ## Hosted versions:
 
-- [Flask app](http://scilifelab-lunches.herokuapp.com/)
-- [Vue frontend](http://talavis.eu/menu/)
+- [Flask app](https://menu.dckube.scilifelab.se/api/
+- [Vue frontend](https://menu.dckube.scilifelab.se/)
 
 ## Containers:
 
