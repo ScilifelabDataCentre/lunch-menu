@@ -20,7 +20,7 @@ It can be run via flask (`FLASK_APP=flask_app.py flask run`).
 
 ## Hosted versions:
 
-- [Flask app](https://menu.dckube.scilifelab.se/api/
+- [Flask app](https://menu.dckube.scilifelab.se/api/)
 - [Vue frontend](https://menu.dckube.scilifelab.se/)
 
 ## Containers:
