@@ -11,3 +11,4 @@ Uppsala	bikupan	Restaurang Bikupan	http://www.hors.se/restaurang/restaurang-biku
 Uppsala	dufva	Sven Dufva	http://svendufva.se/	http://svendufva.se/#lunch	https://www.openstreetmap.org/#map=19/59.84298/17.64096
 Uppsala	hubben	Restaurang Hubben	https://vasakronan.foodbycoor.se/hubben	https://vasakronan.foodbycoor.se/hubben/restaurangen/restaurangens-meny	https://www.openstreetmap.org/#map=18/59.84334/17.64074
 Uppsala	rudbeck	Bistro Rudbeck	https://www.compass-group.se/MatDryck/Restauranger/uppsala/bistro-rudbeck/	https://eurest.mashie.com/public/menu/restaurang+kannan/cb061efe?country=se	https://www.openstreetmap.org/#map=19/59.84518/17.63968
+Uppsala	tallrik	Tallriket	https://www.compass-group.se/MatDryck/Restauranger/uppsala/tallriket/	https://eurest.mashie.com/public/menu/viktoria+hotell+och+konferens/cdbcb148?country=se	https://www.openstreetmap.org/#map=19/59.84248/17.64046

@@ -386,3 +386,20 @@ def parse_svarta(res_data):
     Parse the menu of Svarta Räfven
     '''
     return {'menu': []}
+
+
+@restaurant
+def parse_tallrik(res_data):
+    '''
+    Parse the menu of Tallriket
+    '''
+    data = {'menu': []}
+    soup = get_parser(res_data['menu_url'])
+
+    days = soup.find_all('div', {'class':'container-fluid no-print'})
+    day = days[get_weekdigit()]
+    dishes = day.find_all('span')[3:]
+    for dish in [x for x in dishes if x.get_text().strip() != '']:
+        data['menu'].append(dish.get_text().strip())
+
+    return data
