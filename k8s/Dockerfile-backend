@@ -9,6 +9,6 @@ WORKDIR /code
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
 
-CMD ["gunicorn", "-w", "3", "-k", "gthread", "--bind", "0.0.0.0:8000", "flask_app:app"]
+CMD ["gunicorn", "-w", "3", "-k", "gthread", "--bind", "0.0.0.0:8000", "flask_app:app", "--access-logfile", "-"]
 
 EXPOSE 8000
