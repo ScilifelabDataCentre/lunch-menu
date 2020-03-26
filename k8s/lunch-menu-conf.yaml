@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: lunch-menu-conf
-data:
-  api-url: http://192.168.39.87/api
