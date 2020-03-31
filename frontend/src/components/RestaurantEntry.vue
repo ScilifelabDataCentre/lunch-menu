@@ -1,7 +1,7 @@
 <template>
 <div class="restaurant">
   <div class="title is-5"><a :href="restaurant_info.url">{{ restaurant_info.name }}</a>
-    (<a :href="restaurant_info.osm">map</a>)
+    <a :href="restaurant_info.osm"><img :src="require('../assets/img/map-marker.svg')" class="map"/></a>
   </div>
   <div v-for="entry in dishes" :key="entry">
     {{ entry.dish }}
@@ -33,4 +33,9 @@ export default {
 .restaurant {
     Margin: 10px 0px 10px 0px;
 }
+.map {
+    height: 1em;
+    padding: 0.1em 0em 0em 0.15em;
+}
+
 </style>
