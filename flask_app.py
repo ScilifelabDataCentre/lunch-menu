@@ -9,19 +9,19 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 
-@app.route('/')
+@app.route('/api/')
 @cache.cached(timeout=3600)
 def nbis_list_entities():
     return jsonify({'entities': ['restaurant']})
 
 
-@app.route('/restaurant/')
+@app.route('/api/restaurant/')
 @cache.cached(timeout=3600)
 def nbis_api_list_restaurants():
     return jsonify({'restaurants': main.list_restaurants()})
 
 
-@app.route('/restaurant/<name>/')
+@app.route('/api/restaurant/<name>/')
 @cache.cached(timeout=3600)
 def nbis_api_get_restaurant(name):
     data = main.get_restaurant(name)
