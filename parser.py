@@ -54,6 +54,7 @@ def restaurant(func):
             data.update(func(res_data))
         except Exception as err:
             sys.stderr.write(f'E in {func.__name__}: {err}\n')
+            data.update({'menu': []})
             pass
         return data
     helper.__name__ = func.__name__
