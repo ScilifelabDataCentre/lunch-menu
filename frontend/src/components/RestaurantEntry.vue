@@ -11,19 +11,24 @@
                  type="a"
                  :href="restaurantBase.menu_url"
                  :label="restaurantBase.name" />
+
+	  <q-space />
+
           <q-btn flat
+		 dense
                  round
                  text-color="secondary"
                  icon="location_on"
                  type="a"
                  :href="restaurantBase.osm"/>
-        <q-space />
-        <q-btn @click="setFavourite"
-               flat
-               round
-               color="white"
-               text-color="red"
-               :icon="isFavourite ? 'favorite' : 'favorite_border'" />
+
+          <q-btn @click="setFavourite"
+		 flat
+		 dense
+		 round
+		 color="white"
+		 text-color="red"
+		 :icon="isFavourite ? 'favorite' : 'favorite_border'" />
         </div>
         <div v-if="loading"
              class="flex justify-center">
