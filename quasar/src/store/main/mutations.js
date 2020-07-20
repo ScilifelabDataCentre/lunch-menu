@@ -20,15 +20,16 @@ export function updateOnlyFavourites (state, payload) {
 
 // expects payload to be {'restaurant': name, 'favourite': state}
 export function updateFavourite (state, payload) {
-  let index = state.favourites.index(payload['restaurant']);
-  if (!payload[favourite]) {
-    if (index > -1) {
-      state.favourites.splice(index);
+  let index = state.favourites.indexOf(payload.restaurant);
+  console.log(index);
+  if (payload.favourite) {
+    if (index === -1) {
+      state.favourites.push(payload.restaurant);
     }
   }
   else {
     if (index > -1) {
-      state.favourites.push(payload['restaurant']);
+      state.favourites.splice(index);
     }
   }
 }
