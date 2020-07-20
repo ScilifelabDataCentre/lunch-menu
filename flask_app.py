@@ -11,19 +11,19 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/api/')
 @cache.cached(timeout=3600)
-def nbis_list_entities():
+def list_entities():
     return jsonify({'entities': ['restaurant']})
 
 
 @app.route('/api/restaurant/')
 @cache.cached(timeout=3600)
-def nbis_api_list_restaurants():
-    return jsonify({'restaurants': main.list_restaurants()})
+def list_restaurants():
+    return jsonify({'restaurants': [entry['identifier'] for entry in main.list_restaurants()]})
 
 
 @app.route('/api/restaurant/<name>/')
 @cache.cached(timeout=3600)
-def nbis_api_get_restaurant(name):
+def get_restaurant(name):
     data = main.get_restaurant(name)
     if not data:
         abort(status=404)
