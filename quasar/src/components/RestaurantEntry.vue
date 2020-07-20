@@ -2,11 +2,7 @@
 <q-item>
   <q-item-section>
     <q-card>
-      <q-card-section v-if="failed">
-        <q-avatar text-color="negative" icon="error" />
-        Failed to retrieve data for {{ restaurantData }}
-      </q-card-section>
-      <q-card-section v-else>
+      <q-card-section>
         <div class="row">
           <q-btn flat
                  dense
@@ -35,6 +31,11 @@
             color="primary"
             size="2em"
             />
+        </div>
+        <div v-else-if="failed"
+             class="justify-center">
+          <q-avatar text-color="negative" icon="error" />
+          Failed to retrieve data for {{ restaurantBase.name }}
         </div>
         <q-list v-else>
           <q-item
@@ -101,7 +102,7 @@ export default {
     }
   },
   
-  mounted () {
+  created () {
     this.isFavourite = this.favourites.includes(this.restaurantBase.identifier);
     this.$store.dispatch('main/getRestaurant', this.restaurantBase.identifier)
       .then((response) => {
