@@ -1,14 +1,16 @@
 <template>
 <q-layout view="lHh Lpr lFf">
-    <div class="q-pa-md">
-      <div class="row no-wrap shadow-1">
-        <q-toolbar class="bg-grey-3">
-          {{ today }}
-          <q-space />
+  <q-header elevated>
+    <q-toolbar class="bg-grey-2">
+      <span class="text-primary">
+        {{ today }}
+      </span>
+      <q-space />
           <q-btn-dropdown dense
                           flat
                           no-wrap
                           no-caps
+			  text-color="secondary"
                           icon="location_on"
                           class="q-ml-sm pull-right">
             <q-list>
@@ -16,13 +18,13 @@
                 <q-item-section avatar>
                   <q-btn round
                          :icon="showSolna ? 'location_on' : 'location_off'"
-                         :color="showSolna ? 'secondary' : 'grey-3'"
+                         :color="showSolna ? 'positive' : 'grey-2'"
                          :text-color="showSolna ? 'white' : 'black'"
                          @click="showSolna = !showSolna" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>Solna</q-item-label>
-                  <q-item-label caption>Karolinska Institutet</q-item-label>
+                  <q-item-label caption>Show restaurants at KI Solna</q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -30,13 +32,13 @@
                 <q-item-section avatar>
                   <q-btn round
                          :icon="showUppsala ? 'location_on' : 'location_off'"
-                         :color="showUppsala ? 'secondary' : 'grey-3'"
+                         :color="showUppsala ? 'positive' : 'grey-2'"
                          :text-color="showUppsala ? 'white' : 'black'"
                          @click="showUppsala = !showUppsala" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>Uppsala</q-item-label>
-                  <q-item-label caption>Biomedicinskt centrum</q-item-label>
+                  <q-item-label caption>Show restaurants at BMC</q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -45,13 +47,13 @@
               <q-item>
                 <q-item-section avatar>
                   <q-btn round
-                         :icon="onlyFavourites ? 'location_on' : 'location_off'"
-                         :color="onlyFavourites ? 'secondary' : 'grey-3'"
+                         :icon="onlyFavourites ? 'favorite' : 'favorite_border'"
+                         :color="onlyFavourites ? 'positive' : 'grey-2'"
                          :text-color="onlyFavourites ? 'white' : 'black'"
                          @click="onlyFavourites = !onlyFavourites" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>Only favourites</q-item-label>
+                  <q-item-label>Favourites Only</q-item-label>
                   <q-item-label caption>Show only favourited restaurants</q-item-label>
                 </q-item-section>
               </q-item>
@@ -72,13 +74,11 @@
             href="https://www.scilifelab.se/data/"
             />
         </q-toolbar>
-      </div>
-    </div>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+  </q-header>
+  <q-page-container>
+    <router-view />
+  </q-page-container>
+</q-layout>
 </template>
 
 <script>
