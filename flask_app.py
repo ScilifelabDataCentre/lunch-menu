@@ -18,7 +18,7 @@ def list_entities():
 @app.route('/api/restaurant/')
 @cache.cached(timeout=3600)
 def list_restaurants():
-    return jsonify({'restaurants': [entry['identifier'] for entry in main.list_restaurants()]})
+    return jsonify({'restaurants': main.list_restaurants()})
 
 
 @app.route('/api/restaurant/<name>/')
