@@ -155,7 +155,7 @@ def print_usage(supported):
     '''
     Print description of syntax
     '''
-    sys.stderr.write('Usage: {} restaurant1 [restaurant2] \n'.format(sys.argv[0]))
+    sys.stderr.write('Usage: {} restaurant1 [...] \n'.format(sys.argv[0]))
     sys.stderr.write('Supported restaurants: {}\n'.format(', '.join(sorted(supported))))
     sys.stderr.write('Write all to generate all supported restaurants\n')
 
