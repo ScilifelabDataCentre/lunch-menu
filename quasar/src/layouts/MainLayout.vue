@@ -1,0 +1,135 @@
+<template>
+<q-layout view="lHh Lpr lFf">
+    <div class="q-pa-md">
+      <div class="row no-wrap shadow-1">
+        <q-toolbar class="bg-grey-3">
+          {{ today }}
+          <q-space />
+          <q-btn-dropdown dense
+                          flat
+                          no-wrap
+                          no-caps
+                          icon="location_on"
+                          class="q-ml-sm pull-right">
+            <q-list>
+              <q-item>
+                <q-item-section avatar>
+                  <q-btn round
+                         :icon="showSolna ? 'location_on' : 'location_off'"
+                         :color="showSolna ? 'primary' : 'grey-3'"
+                         :text-color="showSolna ? 'white' : 'black'"
+                         @click="showSolna = !showSolna" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Solna</q-item-label>
+                  <q-item-label caption>Karolinska Institutet</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item>
+                <q-item-section avatar>
+                  <q-btn round
+                         :icon="showUppsala ? 'location_on' : 'location_off'"
+                         :color="showUppsala ? 'primary' : 'grey-3'"
+                         :text-color="showUppsala ? 'white' : 'black'"
+                         @click="showUppsala = !showUppsala" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Uppsala</q-item-label>
+                  <q-item-label caption>Biomedicinskt centrum</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-separator inset spaced />
+
+              <q-item>
+                <q-item-section avatar>
+                  <q-btn round
+                         :icon="onlyFavourites ? 'location_on' : 'location_off'"
+                         :color="onlyFavourites ? 'primary' : 'grey-3'"
+                         :text-color="onlyFavourites ? 'white' : 'black'"
+                         @click="onlyFavourites = !onlyFavourites" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Only favourites</q-item-label>
+                  <q-item-label caption>Show only favourited restaurants</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+
+          <q-separator vertical />
+          <q-btn
+            dense
+            flat
+            no-wrap
+            no-caps
+            color="primary"
+            label="SciLifeLab Data Centre"
+            class="q-ml-sm pull-right"
+            type="a"
+            target="_blank"
+            href="https://www.scilifelab.se/data/"
+            />
+        </q-toolbar>
+      </div>
+    </div>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script>
+export default {
+  name: 'MainLayout',
+
+  computed: {  
+    showSolna: {
+      get () {
+        return this.$store.state.main.showSolna;
+      },
+      set (val) {
+        this.$store.dispatch('main/setShowSolna', val)
+      }
+    },
+
+    showUppsala: {
+      get () {
+        return this.$store.state.main.showUppsala;
+      },
+      set (val) {
+        this.$store.dispatch('main/setShowUppsala', val)
+      }
+    },
+
+    onlyFavourites: {
+      get () {
+        return this.$store.state.main.onlyFavourites;
+      },
+      set (val) {
+        this.$store.dispatch('main/setOnlyFavourites', val)
+      }
+    }
+  },
+
+  data () {
+    return {
+      today: '',
+    }
+  },
+  
+  created () {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
+                  'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March',
+                    'April', 'May', 'June',
+                    'July', 'August', 'September',
+                    'October', 'November', 'December'];
+    let day = new Date();
+    this.today = days[day.getDay()] + ' ' + day.getDate() + ' ' + months[day.getMonth()];
+  }
+    
+}
+</script>
