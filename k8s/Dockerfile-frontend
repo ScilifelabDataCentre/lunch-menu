@@ -1,18 +1,22 @@
 FROM node:latest as build
 
+RUN yarn global add @quasar/cli
+
+COPY ./frontend/package.json /package.json
+
+WORKDIR /
+RUN yarn install
+
+
 COPY ./frontend /code
+RUN mv /node_modules /code/
 WORKDIR /code
 
-RUN yarn install
-RUN yarn build
+RUN quasar build
 
 FROM nginx:alpine
 
-COPY --from=build /code/dist/ /usr/share/nginx/html/
-COPY ./setup_frontend.sh /
-
+COPY --from=build /code/dist/spa/ /usr/share/nginx/html/
 COPY ./k8s/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
-
-CMD ["/setup_frontend.sh"]
