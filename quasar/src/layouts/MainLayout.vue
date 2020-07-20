@@ -2,7 +2,7 @@
 <q-layout view="lHh Lpr lFf">
   <q-header elevated>
     <q-toolbar class="bg-grey-2">
-      <span class="text-primary">
+      <span class="text-uppercase text-primary text-weight-bold">
         {{ today }}
       </span>
       <q-space />
