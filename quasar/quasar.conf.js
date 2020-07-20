@@ -82,7 +82,7 @@ cfg.module.rules.push({
         // proxy all requests starting with /api to jsonplaceholder
         '/api': {
           // target: 'https://menu.dckube.scilifelab.se/api/',
-          target: 'http://localhost:5050/api/',
+          target: 'https://menu.dckube.scilifelab.se/api/',
           changeOrigin: true,
           pathRewrite: {
             '^/api': ''
