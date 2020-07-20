@@ -8,10 +8,19 @@
       </q-card-section>
       <q-card-section v-else>
         <div class="row">
-        <q-btn flat
-               text-color="primary">
-          {{ restaurantBase.name }}
-        </q-btn>
+          <q-btn flat
+                 dense
+                 no-wrap
+                 text-color="primary"
+                 type="a"
+                 :href="restaurantBase.menu_url"
+                 :label="restaurantBase.name" />
+          <q-btn flat
+                 round
+                 text-color="secondary"
+                 icon="location_on"
+                 type="a"
+                 :href="restaurantBase.osm"/>
         <q-space />
         <q-btn @click="setFavourite"
                flat
