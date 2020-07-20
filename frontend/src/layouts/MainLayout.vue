@@ -68,7 +68,13 @@
           <q-item tag="a"
                   href="https://www.scilifelab.se/data/"
                   target="_blank">
-            <q-item-section>
+	    <q-item-section avatar>
+	      <q-avatar>
+                <img :src="require('../assets/data-centre-logo.svg')"
+		     alt="Data Centre logo"/>
+	      </q-avatar>
+            </q-item-section>
+	    <q-item-section>
               <q-item-label>SciLifeLab Data Centre</q-item-label>
               <q-item-label caption>Developers of the menu page</q-item-label>
             </q-item-section>
@@ -76,6 +82,10 @@
           <q-item tag="a"
                   href="https://github.com/ScilifelabDataCentre/lunch-menu"
                   target="_blank">
+	    <q-item-section avatar>
+	      <q-avatar
+                icon="code" />
+            </q-item-section>
             <q-item-section>
               <q-item-label>Github</q-item-label>
               <q-item-label caption>Code, issues, requests</q-item-label>
