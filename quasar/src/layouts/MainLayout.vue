@@ -16,7 +16,7 @@
                 <q-item-section avatar>
                   <q-btn round
                          :icon="showSolna ? 'location_on' : 'location_off'"
-                         :color="showSolna ? 'primary' : 'grey-3'"
+                         :color="showSolna ? 'secondary' : 'grey-3'"
                          :text-color="showSolna ? 'white' : 'black'"
                          @click="showSolna = !showSolna" />
                 </q-item-section>
@@ -30,7 +30,7 @@
                 <q-item-section avatar>
                   <q-btn round
                          :icon="showUppsala ? 'location_on' : 'location_off'"
-                         :color="showUppsala ? 'primary' : 'grey-3'"
+                         :color="showUppsala ? 'secondary' : 'grey-3'"
                          :text-color="showUppsala ? 'white' : 'black'"
                          @click="showUppsala = !showUppsala" />
                 </q-item-section>
@@ -46,7 +46,7 @@
                 <q-item-section avatar>
                   <q-btn round
                          :icon="onlyFavourites ? 'location_on' : 'location_off'"
-                         :color="onlyFavourites ? 'primary' : 'grey-3'"
+                         :color="onlyFavourites ? 'secondary' : 'grey-3'"
                          :text-color="onlyFavourites ? 'white' : 'black'"
                          @click="onlyFavourites = !onlyFavourites" />
                 </q-item-section>
