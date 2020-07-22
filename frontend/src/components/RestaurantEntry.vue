@@ -17,8 +17,8 @@
           <q-btn flat
 		 dense
                  round
-                 text-color="secondary"
-                 icon="location_on"
+                 text-color="primary"
+                 icon="map"
                  type="a"
                  :href="restaurantBase.osm"/>
 
