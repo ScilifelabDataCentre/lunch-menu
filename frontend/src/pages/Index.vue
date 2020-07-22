@@ -62,11 +62,13 @@ export default {
         if (this.onlyFavourites) {
           current = current.filter((value) => this.favourites.includes(value.identifier));
         }
-        if (!this.showSolna) {
-          current = current.filter((value) => value.campus !== 'Solna');
-        }
-        if (!this.showUppsala) {
-          current = current.filter((value) => value.campus !== 'Uppsala');
+        else {
+          if (!this.showSolna) {
+            current = current.filter((value) => value.campus !== 'Solna');
+          }
+          if (!this.showUppsala) {
+            current = current.filter((value) => value.campus !== 'Uppsala');
+          }
         }
         return current;
       }

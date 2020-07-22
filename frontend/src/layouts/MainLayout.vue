@@ -1,64 +1,28 @@
 <template>
 <q-layout view="lHh Lpr lFf">
   <q-header elevated>
-    <q-toolbar class="bg-grey-2">
-      <span class="text-uppercase text-primary text-weight-bold">
+    <q-toolbar class="bg-grey-2  text-primary">
+      <span class="text-uppercase 
+		   text-weight-bold">
         {{ today }}
       </span>
       <q-space />
-      <q-btn-dropdown dense
-                      flat
-                      no-wrap
-                      no-caps
-		      text-color="secondary"
-                      icon="location_on"
-                      class="q-ml-sm pull-right">
-        <q-list>
-          <q-item>
-            <q-item-section avatar>
-              <q-btn round
-                     :icon="showSolna ? 'location_on' : 'location_off'"
-                     :color="showSolna ? 'positive' : 'grey-2'"
-                     :text-color="showSolna ? 'white' : 'black'"
-                     @click="showSolna = !showSolna" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Solna</q-item-label>
-              <q-item-label caption>Show restaurants at KI Solna</q-item-label>
-            </q-item-section>
-          </q-item>
 
-          <q-item>
-            <q-item-section avatar>
-              <q-btn round
-                     :icon="showUppsala ? 'location_on' : 'location_off'"
-                     :color="showUppsala ? 'positive' : 'grey-2'"
-                     :text-color="showUppsala ? 'white' : 'black'"
-                     @click="showUppsala = !showUppsala" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Uppsala</q-item-label>
-              <q-item-label caption>Show restaurants at BMC</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-separator inset spaced />
-
-          <q-item>
-            <q-item-section avatar>
-              <q-btn round
-                     :icon="onlyFavourites ? 'favorite' : 'favorite_border'"
-                     :color="onlyFavourites ? 'positive' : 'grey-2'"
-                     :text-color="onlyFavourites ? 'white' : 'black'"
-                     @click="onlyFavourites = !onlyFavourites" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Favourites Only</q-item-label>
-              <q-item-label caption>Show only favourited restaurants</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-btn-dropdown>
+      <div v-if="!onlyFavourites">
+        <q-checkbox class="q-mx-sm"
+		    v-model="showSolna"
+		    label="Solna" />
+        <q-checkbox class="q-mr-sm"
+		    v-model="showUppsala"
+		    label="Uppsala" />
+      </div>
+      <q-btn class="q-mr-sm"
+             @click="onlyFavourites = !onlyFavourites"
+	     flat
+	     dense
+	     round
+	     text-color="primary"
+	     :icon="onlyFavourites ? 'favorite' : 'favorite_border'" />
 
       <q-separator vertical />
       <q-btn-dropdown flat

@@ -27,7 +27,7 @@
 		 dense
 		 round
 		 color="white"
-		 text-color="red"
+		 text-color="primary"
 		 :icon="isFavourite ? 'favorite' : 'favorite_border'" />
         </div>
         <div v-if="loading"
