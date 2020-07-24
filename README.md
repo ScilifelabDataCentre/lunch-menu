@@ -3,7 +3,7 @@ Lunch Menu Aggregator
 
 This is the code for a webpage listing the menus of the restaurants near SciLifeLab Solna (KI) and Uppsala (BMC).
 
-The first code was written in 2010 by [@talavis](https://github.com/talavis), who is still the main developers. There are also multiple contributors of e.g. bugfixes and new parsers.
+The first code was written in 2010 by [@talavis](https://github.com/talavis), who is still the main developer. There are also multiple contributors of e.g. bugfixes and new parsers.
 
 There are three parts:
 
