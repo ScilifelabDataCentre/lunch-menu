@@ -8,6 +8,7 @@
               v-model="showSolna"
 	      label="Solna" />
     <q-toggle v-else
+              color="accent"
 	      label="Solna"
               v-model="constTrue"
               disable />
@@ -16,6 +17,7 @@
               v-model="showUppsala"
 	      label="Uppsala" />
     <q-toggle v-else
+              color="accent"
               v-model="constTrue"
               label="Uppsala"
               disable />
