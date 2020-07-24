@@ -6,25 +6,9 @@
 		   text-weight-bold">
         {{ today }}
       </span>
+
       <q-space />
 
-      <div v-if="!onlyFavourites">
-        <q-checkbox class="q-mx-sm"
-		    v-model="showSolna"
-		    label="Solna" />
-        <q-checkbox class="q-mr-sm"
-		    v-model="showUppsala"
-		    label="Uppsala" />
-      </div>
-      <q-btn class="q-mr-sm"
-             @click="onlyFavourites = !onlyFavourites"
-	     flat
-	     dense
-	     round
-	     text-color="primary"
-	     :icon="onlyFavourites ? 'favorite' : 'favorite_border'" />
-
-      <q-separator vertical />
       <q-btn-dropdown flat
                       label="About"
                       class="text-primary">
