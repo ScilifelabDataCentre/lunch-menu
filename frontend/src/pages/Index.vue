@@ -25,7 +25,7 @@
 
   <div class="flex justify-center">
     <q-list class="flex-center">
-      <res-entry v-for="restaurant in visRes"
+      <res-entry v-for="restaurant in visibleRestaurants"
                  :key="restaurant.identifier"
                  :restaurantBase="restaurant" />
     </q-list>
@@ -93,7 +93,7 @@ export default {
 
     },
 
-    visRes: {
+    visibleRestaurants: {
       get () {
         let current = this.restaurants;
         if (this.onlyFavourites) {
@@ -107,6 +107,15 @@ export default {
             current = current.filter((value) => value.campus !== 'Uppsala');
           }
         }
+
+        current = current.sort((a,b) => {
+          if (a.campus > b.campus)
+            return 1;
+          if (a.campus < b.campus)
+            return -1;
+          return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+        });
+
         return current;
       }
     },
@@ -114,7 +123,6 @@ export default {
   
   data () {
     return {
-      visibleRestaurants: [],
       error: false,
       loading: true,
       constTrue: true,
