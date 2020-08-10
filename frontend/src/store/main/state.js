@@ -1,6 +1,6 @@
 export default function () {
   return {
-    restaurants: {},
+    restaurants: [],
     showSolna: true,
     showUppsala: true,
     onlyFavourites: false,
