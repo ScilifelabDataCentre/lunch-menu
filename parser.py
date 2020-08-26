@@ -263,7 +263,10 @@ def parse_hjulet(res_data):
             if get_weekday(tomorrow=True).upper() in str(menu_row):
                 break
             if correct_part:
-                data['menu'] += str(menu_row).strip().replace('\r', '').split('\n')
+                data['menu'] += [entry
+                                 for entry
+                                 in str(menu_row).strip().replace('\r', '').split('\n')
+                                 if entry]
 
     return data
 
