@@ -211,7 +211,7 @@ def parse_dufva(res_data):
     for line in menu_data:
         if not line:
             continue
-        if line.lower() == dag:
+        if line.lower() == f"- {dag} -":
             started = True
             continue
         if started:
