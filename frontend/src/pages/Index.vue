@@ -1,6 +1,7 @@
 <template>
 <q-page class="justify-center">
-  <q-toolbar class="justify-center text-primary">
+  <q-toolbar v-if="tmpState === undefined"
+             class="justify-center text-primary">
     <q-toggle v-model="onlyFavourites"
               label="Favourites" />
 
@@ -46,6 +47,8 @@ import RestaurantEntry from 'components/RestaurantEntry.vue'
 export default {
   name: 'PageIndex',
 
+  props: ["tmpState"],
+  
   components: {
     'res-entry': RestaurantEntry,
   },
@@ -96,18 +99,28 @@ export default {
     visibleRestaurants: {
       get () {
         let current = this.restaurants;
-        if (this.onlyFavourites) {
-          current = current.filter((value) => this.favourites.includes(value.identifier));
-        }
-        else {
-          if (!this.showSolna) {
+
+        if (this.tmpState !== undefined) {
+          if (this.tmpState !== 'solna') {
             current = current.filter((value) => value.campus !== 'Solna');
           }
-          if (!this.showUppsala) {
+          if (this.tmpState !== 'bmc') {
             current = current.filter((value) => value.campus !== 'Uppsala');
           }
         }
-
+        else {
+          if (this.onlyFavourites) {
+            current = current.filter((value) => this.favourites.includes(value.identifier));
+          }
+          else {
+            if (!this.showSolna) {
+              current = current.filter((value) => value.campus !== 'Solna');
+            }
+            if (!this.showUppsala) {
+              current = current.filter((value) => value.campus !== 'Uppsala');
+            }
+          }
+        }
         current = current.sort((a,b) => {
           if (a.campus > b.campus)
             return 1;
