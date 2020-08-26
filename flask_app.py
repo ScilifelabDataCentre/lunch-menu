@@ -33,20 +33,33 @@ def get_restaurant(name):
 
 @app.route('/api/slack/', methods=['POST'])
 def handle_slack_request():
-    import logging
-    logging.error(f'incoming form: {flask.request.form}')
     command_text = flask.request.form['text']
+    identifiers = command_text.split()
     available = [entry['identifier'] for entry in main.list_restaurants()]
+    regions = ('ki', 'bmc', 'uu', 'uppsala', 'solna')
 
-    if command_text not in available:
-        text = f'Usage: `/lunch-menu <identifier>`. Available restaurants:\n\n'
-        for entry in main.list_restaurants():
-            text += f'- {entry["name"]}: `{entry["identifier"]}`\n'
-    else:
-        restaurant_data = main.get_restaurant(command_text)
-        text = f'{restaurant_data["title"]}:\n'
-        for dish in restaurant_data['menu']:
-            text += f'- {dish}\n'
+    text = ''
+    for identifier in identifiers:
+        if identifier not in available and identifier.lower() not in regions:
+            text = f'Usage: `/lunch-menu <identifier>`. Available restaurants:\n\n'
+            for entry in main.list_restaurants():
+                text += f'- {entry["name"]}: `{entry["identifier"]}`\n'
+            break
+        elif identifier.lower() in regions:
+            if identifier.lower() in ('solna', 'ki'):
+                new_ids = [entry['identifier'] for entry in main.list_restaurants() if entry['campus'] == 'Solna']
+            else:
+                new_ids = [entry['identifier'] for entry in main.list_restaurants() if entry['campus'] == 'Uppsala']
+            for ident in new_ids:
+                restaurant_data = main.get_restaurant(ident)
+                text += f'*{restaurant_data["title"]}*\n'
+                for dish in restaurant_data['menu']:
+                    text += f'- {dish}\n'
+        else:
+            restaurant_data = main.get_restaurant(identifier)
+            text += f'*{restaurant_data["title"]}*\n'
+            for dish in restaurant_data['menu']:
+                text += f'- {dish}\n'
 
     response = {"blocks": [{"type": "section",
 			    "text": {
