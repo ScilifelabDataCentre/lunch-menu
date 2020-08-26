@@ -25,7 +25,7 @@ def list_restaurants():
 @app.route('/api/restaurant/<name>/')
 @cache.cached(timeout=3600)
 def get_restaurant(name):
-    data = main.get_restaurant(name)
+    data = dict(main.get_restaurant(name))
     if not data:
         abort(status=404)
     data['menu'] = [{'dish': entry} for entry in data['menu']]
@@ -51,12 +51,12 @@ def handle_slack_request():
             else:
                 new_ids = [entry['identifier'] for entry in main.list_restaurants() if entry['campus'] == 'Uppsala']
             for ident in new_ids:
-                restaurant_data = main.get_restaurant(ident)
+                restaurant_data = dict(main.get_restaurant(ident))
                 text += f'*{restaurant_data["title"]}*\n'
                 for dish in restaurant_data['menu']:
                     text += f'- {dish}\n'
         else:
-            restaurant_data = main.get_restaurant(identifier)
+            restaurant_data = dict(main.get_restaurant(identifier))
             text += f'*{restaurant_data["title"]}*\n'
             for dish in restaurant_data['menu']:
                 text += f'- {dish}\n'
