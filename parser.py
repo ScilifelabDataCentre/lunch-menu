@@ -248,13 +248,22 @@ def parse_hjulet(res_data):
     data = {'menu': []}
     soup = get_parser(res_data['menu_url'])
 
-    for header in soup.find_all('h4'):
-        if header.find(text=re.compile('LUNCH MENY')) and str(get_week()) in header.text:
+    passed = False
+    for header in soup.find_all('h3'):
+        if header.find(text=re.compile(f'MENY VECKA {get_week()}')):
+            passed = True
             # Will fail if the day is in a non-menu paragraph
-            for par in soup.find_all('p'):
-                if par.find(text=re.compile('^' + get_weekday().capitalize())):
-                    data['menu'] += par.text.split('\n')[1:]
-                    break
+    if passed:
+        menu = soup.find('pre')
+        correct_part = False
+        for menu_row in menu:
+            if get_weekday().upper() in str(menu_row):
+                correct_part = True
+                continue
+            if get_weekday(tomorrow=True).upper() in str(menu_row):
+                break
+            if correct_part:
+                data['menu'] += str(menu_row).strip().replace('\r', '').split('\n')
 
     return data
 
