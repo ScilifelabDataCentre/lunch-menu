@@ -11,19 +11,19 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 @app.route('/api/')
-@cache.cached(timeout=3600)
+@cache.cached(timeout=10800)
 def list_entities():
     return jsonify({'entities': ['restaurant']})
 
 
 @app.route('/api/restaurant/')
-@cache.cached(timeout=3600)
+@cache.cached(timeout=10800)
 def list_restaurants():
     return jsonify({'restaurants': main.list_restaurants()})
 
 
 @app.route('/api/restaurant/<name>/')
-@cache.cached(timeout=3600)
+@cache.cached(timeout=10800)
 def get_restaurant(name):
     data = dict(main.get_restaurant(name))
     if not data:
