@@ -13,8 +13,6 @@ blueprint = flask.Blueprint('slack', __name__)  # pylint: disable=invalid-name
 
 @blueprint.route('/', methods=['POST'])
 def handle_slack_request():
-    import logging
-    logging.error(flask.request.form['text'])
     command_text = flask.request.form['text']
     identifiers = command_text.split()
     available = [entry['identifier'] for entry in main.list_restaurants()]
@@ -22,11 +20,11 @@ def handle_slack_request():
 
     text = ''
     for identifier in identifiers:
-        if identifier not in available and identifier.lower() not in regions:
-            text = f'*Available restaurants:*\n'
-            for entry in main.list_restaurants():
-                text += f'- {entry["name"]}: `{entry["identifier"]}`\n'
-            break
+        if identifier in available:
+            restaurant_data = dict(main.get_restaurant(identifier))
+            text += f'*{restaurant_data["title"]}*\n'
+            for dish in restaurant_data['menu']:
+                text += f'- {dish}\n'
         elif identifier.lower() in regions:
             if identifier.lower() in ('solna', 'ki'):
                 new_ids = [entry['identifier'] for entry in main.list_restaurants() if entry['campus'] == 'Solna']
@@ -38,11 +36,11 @@ def handle_slack_request():
                 for dish in restaurant_data['menu']:
                     text += f'- {dish}\n'
         else:
-            restaurant_data = dict(main.get_restaurant(identifier))
-            text += f'*{restaurant_data["title"]}*\n'
-            for dish in restaurant_data['menu']:
-                text += f'- {dish}\n'
-    
+            text = list_identifiers()
+            break
+    if not identifiers:
+        text = list_identifiers()
+
     response = {"blocks": [{"type": "section",
 			    "text": {
 				"type": "mrkdwn",
@@ -55,3 +53,12 @@ def get_token(token_name: str) -> str:
         return os.environ[token]
     except KeyError:
         return None
+
+
+def list_identifiers() -> str:
+    text = f'*Available restaurants:*\n'
+    for entry in main.list_restaurants():
+        text += f'- {entry["name"]}: `{entry["identifier"]}`\n'
+    text += '- Solna: `solna`\n'
+    text += '- Uppsala: `uppsala`\n'
+    return text
