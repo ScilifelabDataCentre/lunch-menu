@@ -2,6 +2,10 @@
 <q-layout view="lHh Lpr lFf">
   <q-header elevated>
     <q-toolbar class="bg-grey-2  text-primary">
+      <q-avatar v-if="$route.path !== '/'">
+	<q-btn icon="home"
+	       to="/" />
+      </q-avatar>
       <span class="text-uppercase 
 		   text-weight-bold">
         {{ today }}
