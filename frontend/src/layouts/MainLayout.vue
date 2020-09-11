@@ -2,14 +2,15 @@
 <q-layout view="lHh Lpr lFf">
   <q-header elevated>
     <q-toolbar class="bg-grey-2  text-primary">
-      <q-avatar v-if="$route.path !== '/'">
-	<q-btn icon="home"
-	       to="/" />
-      </q-avatar>
-      <span class="text-uppercase 
-		   text-weight-bold">
-        {{ today }}
-      </span>
+      <q-btn to="/" flat round>
+	<q-avatar>
+          <img :src="require('../assets/sll-logo.svg')"
+	       alt="Data Centre logo"/>
+	</q-avatar>
+      </q-btn>
+      <q-toolbar-title>
+	{{ today }}
+      </q-toolbar-title>
 
       <q-space />
 
