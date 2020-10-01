@@ -12,7 +12,7 @@ blueprint = flask.Blueprint('slack', __name__)  # pylint: disable=invalid-name
 
 
 @blueprint.route('/', methods=['POST'])
-def handle_slack_request():
+def handle_slack_command():
     command_text = flask.request.form['text']
     identifiers = command_text.split()
     available = [entry['identifier'] for entry in main.list_restaurants()]
@@ -46,13 +46,6 @@ def handle_slack_request():
 				"type": "mrkdwn",
 				"text": text}}]}
     return flask.jsonify(response)
-
-
-def get_token(token_name: str) -> str:
-    try:
-        return os.environ[token]
-    except KeyError:
-        return None
 
 
 def list_identifiers() -> str:
