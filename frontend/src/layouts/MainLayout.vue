@@ -23,7 +23,7 @@
                   target="_blank">
 	    <q-item-section avatar>
 	      <q-avatar>
-                <img :src="require('../assets/data-centre-logo.svg')"
+                <img :src="require('../assets/sll-logo.svg')"
 		     alt="Data Centre logo"/>
 	      </q-avatar>
             </q-item-section>
@@ -37,7 +37,7 @@
                   target="_blank">
 	    <q-item-section avatar>
 	      <q-avatar
-                icon="code" />
+                icon="fab fa-github" />
             </q-item-section>
             <q-item-section>
               <q-item-label>Github</q-item-label>
