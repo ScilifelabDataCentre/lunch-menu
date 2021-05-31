@@ -345,34 +345,25 @@ def parse_nanna(res_data):
     data = {"menu": []}
     soup = get_parser(res_data["menu_url"])
 
-    menu_part = soup.find_all("div", {"class": "entry-content"})[0]
+    menu_part = soup.find("article", {"class": "article"}).find("div", {"class": "text"})
+    if not menu_part.find("h2").find(text=re.compile(r"MATSEDEL V\." + str(get_week()))):
+        return data
 
-    current_week = False
-    for tag in menu_part.find_all("strong"):
-        if tag.find(text=re.compile(r"MATSEDEL V\." + str(get_week()))):
-            current_week = True
-            break
+    day = f"{get_weekday().capitalize()} {str(get_day())} {get_month()}"
+    current_day = False
+    for tag in menu_part.find_all(("ul", "strong")):
+        if current_day:
+            if tag.name == "strong":
+                break
+            if tag.name == "ul":
+                # Keep only Swedish
+                for entry in tag.children:
+                    if entry.name and next(entry.children).name != "em":
+                        data["menu"].append(entry.text)
+        else:
+            if tag.name == "strong" and day in tag.text:
+                current_day = True
 
-    if current_week:
-        started = False
-        dishes = []
-        for par in menu_part.find_all(("li", "strong")):
-            if started:
-                if par.find(
-                    text=re.compile(get_weekday(tomorrow=True).capitalize())
-                ) or par.find(text=re.compile(r"^Priser")):
-                    break
-                # Since they mess up the page now and then,
-                # day may show up twice because it is both <li> and <strong>
-                if par.find(text=re.compile(get_weekday().capitalize())):
-                    continue
-                dish_text = par.text.replace("\xa0", "")
-                if dish_text:
-                    dishes.append(dish_text)
-            if par.find(text=re.compile(get_weekday().capitalize())):
-                started = True
-
-        data["menu"] = dishes[::2]  # get rid of entries in English
     return data
 
 
