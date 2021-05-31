@@ -228,30 +228,11 @@ def parse_haga(res_data):
 @restaurant
 def parse_hjulet(res_data):
     '''
-    Parse the menu of Restaurang Hjulet
+    Parse the menu of Restaurang Hjulet.
+
+    Currently no menu available.
     '''
     data = {'menu': []}
-    soup = get_parser(res_data['menu_url'])
-
-    passed = False
-    for header in soup.find_all('h3'):
-        if header.find(text=re.compile(f'MENY VECKA {get_week()}')):
-            passed = True
-            # Will fail if the day is in a non-menu paragraph
-    if passed:
-        menu = soup.find('pre')
-        correct_part = False
-        for menu_row in menu:
-            if get_weekday().upper() in str(menu_row):
-                correct_part = True
-                continue
-            if get_weekday(tomorrow=True).upper() in str(menu_row):
-                break
-            if correct_part:
-                data['menu'] += [entry
-                                 for entry
-                                 in str(menu_row).strip().replace('\r', '').split('\n')
-                                 if entry]
 
     return data
 
