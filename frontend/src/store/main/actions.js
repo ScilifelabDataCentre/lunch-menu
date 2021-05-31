@@ -4,7 +4,7 @@ import axios from 'axios';
 export function getRestaurants ({ commit }) {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/restaurant/')
+      .get('/api/restaurant')
       .then((response) => {
         commit('updateRestaurants', response.data.restaurants);
         resolve(response);
@@ -19,7 +19,7 @@ export function getRestaurants ({ commit }) {
 export function getRestaurant ({ commit }, identifier) {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/restaurant/' + identifier)
+      .get('/api/restaurant' + identifier)
       .then((response) => {
         resolve(response);
       })
