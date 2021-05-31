@@ -19,7 +19,7 @@ export function getRestaurants ({ commit }) {
 export function getRestaurant ({ commit }, identifier) {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/restaurant' + identifier)
+      .get('/api/restaurant/' + identifier)
       .then((response) => {
         resolve(response);
       })
