@@ -2,50 +2,26 @@
 <q-layout view="lHh Lpr lFf">
   <q-header elevated>
     <q-toolbar class="bg-grey-2  text-primary">
-      <q-btn to="/" flat round>
+      <q-btn type="a"
+             href="https://www.scilifelab.se/data/"
+             flat
+             round>
 	<q-avatar>
-          <img :src="require('../assets/sll-logo.svg')"
+          <img :src="require('assets/sll-logo.svg')"
 	       alt="Data Centre logo"/>
 	</q-avatar>
-      </q-btn>
+      </q-btn>      
       <q-toolbar-title>
 	{{ today }}
       </q-toolbar-title>
 
       <q-space />
 
-      <q-btn-dropdown flat
-                      label="About"
-                      class="text-primary">
-        <q-list>
-          <q-item tag="a"
-                  href="https://www.scilifelab.se/data/"
-                  target="_blank">
-	    <q-item-section avatar>
-	      <q-avatar>
-                <img :src="require('../assets/sll-logo.svg')"
-		     alt="Data Centre logo"/>
-	      </q-avatar>
-            </q-item-section>
-	    <q-item-section>
-              <q-item-label>SciLifeLab Data Centre</q-item-label>
-              <q-item-label caption>Developers of the menu page</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item tag="a"
-                  href="https://github.com/ScilifelabDataCentre/lunch-menu"
-                  target="_blank">
-	    <q-item-section avatar>
-	      <q-avatar
-                icon="fab fa-github" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Github</q-item-label>
-              <q-item-label caption>Code, issues, requests</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-btn-dropdown>
+      <q-btn flat
+             round
+             icon="fab fa-github"
+             type="a"
+             href="https://github.com/ScilifelabDataCentre/lunch-menu"/>
     </q-toolbar>
   </q-header>
   <q-page-container>
