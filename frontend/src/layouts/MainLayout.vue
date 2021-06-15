@@ -6,7 +6,7 @@
              href="https://www.scilifelab.se/data/"
              flat
              round>
-	<q-avatar>
+	<q-avatar square>
           <img :src="require('assets/sll-logo.svg')"
 	       alt="Data Centre logo"/>
 	</q-avatar>
