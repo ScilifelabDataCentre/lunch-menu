@@ -4,8 +4,7 @@
     <q-toolbar class="bg-grey-2  text-primary">
       <q-btn type="a"
              href="https://www.scilifelab.se/data/"
-             flat
-             round>
+             flat>
 	<q-avatar square>
           <img :src="require('assets/sll-logo.svg')"
 	       alt="Data Centre logo"/>
