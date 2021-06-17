@@ -19,7 +19,7 @@
                  text-color="primary"
                  type="a"
                  :href="restaurantBase.osm">
-            <q-icon size="1.2em" name="las la-map" />
+            <q-icon name="las la-map" />
           </q-btn>
 
           <q-btn @click="setFavourite"
