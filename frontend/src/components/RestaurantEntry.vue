@@ -62,27 +62,9 @@ export default {
   props: ["restaurantBase"],
 
   computed: {
-    showSolna: {
-      get () {
-        return this.$store.state.main.showSolna;
-      },
-    },
-
-    showUppsala: {
-      get () {
-        return this.$store.state.main.showUppsala;
-      },
-    },
-
     favourites: {
       get () {
         return this.$store.state.main.favourites;
-      },
-    },
-
-    onlyFavourites: {
-      get () {
-        return this.$store.state.main.onlyFavourites;
       },
     },
   },
