@@ -1,6 +1,6 @@
 <template>
 <q-page class="justify-center">
-  <q-toolbar v-if="tmpState === undefined"
+  <q-toolbar v-if="$route.path === '/'"
              class="justify-center text-primary">
     <q-toggle v-model="onlyFavourites"
               label="Favourites" />
@@ -40,14 +40,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 import RestaurantEntry from 'components/RestaurantEntry.vue'
 
 export default {
   name: 'PageIndex',
-
-  props: ["tmpState"],
   
   components: {
     'res-entry': RestaurantEntry,
@@ -100,11 +96,11 @@ export default {
       get () {
         let current = this.restaurants;
 
-        if (this.tmpState !== undefined) {
-          if (this.tmpState !== 'solna') {
+        if (this.$route.path !== '/') {
+          if (['/solna', '/ki'].includes(this.$route.path)) {
             current = current.filter((value) => value.campus !== 'Solna');
           }
-          if (this.tmpState !== 'bmc') {
+          if (['/uu', 'uppsala'].includes(this.$route.path)) {
             current = current.filter((value) => value.campus !== 'Uppsala');
           }
         }
