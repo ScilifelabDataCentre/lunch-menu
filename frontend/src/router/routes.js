@@ -16,7 +16,6 @@ const routes = [
       {
         path: '',
         component: () => import('pages/Index.vue'),
-        props: {'tmpState': 'solna'}
       }
     ],
   },
@@ -29,7 +28,6 @@ const routes = [
       {
         path: '',
         component: () => import('pages/Index.vue'),
-        props: {'tmpState': 'bmc'}
       }
     ],
   },
