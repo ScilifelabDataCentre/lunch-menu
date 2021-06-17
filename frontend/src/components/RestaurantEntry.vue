@@ -19,7 +19,7 @@
                  text-color="primary"
                  type="a"
                  :href="restaurantBase.osm">
-            <q-icon size="1.2em" name="fas fa-map-marked" />
+            <q-icon size="1.2em" name="las la-map" />
           </q-btn>
 
           <q-btn @click="setFavourite"
@@ -28,7 +28,7 @@
 		 round
 		 color="white"
 		 text-color="primary"
-		 :icon="isFavourite ? 'fas fa-heart' : 'far fa-heart'" />
+		 :icon="isFavourite ? 'las la-heart' : 'lar la-heart'" />
         </div>
         <div v-if="loading"
              class="flex justify-center">

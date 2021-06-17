@@ -7,7 +7,7 @@
              flat>
 	<q-avatar square>
           <img :src="require('assets/sll-logo.svg')"
-	       alt="Data Centre logo"/>
+	       alt="SciLifeLab logo"/>
 	</q-avatar>
       </q-btn>      
       <q-toolbar-title>
@@ -18,7 +18,7 @@
 
       <q-btn flat
              round
-             icon="fab fa-github"
+             icon="lab la-github"
              type="a"
              href="https://github.com/ScilifelabDataCentre/lunch-menu"/>
     </q-toolbar>

@@ -29,9 +29,8 @@ module.exports = function (/* ctx */) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      'fontawesome-v5',
+      'line-awesome',
       'roboto-font', // optional, you are not bound to it
-      'material-icons', // optional, you are not bound to it
     ],
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
