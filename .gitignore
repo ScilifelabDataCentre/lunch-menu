@@ -1,6 +1,5 @@
 __pycache__
 *~
-yarn.lock
 node_modules
 */dist/*
 *.log
