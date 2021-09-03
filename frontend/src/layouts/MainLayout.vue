@@ -1,7 +1,7 @@
 <template>
 <q-layout view="lHh Lpr lFf">
-  <q-header elevated>
-    <q-toolbar class="bg-grey-2  text-primary">
+  <q-header elevated reveal>
+    <q-toolbar>
       <q-btn type="a"
              href="https://www.scilifelab.se/data/"
              flat>
@@ -18,9 +18,16 @@
 
       <q-btn flat
              round
+             dense
+             :icon="$q.dark.isActive ? 'las la-sun' : 'las la-moon'"
+             @click="toggleDark" />
+      
+      <q-btn flat
+             round
+             dense
              icon="lab la-github"
              type="a"
-             href="https://github.com/ScilifelabDataCentre/lunch-menu"/>
+             href="https://github.com/ScilifelabDataCentre/lunch-menu" />
     </q-toolbar>
   </q-header>
   <q-page-container>
@@ -30,6 +37,8 @@
 </template>
 
 <script>
+import { setCssVar } from 'quasar'
+
 export default {
   name: 'MainLayout',
 
@@ -67,8 +76,22 @@ export default {
       today: '',
     }
   },
+
+  methods: {
+    toggleDark () {
+      console.log("here")
+      this.$q.dark.toggle();
+      if (this.$q.dark.isActive)
+        setCssVar('info', '#A7C947');
+      else
+        setCssVar('info', '#3F3F3F');
+    },
+  },
   
   created () {
+    if (this.$q.dark.isActive)
+      setCssVar('primary', '#A7C947')
+
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
                   'Thursday', 'Friday', 'Saturday'];
     const months = ['January', 'February', 'March',

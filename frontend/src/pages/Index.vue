@@ -2,26 +2,35 @@
 <q-page class="justify-center">
   <q-toolbar v-if="$route.path === '/'"
              class="justify-center text-primary">
-    <q-toggle v-model="onlyFavourites"
-              label="Favourites" />
+    <q-toggle v-model="onlyFavourites">
+      <span class="text-info">Favourites</span>
+    </q-toggle>
 
     <q-toggle v-if="!onlyFavourites"
-              v-model="showSolna"
-	      label="Solna" />
-    <q-toggle v-else
-              color="accent"
-	      label="Solna"
-              v-model="constTrue"
-              disable />
-
-    <q-toggle v-if="!onlyFavourites"
-              v-model="showUppsala"
-	      label="Uppsala" />
+              color="secondary"
+              v-model="showSolna">
+      <span class="text-info">Solna</span>
+    </q-toggle>
     <q-toggle v-else
               color="accent"
               v-model="constTrue"
-              label="Uppsala"
-              disable />
+              disable>
+      <span class="text-info">Solna</span>
+    </q-toggle>
+
+    <q-toggle v-if="!onlyFavourites"
+              color="secondary"
+              v-model="showUppsala">
+      <span class="text-info">Uppsala</span>
+    </q-toggle>
+
+    <q-toggle v-else
+              color="accent"
+              v-model="constTrue"
+              disable>
+      <span class="text-info">Uppsala</span>
+    </q-toggle>
+
   </q-toolbar>
 
   <div class="flex justify-center">
@@ -94,7 +103,7 @@ export default {
 
     visibleRestaurants: {
       get () {
-        let current = this.restaurants;
+        let current = JSON.parse(JSON.stringify(this.restaurants));
 
         if (this.$route.path !== '/') {
           if (['/solna', '/ki'].includes(this.$route.path)) {

@@ -1,28 +1,29 @@
 {
-  "name": "lunch-menu",
+  "name": "menu-aggregator",
   "version": "0.0.1",
-  "description": "Lunch menus for the restaurants near SciLifeLab Solna and Uppsala",
-  "productName": "Lunch Menus",
-  "author": "SciLifeLab Data Centre",
+  "description": "Frontend for a lunch menu aggregator for restaurants near the Solna and BMC campuses",
+  "productName": "SciLifeLab Menu Aggregator",
+  "author": "Linus Östberg <linus.ostberg@scilifelab.uu.se>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.10.6",
+    "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
-    "core-js": "^3.13.1",
-    "quasar": "^1.15.19",
-    "vuex-persistedstate": "3.2.0"
+    "core-js": "^3.6.5",
+    "quasar": "^2.0.0",
+    "vuex": "^4.0.1",
+    "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
-    "@quasar/app": "^2.0.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-vue": "^6.1.2"
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app": "^3.0.0",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^7.0.0",
+    "eslint-webpack-plugin": "^2.4.0"
   },
   "browserslist": [
     "last 10 Chrome versions",
@@ -36,7 +37,7 @@
     "last 5 Opera versions"
   ],
   "engines": {
-    "node": ">= 10.18.1",
+    "node": ">= 12.22.1",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }
