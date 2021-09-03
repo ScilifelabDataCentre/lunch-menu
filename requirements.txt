@@ -2,6 +2,7 @@ beautifulsoup4==4.9.3
 cachetools==4.2.2
 certifi==2021.5.30
 chardet==4.0.0
+charset-normalizer==2.0.4
 click==8.0.1
 Flask==2.0.1
 Flask-Caching==1.10.1
@@ -10,8 +11,8 @@ idna==2.10
 itsdangerous==2.0.1
 Jinja2==3.0.1
 MarkupSafe==2.0.1
-requests==2.25.1
+requests==2.26.0
 six==1.16.0
 soupsieve==2.2.1
-urllib3==1.26.5
+urllib3==1.26.6
 Werkzeug==2.0.1
