@@ -1,14 +1,14 @@
-FROM python:alpine as build
+FROM python:alpine
 
 RUN mkdir /code
-COPY ./requirements.txt /code/
-COPY ./restaurants.txt /code/
+COPY ./backend/requirements.txt /code/
+COPY ./backend/restaurants.txt /code/
 WORKDIR /code
 
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
 
-COPY ./*.py /code/
+COPY ./backend/*.py /code/
 
 ENV GUNICORN_CMD_ARGS "--bind=0.0.0.0:8000 --workers=2 --thread=4 --worker-class=gthread --forwarded-allow-ips='*' --access-logfile -"
 
