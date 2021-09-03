@@ -82,7 +82,9 @@ export default {
       console.log("here")
       this.$q.dark.toggle();
       if (this.$q.dark.isActive)
-        setCssVar('primary', '#A7C947');
+        setCssVar('info', '#A7C947');
+      else
+        setCssVar('info', '#3F3F3F');
     },
   },
   

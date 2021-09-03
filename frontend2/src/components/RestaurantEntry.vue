@@ -7,7 +7,7 @@
           <q-btn flat
                  dense
                  no-wrap
-                 text-color="primary"
+                 text-color="info"
                  type="a"
                  :href="restaurantBase.menu_url"
                  :label="restaurantBase.name" />
@@ -16,7 +16,7 @@
           <q-btn flat
 		 dense
                  round
-                 text-color="primary"
+                 text-color="info"
                  type="a"
                  :href="restaurantBase.osm">
             <q-icon name="las la-map" />
@@ -27,13 +27,13 @@
 		 dense
 		 round
 		 color="white"
-		 text-color="primary"
+		 text-color="info"
 		 :icon="isFavourite ? 'las la-heart' : 'lar la-heart'" />
         </div>
         <div v-if="loading"
              class="flex justify-center">
           <q-spinner-dots 
-            color="primary"
+            color="info"
             size="2em"
             />
         </div>
