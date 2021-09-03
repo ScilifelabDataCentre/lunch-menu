@@ -96,7 +96,7 @@ export default {
 
     visibleRestaurants: {
       get () {
-        let current = JSON.parse(JSON.stringify(this.restaurants));
+        let current = this.restaurants;
 
         if (this.$route.path !== '/') {
           if (['/solna', '/ki'].includes(this.$route.path)) {
