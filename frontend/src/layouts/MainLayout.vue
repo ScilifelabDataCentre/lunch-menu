@@ -90,7 +90,7 @@ export default {
   
   created () {
     if (this.$q.dark.isActive)
-      setCssVar('primary', '#A7C947')
+      setCssVar('info', '#A7C947');
 
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
                   'Thursday', 'Friday', 'Saturday'];
