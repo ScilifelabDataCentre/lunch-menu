@@ -107,10 +107,10 @@ export default {
 
         if (this.$route.path !== '/') {
           if (['/solna', '/ki'].includes(this.$route.path)) {
-            current = current.filter((value) => value.campus !== 'Solna');
+            current = current.filter((value) => value.campus === 'Solna');
           }
           if (['/uu', 'uppsala'].includes(this.$route.path)) {
-            current = current.filter((value) => value.campus !== 'Uppsala');
+            current = current.filter((value) => value.campus === 'Uppsala');
           }
         }
         else {
