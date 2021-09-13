@@ -38,17 +38,20 @@ import sys
 import parser as ps
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-REST_FILENAME = os.path.join(__location__, "restaurants.txt")
+REST_FILENAME = os.path.join(__location__, "restaurants.json")
 
 
-def read_restaurants(intext):
+def read_restaurants(intext: str) -> dict:
     """
-    Read the list of restaurants
-    Read a tsv file with the columns:
-    [0] campus [1] identifier [2] Name [3] URL [4] Menu URL [5] OSM URL
-    """
-    return json.loads(open("restaurants.json").read())
+    Parse the list of restaurants from the restaurants file.
 
+    Args:
+        intext(str): The text loaded from the restaurants file.
+    """
+    data = json.loads(intext)
+    for entry in data:
+        data[entry]["identifier"] = entry
+    return data
 
 REST_DATA = read_restaurants(open(REST_FILENAME).read())
 
