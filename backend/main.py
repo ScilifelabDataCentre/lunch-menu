@@ -31,7 +31,6 @@
 Main script for choosing what restaurant parsers to use.
 """
 
-from cachetools import cached, TTLCache
 import os
 import sys
 
@@ -102,7 +101,6 @@ def activate_parsers(restaurants, restaurant_data):
     return "\n".join(output)
 
 
-@cached(cache=TTLCache(maxsize=128, ttl=10800))
 def get_restaurant(name: str) -> dict:
     """
     Request the menu of a restaurant
