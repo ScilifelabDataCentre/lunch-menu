@@ -37,7 +37,7 @@ Start the frontend by running `quasar dev` in the `frontend` folder.
 To add a new restaurant:
 1. Add the parser function to `parser.py`
 2. Add the relevant keyword and function name to `MAPPER` in `main.py`
-3. Add URLs etc to `restaurants.txt`
+3. Add URLs etc to `restaurants.json`
 
 
 ## Supported endpoints in the flask application:
