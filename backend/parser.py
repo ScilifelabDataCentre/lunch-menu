@@ -49,8 +49,8 @@ def restaurant(func):
     def helper(res_data):
         data = {
             "title": res_data["name"],
-            "location": res_data["campus"],
-            "url": res_data["url"],
+            "location": res_data["region"],
+            "url": res_data["homepage"],
             "map_url": res_data["osm"],
         }
         try:
@@ -199,7 +199,7 @@ def parse_bikupan(res_data: dict) -> dict:
         return p.get_text().strip().replace("\n", " ")
 
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
     # check week number
     target = soup.find("div", {"id": "current"})
     if str(get_week()) not in target.find("h2").text:
@@ -220,7 +220,7 @@ def parse_dufva(res_data):
     Parse the menu of Sven Dufva
     """
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
 
     relevant = soup.find("div", {"id": "post"})
     menu_data = relevant.get_text().split("\n")
@@ -276,7 +276,7 @@ def parse_hubben(res_data):
     Parse the menu of Restaurang Hubben
     """
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
 
     days = soup.find_all("div", {"class": "day"})
     current = days[get_weekdigit()]
@@ -295,7 +295,7 @@ def parse_jons(res_data):
     Parse the menu of Jöns Jacob
     """
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
 
     days = soup.find("table", {"class": "table lunch_menu animation"})
     day = days.find("tbody", {"class": "lunch-day-content"})
@@ -320,7 +320,7 @@ def parse_livet(res_data):
     Parse the menu of Livet
     """
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
 
     started = False
     for par in soup.find_all(("h3", "p")):
@@ -343,7 +343,7 @@ def parse_livet(res_data):
 def parse_nanna(res_data):
     """Parse the menu of Nanna Svartz."""
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
 
     menu_part = soup.find("article", {"class": "article"}).find("div", {"class": "text"})
     if not menu_part.find("h2").find(text=re.compile(r"MATSEDEL V\." + str(get_week()))):
@@ -373,7 +373,7 @@ def parse_rudbeck(res_data):
     Parse the menu of Bistro Rudbeck
     """
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
 
     days = soup.find_all("div", {"class": "container-fluid no-print"})
     day = days[get_weekdigit()]
@@ -398,7 +398,7 @@ def parse_tallrik(res_data):
     Parse the menu of Tallriket
     """
     data = {"menu": []}
-    soup = get_parser(res_data["menu_url"])
+    soup = get_parser(res_data["menuUrl"])
 
     days = soup.find_all("div", {"class": "container-fluid no-print"})
     day = days[get_weekdigit()]

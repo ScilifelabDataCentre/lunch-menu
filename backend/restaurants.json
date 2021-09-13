@@ -1,0 +1,93 @@
+{
+    "bikupan": {
+        "homepage": "https://www.hors.se/uppsala/17/3/restaurang-bikupan/",
+        "menuUrl": "https://www.hors.se/uppsala/17/3/restaurang-bikupan/",
+        "name": "Restaurang Bikupan",
+        "osm": "https://www.openstreetmap.org/#map=18/59.84186/17.63407",
+        "region": "Uppsala"
+    },
+    "dufva": {
+        "homepage": "http://svendufva.se/",
+        "menuUrl": "https://matfest.se/veckans-lunch/",
+        "name": "Sven Dufva",
+        "osm": "https://www.openstreetmap.org/#map=19/59.84298/17.64096",
+        "region": "Uppsala"
+    },
+    "glada": {
+        "homepage": "http://www.dengladarestaurangen.se/",
+        "menuUrl": "http://www.dengladarestaurangen.se/#!meny/c30g",
+        "name": "Den Glada Restaurangen",
+        "osm": "http://www.openstreetmap.org/#map=19/59.35123/18.03006",
+        "region": "Solna"
+    },
+    "haga": {
+        "homepage": "http://orenib.se/haga_gk2.pdf",
+        "menuUrl": "http://orenib.se/haga_gk2.pdf",
+        "name": "Haga gatuk\u00f6k",
+        "osm": "https://www.openstreetmap.org/#map=19/59.34931/18.02095",
+        "region": "Solna"
+    },
+    "hjulet": {
+        "homepage": "http://www.restauranghjulet.se",
+        "menuUrl": "http://www.restauranghjulet.se",
+        "name": "Restaurang Hjulet",
+        "osm": "https://www.openstreetmap.org/#map=19/59.34508/18.02423",
+        "region": "Solna"
+    },
+    "hubben": {
+        "homepage": "https://vasakronan.foodbycoor.se/hubben",
+        "menuUrl": "https://vasakronan.foodbycoor.se/hubben/restaurangen/restaurangens-meny",
+        "name": "Restaurang Hubben",
+        "osm": "https://www.openstreetmap.org/#map=18/59.84334/17.64074",
+        "region": "Uppsala"
+    },
+    "jons": {
+        "homepage": "http://gastrogate.com/restaurang/jonsjacob/",
+        "menuUrl": "https://jonsjacob.gastrogate.com/lunch/",
+        "name": "J\u00f6ns Jacob ",
+        "osm": "https://www.openstreetmap.org/#map=19/59.34673/18.02465",
+        "region": "Solna"
+    },
+    "jorpes": {
+        "homepage": "https://restaurang-ns.ki.se/cafe-erik-jorpes/",
+        "menuUrl": "https://restaurang-ns.ki.se/cafe-erik-jorpes/",
+        "name": "Caf\u00e9 Erik Jorpes",
+        "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02721",
+        "region": "Solna"
+    },
+    "livet": {
+        "homepage": "https://www.livetbrand.com/har-finns-livet/stockholm-solna/livet-restaurant-solna/",
+        "menuUrl": "https://www.livetbrand.com/har-finns-livet/stockholm-solna/livet-restaurant-solna/",
+        "name": "Livet [Restaurant]",
+        "osm": "https://www.openstreetmap.org/#map=19/59.34853/18.02989",
+        "region": "Solna"
+    },
+    "nanna": {
+        "homepage": "http://restaurang-ns.ki.se/restaurang-nanna-svartz/",
+        "menuUrl": "http://restaurang-ns.ki.se/restaurang-nanna-svartz/",
+        "name": "Restaurang Nanna Svartz",
+        "osm": "https://www.openstreetmap.org/#map=19/59.34848/18.02807",
+        "region": "Solna"
+    },
+    "rudbeck": {
+        "homepage": "https://www.compass-group.se/MatDryck/Restauranger/uppsala/bistro-rudbeck/",
+        "menuUrl": "https://eurest.mashie.com/public/menu/restaurang+kannan/cb061efe?country=se",
+        "name": "Bistro Rudbeck",
+        "osm": "https://www.openstreetmap.org/#map=19/59.84518/17.63968",
+        "region": "Uppsala"
+    },
+    "svarta": {
+        "homepage": "https://restaurang-ns.ki.se/svarta-rafven/",
+        "menuUrl": "https://restaurang-ns.ki.se/svarta-rafven/",
+        "name": "Svarta R\u00e4fven",
+        "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02804",
+        "region": "Solna"
+    },
+    "tallrik": {
+        "homepage": "https://www.compass-group.se/MatDryck/Restauranger/uppsala/tallriket/",
+        "menuUrl": "https://eurest.mashie.com/public/menu/ulls+restaurang/f2caeaeb?country=se",
+        "name": "Tallriket",
+        "osm": "https://www.openstreetmap.org/#map=19/59.84248/17.64046",
+        "region": "Uppsala"
+    }
+}

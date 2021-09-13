@@ -31,6 +31,7 @@
 Main script for choosing what restaurant parsers to use.
 """
 
+import json
 import os
 import sys
 
@@ -46,15 +47,7 @@ def read_restaurants(intext):
     Read a tsv file with the columns:
     [0] campus [1] identifier [2] Name [3] URL [4] Menu URL [5] OSM URL
     """
-    restaurants = {}
-    col_names = ("campus", "identifier", "name", "url", "menu_url", "osm")
-    for line in intext.split("\n"):
-        if not line or line[0] == "#":
-            continue
-        cols = line.rstrip().split("\t")
-        values = dict(zip(col_names, cols))
-        restaurants[values["identifier"]] = values
-    return restaurants
+    return json.loads(open("restaurants.json").read())
 
 
 REST_DATA = read_restaurants(open(REST_FILENAME).read())
