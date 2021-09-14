@@ -2,7 +2,7 @@ FROM python:alpine
 
 RUN mkdir /code
 COPY ./backend/requirements.txt /code/
-COPY ./backend/restaurants.txt /code/
+COPY ./backend/restaurants.json /code/
 WORKDIR /code
 
 RUN pip install -r requirements.txt
