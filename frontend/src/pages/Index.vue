@@ -107,10 +107,10 @@ export default {
 
         if (this.$route.path !== '/') {
           if (['/solna', '/ki'].includes(this.$route.path)) {
-            current = current.filter((value) => value.campus === 'Solna');
+            current = current.filter((value) => value.region === 'Solna');
           }
           if (['/uu', 'uppsala'].includes(this.$route.path)) {
-            current = current.filter((value) => value.campus === 'Uppsala');
+            current = current.filter((value) => value.region === 'Uppsala');
           }
         }
         else {
@@ -119,17 +119,17 @@ export default {
           }
           else {
             if (!this.showSolna) {
-              current = current.filter((value) => value.campus !== 'Solna');
+              current = current.filter((value) => value.region !== 'Solna');
             }
             if (!this.showUppsala) {
-              current = current.filter((value) => value.campus !== 'Uppsala');
+              current = current.filter((value) => value.region !== 'Uppsala');
             }
           }
         }
         current = current.sort((a,b) => {
-          if (a.campus > b.campus)
+          if (a.region > b.region)
             return 1;
-          if (a.campus < b.campus)
+          if (a.region < b.region)
             return -1;
           return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
         });
