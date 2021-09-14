@@ -52,9 +52,9 @@ To add a new restaurant:
 - [Frontend](https://menu.dckube.scilifelab.se/)
 
 
-## Containers:
+## Docker Images:
 
-Dockerfiles are available in the `k8s` folder.
+Dockerfiles are available in the `Dockerfiles` folder.
 
 - [Backend](https://hub.docker.com/repository/docker/scilifelabdatacentre/menu-backend)
 - [Frontend hosted in nginx](https://hub.docker.com/repository/docker/scilifelabdatacentre/menu-frontend)
