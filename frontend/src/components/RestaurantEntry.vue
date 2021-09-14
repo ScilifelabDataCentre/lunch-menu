@@ -9,7 +9,7 @@
                  no-wrap
                  text-color="info"
                  type="a"
-                 :href="restaurantBase.menu_url"
+                 :href="restaurantBase.homepage"
                  :label="restaurantBase.name" />
 	  <q-space />
 
