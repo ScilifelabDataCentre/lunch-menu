@@ -21,3 +21,7 @@ export function onlyFavourites (state) {
 export function favourites (state) {
   return state.favourites;
 }
+
+export function currentRegion (state) {
+  return state.currentRegion;
+}

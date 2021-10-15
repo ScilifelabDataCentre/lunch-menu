@@ -44,6 +44,10 @@ export function setOnlyFavourites ({ commit }, status) {
   commit('updateOnlyFavourites', status);
 }
 
+export function setRegion ({ commit }, value) {
+  commit('updateRegion', value);
+}
+
 
 // expects payload to be {'restaurant': name, 'favourite': state}
 export function setFavourite ({ commit }, payload) {

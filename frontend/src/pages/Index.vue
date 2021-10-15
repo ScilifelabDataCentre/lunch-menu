@@ -1,141 +1,59 @@
 <template>
 <q-page class="justify-center">
-  <q-toolbar v-if="$route.path === '/'"
-             class="justify-center text-primary">
-    <q-toggle v-model="onlyFavourites">
-      <span class="text-info">Favourites</span>
-    </q-toggle>
-
-    <q-toggle v-if="!onlyFavourites"
-              color="secondary"
-              v-model="showSolna">
-      <span class="text-info">Solna</span>
-    </q-toggle>
-    <q-toggle v-else
-              color="accent"
-              v-model="constTrue"
-              disable>
-      <span class="text-info">Solna</span>
-    </q-toggle>
-
-    <q-toggle v-if="!onlyFavourites"
-              color="secondary"
-              v-model="showUppsala">
-      <span class="text-info">Uppsala</span>
-    </q-toggle>
-
-    <q-toggle v-else
-              color="accent"
-              v-model="constTrue"
-              disable>
-      <span class="text-info">Uppsala</span>
-    </q-toggle>
-
-  </q-toolbar>
-
   <div class="flex justify-center">
-    <q-list class="flex-center">
-      <res-entry v-for="restaurant in visibleRestaurants"
-                 :key="restaurant.identifier"
-                 :restaurantBase="restaurant" />
-    </q-list>
-
-    <q-inner-loading :showing="loading">
-      <q-spinner-dots color="primary"
-                      size="2em" />
-    </q-inner-loading>
+    <q-btn-toggle
+    class="q-ma-md"
+    v-model="selectedRegion"
+    toggle-color="info"
+    :options="regionChoices"
+    />
   </div>
+  <menu-map />
+  <menu-list />
 </q-page>
 </template>
 
 <script>
-import RestaurantEntry from 'components/RestaurantEntry.vue'
+import MenuList from 'components/MenuList.vue'
+import MenuMap from 'components/MenuMap.vue'
 
 export default {
   name: 'PageIndex',
   
   components: {
-    'res-entry': RestaurantEntry,
+    'menu-list': MenuList,
+    'menu-map': MenuMap,
   },
-  
+
   computed: {
+    regionChoices: {
+      get () {
+        let regions = [];
+        for (let entry of this.$store.state.main.restaurants)
+          if (!regions.includes(entry.region.toLowerCase()))
+            regions.push(entry.region.toLowerCase())
+        regions = regions.sort()
+        regions.forEach(function (value, i) {
+          regions[i] = {label: value, value: value}
+        });
+        regions.push({icon: 'las la-heart', value: 'favourites'})
+        return regions;
+      }
+    },
+
+    selectedRegion: {
+      get () {
+        return this.$store.state.main.currentRegion
+      },
+      set (newValue) {
+        this.$store.dispatch('main/setRegion', newValue)
+      }
+    },
+
     restaurants: {
       get () {
         return this.$store.state.main.restaurants;
       },
-    },
-
-    showSolna: {
-      get () {
-        return this.$store.state.main.showSolna;
-      },
-      set (val) {
-        this.$store.dispatch('main/setShowSolna', val)
-      }
-
-    },
-
-    showUppsala: {
-      get () {
-        return this.$store.state.main.showUppsala;
-      },
-      set (val) {
-        this.$store.dispatch('main/setShowUppsala', val)
-      }
-
-    },
-
-    favourites: {
-      get () {
-        return this.$store.state.main.favourites;
-      },
-    },
-
-    onlyFavourites: {
-      get () {
-        return this.$store.state.main.onlyFavourites;
-      },
-      set (val) {
-        this.$store.dispatch('main/setOnlyFavourites', val)
-      }
-
-    },
-
-    visibleRestaurants: {
-      get () {
-        let current = JSON.parse(JSON.stringify(this.restaurants));
-
-        if (this.$route.path !== '/') {
-          if (['/solna', '/ki'].includes(this.$route.path)) {
-            current = current.filter((value) => value.region === 'Solna');
-          }
-          if (['/uu', 'uppsala'].includes(this.$route.path)) {
-            current = current.filter((value) => value.region === 'Uppsala');
-          }
-        }
-        else {
-          if (this.onlyFavourites) {
-            current = current.filter((value) => this.favourites.includes(value.identifier));
-          }
-          else {
-            if (!this.showSolna) {
-              current = current.filter((value) => value.region !== 'Solna');
-            }
-            if (!this.showUppsala) {
-              current = current.filter((value) => value.region !== 'Uppsala');
-            }
-          }
-        }
-        current = current.sort((a,b) => {
-          if (a.region > b.region)
-            return 1;
-          if (a.region < b.region)
-            return -1;
-          return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-        });
-
-        return current;
-      }
     },
   },
   

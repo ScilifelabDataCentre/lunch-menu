@@ -17,6 +17,9 @@ export function updateOnlyFavourites (state, payload) {
   state.onlyFavourites = payload;
 }
 
+export function updateRegion (state, payload) {
+  state.currentRegion = payload;
+}
 
 // expects payload to be {'restaurant': name, 'favourite': state}
 export function updateFavourite (state, payload) {

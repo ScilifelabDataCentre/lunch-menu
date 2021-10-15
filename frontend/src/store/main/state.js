@@ -4,6 +4,7 @@ export default function () {
     showSolna: true,
     showUppsala: true,
     onlyFavourites: false,
+    currentRegion: '',
     favourites: [],
   }
 }
