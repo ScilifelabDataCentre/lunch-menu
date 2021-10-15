@@ -13,15 +13,6 @@
                  :label="restaurantBase.name" />
 	  <q-space />
 
-          <q-btn flat
-		 dense
-                 round
-                 text-color="info"
-                 type="a"
-                 :href="restaurantBase.osm">
-            <q-icon name="las la-map" />
-          </q-btn>
-
           <q-btn @click="setFavourite"
 		 flat
 		 dense
