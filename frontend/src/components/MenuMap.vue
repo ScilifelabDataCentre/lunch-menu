@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <div ref="map-root" style="width: 95%; height: 40vh; max-width: 100em; max-height: 80em">
+    <div ref="map-root" style="width: 100%; height: 60vh; max-height: 80em">
     </div>
   </div>
 </template>

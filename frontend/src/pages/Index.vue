@@ -6,17 +6,19 @@
                   toggle-color="info"
                   :options="regionChoices" />
   </div>
-  <div class="flex justify-center">
-    <q-toggle left-label
-              label="Area map"
-              :icon="showMap ? 'las la-eye' : 'las la-eye-slash'"
-              v-model="showMap" />
+  <div v-if="selectedRegion != 'favourites'">
+    <div class="flex justify-center">
+      <q-toggle left-label
+                label="Area map"
+                :icon="showMap ? 'las la-eye' : 'las la-eye-slash'"
+                v-model="showMap" />
+    </div>
+    <q-card class="q-my-lg q-mx-md">
+      <q-slide-transition>
+        <menu-map v-if="showMap" />
+      </q-slide-transition>
+    </q-card>
   </div>
-  <q-card class="q-my-lg">
-    <q-slide-transition>
-      <menu-map v-show="showMap" />
-    </q-slide-transition>
-  </q-card>
   <menu-list />
 </q-page>
 </template>
