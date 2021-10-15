@@ -29,25 +29,13 @@ export function getRestaurant ({ commit }, identifier) {
   });
 }
 
-
-export function setShowSolna ({ commit }, status) {
-  commit('updateSolna', status);
-}
-
-
-export function setShowUppsala ({ commit }, status) {
-  commit('updateUppsala', status);
-}
-
-
-export function setOnlyFavourites ({ commit }, status) {
-  commit('updateOnlyFavourites', status);
-}
-
 export function setRegion ({ commit }, value) {
   commit('updateRegion', value);
 }
 
+export function setShowMap ({ commit }, value) {
+  commit('updateShowMap', value);
+}
 
 // expects payload to be {'restaurant': name, 'favourite': state}
 export function setFavourite ({ commit }, payload) {

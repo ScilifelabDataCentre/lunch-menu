@@ -2,23 +2,12 @@ export function updateRestaurants (state, payload) {
   state.restaurants = payload;
 }
 
-
-export function updateSolna (state, payload) {
-  state.showSolna = payload;
-}
-
-
-export function updateUppsala (state, payload) {
-  state.showUppsala = payload;
-}
-
-
-export function updateOnlyFavourites (state, payload) {
-  state.onlyFavourites = payload;
-}
-
 export function updateRegion (state, payload) {
   state.currentRegion = payload;
+}
+
+export function updateShowMap (state, payload) {
+  state.showMap = payload;
 }
 
 // expects payload to be {'restaurant': name, 'favourite': state}
