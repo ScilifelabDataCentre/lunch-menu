@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 export function getRestaurants ({ commit }) {
   return new Promise((resolve, reject) => {
     axios
@@ -14,7 +13,6 @@ export function getRestaurants ({ commit }) {
       });
   });
 }
-
 
 export function getRestaurant ({ commit }, identifier) {
   return new Promise((resolve, reject) => {
@@ -40,4 +38,8 @@ export function setShowMap ({ commit }, value) {
 // expects payload to be {'restaurant': name, 'favourite': state}
 export function setFavourite ({ commit }, payload) {
   commit('updateFavourite', payload);
+}
+
+export function updateVisRes ({ commit }) {
+  commit('updateVisRes');
 }

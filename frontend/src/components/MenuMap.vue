@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <div ref="map-root" style="width: 100%; height: 60vh; max-height: 80em">
+    <div ref="map-root" style="width: 100%; height: 50vh; max-height: 50em">
     </div>
     <res-entry v-if="selectedRestaurant.length > 0" :restaurantBase="selectedRestaurantBase" />
   </div>
@@ -45,22 +45,6 @@ export default {
       }
     },
 
-    visibleRestaurants: {
-      get () {
-        let current = JSON.parse(JSON.stringify(this.restaurants));
-        if (this.currentRegion === "favourites") {
-          current = current.filter((entry) => this.favourites.includes(entry.identifier));
-        }
-        else {
-          current = current.filter((value) => value.region.toLowerCase() === this.currentRegion);
-          current = current.sort((a,b) => {
-            return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-          });
-        }
-        return current;
-      }
-    },
-
     showMap: {
       get () {
         return this.$store.state.main.showMap
@@ -70,9 +54,9 @@ export default {
       }
     },
 
-    restaurants: {
+    visibleRestaurants: {
       get () {
-        return this.$store.state.main.restaurants;
+        return this.$store.state.main.visibleRestaurants;
       },
     },
   },
@@ -84,33 +68,21 @@ export default {
   props: {},
 
   methods: {
-    genResLayer() {
-      let features = [];
-      for (let entry of this.restaurants) {
-        features.push(new Feature({
+    updateResSource() {
+      this.resSource.clear()
+      for (let entry of this.visibleRestaurants) {
+        this.resSource.addFeature(new Feature({
           geometry: new Point(fromLonLat([entry.coordinate[1], entry.coordinate[0]])),
           name: entry.identifier,
         }))
       }
-      this.resSource = new Vector({features: features})
-      let layer = new VectorLayer({source: this.resSource,
-                                   style: new Style({
-                                     image: new Icon({
-                                       anchor: [0.5, 64],
-                                       anchorXUnits: 'fraction',
-                                       anchorYUnits: 'pixels',
-                                       src: require('assets/map-marker.png'),
-                                     }),
-                                   })
-                                  });
-      return layer;
     },
 
     handleMapClick(event) {
       let tmp = this.mapObject.getLayers()
       console.log(this.mapObject.getFeaturesAtPixel(event.pixel, {hitTolerance: 20}))
       this.selectedRestaurant = ''
-      this.mapObject.forEachFeatureAtPixel(event.pixel, updateSelectedRes);
+      this.mapObject.forEachFeatureAtPixel(event.pixel, this.updateSelectedRes);
     },
 
     updateSelectedRes(feature, layer) {
@@ -120,15 +92,9 @@ export default {
   },
   
   watch: {
-    restaurants() {
-      let layer = this.genResLayer()
-      this.mapObject.addLayer(layer);
-      this.mapObject.updateSize();
-      this.mapObject.renderSync();
-    },
-    
-    region() {
-      
+    visibleRestaurants() {
+      this.updateResSource();
+      this.mapObject.getView().fit(this.resSource.getExtent(), {padding: [70, 70, 70, 70]});
     },
   }, 
   
@@ -147,12 +113,22 @@ export default {
     this.mapObject = new Map({
       target: this.$refs['map-root'],
       layers: [ new TileLayer({ source: new OSM() }) ],
-      view: new View({zoom: 17, center: this.solnaCenter})
     })
-    let layer = this.genResLayer()
+    this.resSource = new Vector({features: []});
+    this.updateResSource();
+    let layer = new VectorLayer({source: this.resSource,
+                                 style: new Style({
+                                   image: new Icon({
+                                     anchor: [0.5, 50],
+                                     anchorXUnits: 'fraction',
+                                     anchorYUnits: 'pixels',
+                                     src: require('assets/map-marker.png'),
+                                   })
+                                 })
+                                });
 
     this.mapObject.addLayer(layer);
-    
+    this.mapObject.getView().fit(this.resSource.getExtent(), {padding: [70, 70, 70, 70]});
     this.mapObject.on('click', this.handleMapClick);
     this.mapObject.updateSize();
     this.mapObject.renderSync();

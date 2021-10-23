@@ -46,17 +46,7 @@ export default {
 
     visibleRestaurants: {
       get () {
-        let current = JSON.parse(JSON.stringify(this.restaurants));
-        if (this.currentRegion === "favourites") {
-          current = current.filter((entry) => this.favourites.includes(entry.identifier));
-        }
-        else {
-          current = current.filter((value) => value.region.toLowerCase() === this.currentRegion);
-          current = current.sort((a,b) => {
-            return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
-          });
-        }
-        return current;
+        return this.$store.state.main.visibleRestaurants;
       }
     },
   },

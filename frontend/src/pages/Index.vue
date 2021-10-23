@@ -57,6 +57,7 @@ export default {
       },
       set (newValue) {
         this.$store.dispatch('main/setRegion', newValue)
+          .then(this.$store.dispatch('main/updateVisRes'));
       }
     },
 
@@ -87,6 +88,7 @@ export default {
   created () {
     this.$store.dispatch('main/getRestaurants')
       .then(() => this.loading = false);
+    this.$store.dispatch('main/updateVisRes');
   }
 }
 </script>

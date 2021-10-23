@@ -2,6 +2,10 @@ export function restaurants (state) {
   return state.restaurants;
 }                  
 
+export function visibleRestaurants (state) {
+  return state.visibleRestaurants;
+}                  
+
 
 export function showSolna (state) {
   return state.showSolna;
