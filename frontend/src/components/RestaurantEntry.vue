@@ -1,49 +1,45 @@
 <template>
-<q-item>
-  <q-item-section>
-    <q-card>
-      <q-card-section>
-        <div class="row">
-          <q-btn flat
-                 dense
-                 no-wrap
-                 text-color="info"
-                 type="a"
-                 :href="restaurantBase.homepage"
-                 :label="restaurantBase.name" />
-	  <q-space />
-
-          <q-btn @click="setFavourite"
-		 flat
-		 dense
-		 round
-		 color="white"
-		 text-color="info"
-		 :icon="isFavourite ? 'las la-heart' : 'lar la-heart'" />
-        </div>
-        <div v-if="loading"
-             class="flex justify-center">
-          <q-spinner-dots 
-            color="info"
-            size="2em"
-            />
-        </div>
-        <div v-else-if="failed"
-             class="justify-center">
-          <q-avatar text-color="negative" icon="error" />
-          Failed to retrieve data for {{ restaurantBase.name }}
-        </div>
-        <q-list v-else>
-          <q-item
-                  v-for="menuEntry in restaurantData.menu"
-                  :key="menuEntry['dish']">
-            {{ menuEntry['dish'] }}
-          </q-item>
-        </q-list>
-      </q-card-section>
-    </q-card>
-  </q-item-section>
-</q-item>
+<q-card>
+  <q-card-section>
+    <div class="row">
+      <q-btn flat
+             dense
+             no-wrap
+             text-color="info"
+             type="a"
+             :href="restaurantBase.homepage"
+             :label="restaurantBase.name" />
+      <q-space />
+      
+      <q-btn @click="setFavourite"
+	     flat
+	     dense
+	     round
+	     color="white"
+	     text-color="info"
+	     :icon="isFavourite ? 'las la-heart' : 'lar la-heart'" />
+    </div>
+    <div v-if="loading"
+         class="flex justify-center">
+      <q-spinner-dots 
+        color="info"
+        size="2em"
+        />
+    </div>
+    <div v-else-if="failed"
+         class="justify-center">
+      <q-avatar text-color="negative" icon="error" />
+      Failed to retrieve data for {{ restaurantBase.name }}
+    </div>
+    <q-list v-else>
+      <q-item
+        v-for="menuEntry in restaurantData.menu"
+        :key="menuEntry['dish']">
+        {{ menuEntry['dish'] }}
+      </q-item>
+    </q-list>
+  </q-card-section>
+</q-card>
 </template>
 
 <script>

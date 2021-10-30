@@ -2,9 +2,12 @@
 <div class="justify-center">
   <div class="flex justify-center">
     <q-list class="flex-center">
-      <res-entry v-for="restaurant in visibleRestaurants"
-                 :key="restaurant.identifier"
-                 :restaurantBase="restaurant" />
+      <q-item v-for="restaurant in visibleRestaurants"
+              :key="restaurant.identifier">
+        <q-item-section>
+          <res-entry :restaurantBase="restaurant" />
+        </q-item-section>
+      </q-item>
     </q-list>
 
     <q-inner-loading :showing="loading">
