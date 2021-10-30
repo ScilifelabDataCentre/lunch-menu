@@ -2,7 +2,9 @@
   <div class="flex justify-center">
     <div ref="map-root" style="width: 100%; height: 50vh; max-height: 50em">
     </div>
-    <res-entry v-if="selectedRestaurant.length > 0" :restaurantBase="selectedRestaurantBase" />
+    <res-entry v-if="selectedRestaurant.length > 0"
+               class="q-my-md bg-green-13"
+               :restaurantBase="selectedRestaurantBase" />
   </div>
 </template>
 
@@ -26,6 +28,12 @@ export default {
   name: 'MenuMap',
 
   computed: {
+    restaurants: {
+      get () {
+        return this.$store.state.main.restaurants;
+      },
+    },
+
     selectedRegion: {
       get () {
         return this.$store.state.main.currentRegion
@@ -37,8 +45,8 @@ export default {
 
     selectedRestaurantBase: {
       get () {
-        for (entry of this.restaurants) {
-          if (entry.identifier == this.selectedRestaurant)
+        for (let entry of this.restaurants) {
+          if (entry.identifier === this.selectedRestaurant)
             return entry
         }
         return {}
@@ -79,16 +87,26 @@ export default {
     },
 
     handleMapClick(event) {
-      let tmp = this.mapObject.getLayers()
-      console.log(this.mapObject.getFeaturesAtPixel(event.pixel, {hitTolerance: 20}))
-      this.selectedRestaurant = ''
-      this.mapObject.forEachFeatureAtPixel(event.pixel, this.updateSelectedRes);
+      let res = this.resSource.getClosestFeatureToCoordinate(event.coordinate)
+      res.setStyle(new Style({
+        image: new Icon({
+          anchor: [0.5, 50],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: require('assets/map-marker-solid-sel.png'),
+        })
+      }))
+      if (this.currRes !== null)
+        this.currRes.setStyle(undefined)
+      this.currRes = res
+      console.log(event)
+      console.log(event.target.getFeaturesAtPixel(event.pixel))
+      console.log(this.mapObject.getFeaturesAtPixel(event.pixel, { hitTolerance: 10 }))
+      if (res === null)
+        this.selectedRestaurant = '';
+      else
+        this.selectedRestaurant = res.get('name')
     },
-
-    updateSelectedRes(feature, layer) {
-      console.log('inside')
-      this.selectedRestaurant = feature.get('name');
-    }
   },
   
   watch: {
@@ -105,6 +123,7 @@ export default {
       uppsalaCenter: fromLonLat([17.63807, 59.84353]),
       mapObject: null,
       selectedRestaurant: '',
+      currRes: null,
       resSource: {},
     }
   },
@@ -122,7 +141,7 @@ export default {
                                      anchor: [0.5, 50],
                                      anchorXUnits: 'fraction',
                                      anchorYUnits: 'pixels',
-                                     src: require('assets/map-marker.png'),
+                                     src: require('assets/map-marker-solid.png'),
                                    })
                                  })
                                 });
