@@ -11,7 +11,7 @@
              :label="restaurantBase.name" />
       <q-space />
       
-      <q-btn @click="setFavourite"
+      <q-btn @click="isFavourite = !isFavourite"
 	     flat
 	     dense
 	     round
@@ -54,6 +54,32 @@ export default {
         return this.$store.state.main.favourites;
       },
     },
+    isFavourite: {
+      get () {
+        return this.favourites.includes(this.restaurantBase.identifier);
+      },
+      set (value) {
+        console.log('trigger')
+        this.$store.dispatch('main/setFavourite', {
+          'favourite': value,
+          'restaurant': this.restaurantBase.identifier
+        });
+      }
+    }
+  },
+
+  watch: {
+    restaurantBase() {
+      this.$store.dispatch('main/getRestaurant', this.restaurantBase.identifier)
+        .then((response) => {
+          this.restaurantData = response.data.restaurant;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.failed = true;
+        });
+    },
   },
 
   data () {
@@ -61,22 +87,11 @@ export default {
       dishes: null,
       loading: true,
       failed: false,
-      isFavourite: false,
       restaurantData: {},
     }
   },
-
-  methods: {
-    setFavourite () {
-      this.isFavourite = !this.isFavourite;
-      this.$store.dispatch('main/setFavourite', {
-        'favourite': this.isFavourite,
-        'restaurant': this.restaurantBase.identifier
-      });
-    }
-  },
   
-  created () {
+  mounted () {
     this.isFavourite = this.favourites.includes(this.restaurantBase.identifier);
     this.$store.dispatch('main/getRestaurant', this.restaurantBase.identifier)
       .then((response) => {
