@@ -19,6 +19,7 @@ import Feature from 'ol/Feature'
 import Point from 'ol/geom/Point'
 import {fromLonLat} from 'ol/proj'
 import {Icon, Style} from 'ol/style';
+import {getDistance} from 'ol/sphere';
 
 import 'ol/ol.css'
 
@@ -26,14 +27,14 @@ import RestaurantEntry from 'components/RestaurantEntry.vue'
 
 export default {
   name: 'MenuMap',
-
+  
   computed: {
     restaurants: {
       get () {
         return this.$store.state.main.restaurants;
       },
     },
-
+    
     selectedRegion: {
       get () {
         return this.$store.state.main.currentRegion
@@ -42,7 +43,7 @@ export default {
         this.$store.dispatch('main/setRegion', newValue)
       }
     },
-
+    
     selectedRestaurantBase: {
       get () {
         for (let entry of this.restaurants) {
@@ -52,7 +53,7 @@ export default {
         return {}
       }
     },
-
+    
     showMap: {
       get () {
         return this.$store.state.main.showMap
@@ -61,7 +62,7 @@ export default {
         this.$store.dispatch('main/setShowMap', newValue)
       }
     },
-
+    
     visibleRestaurants: {
       get () {
         return this.$store.state.main.visibleRestaurants;
@@ -72,9 +73,9 @@ export default {
   components: {
     'res-entry': RestaurantEntry,
   },
-
+  
   props: {},
-
+  
   methods: {
     updateResSource() {
       this.resSource.clear()
@@ -85,32 +86,32 @@ export default {
         }))
       }
     },
-
+    
     handleMapClick(event) {
       let res = this.resSource.getClosestFeatureToCoordinate(event.coordinate)
-      res.setStyle(new Style({
-        image: new Icon({
-          anchor: [0.5, 50],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'pixels',
-          src: require('assets/map-marker-solid-sel.png'),
-        })
-      }))
       if (this.currRes !== null)
         this.currRes.setStyle(undefined)
       this.currRes = res
-      console.log(event)
-      console.log(event.target.getFeaturesAtPixel(event.pixel))
-      console.log(this.mapObject.getFeaturesAtPixel(event.pixel, { hitTolerance: 10 }))
-      if (res === null)
-        this.selectedRestaurant = '';
-      else
+      if (this.currRes !== null) {
+        this.currRes.setStyle(new Style({
+          image: new Icon({
+            anchor: [0.5, 50],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',
+            src: require('assets/map-marker-solid-sel.png'),
+          })
+        }))
         this.selectedRestaurant = res.get('name')
+      }
+      else
+        this.selectedRestaurant = '';
     },
   },
   
   watch: {
     visibleRestaurants() {
+      this.selectedRestaurant = '',
+      this.currRes = null;
       this.updateResSource();
       this.mapObject.getView().fit(this.resSource.getExtent(), {padding: [70, 70, 70, 70]});
     },
