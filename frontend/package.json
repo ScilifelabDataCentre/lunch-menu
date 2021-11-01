@@ -1,7 +1,7 @@
 {
   "name": "menu-aggregator",
   "version": "0.0.1",
-  "description": "Frontend for a lunch menu aggregator for restaurants near the Solna and BMC campuses",
+  "description": "Lunch menu aggregator for restaurants near SciLifeLab",
   "productName": "SciLifeLab Menu Aggregator",
   "author": "Linus Östberg <linus.ostberg@scilifelab.uu.se>",
   "private": true,
