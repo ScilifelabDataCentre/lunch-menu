@@ -3,7 +3,7 @@
     <div ref="map-root" style="width: 100%; height: 50vh; max-height: 50em">
     </div>
     <res-entry v-if="selectedRestaurant.length > 0"
-               class="q-my-md bg-green-13"
+               :class="$q.dark.isActive ? 'q-my-md bg-grey-9' : 'q-my-md bg-green-13'"
                :restaurantBase="selectedRestaurantBase" />
   </div>
 </template>
