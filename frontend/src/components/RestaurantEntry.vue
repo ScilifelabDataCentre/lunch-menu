@@ -8,6 +8,7 @@
              text-color="info"
              type="a"
              :href="restaurantBase.homepage"
+             icon-right="las la-external-link-alt"
              :label="restaurantBase.name" />
       <q-space />
       
@@ -59,7 +60,6 @@ export default {
         return this.favourites.includes(this.restaurantBase.identifier);
       },
       set (value) {
-        console.log('trigger')
         this.$store.dispatch('main/setFavourite', {
           'favourite': value,
           'restaurant': this.restaurantBase.identifier
