@@ -3,8 +3,14 @@
     <div ref="map-root" style="width: 100%; height: 50vh; max-height: 50em">
     </div>
     <res-entry v-if="selectedRestaurant.length > 0"
-               :class="$q.dark.isActive ? 'q-my-md bg-grey-9' : 'q-my-md bg-green-13'"
+               class="q-my-md"
                :restaurantBase="selectedRestaurantBase" />
+    <q-card v-else
+            class="q-my-md">
+      <q-card-section class="text-center text-weight-medium">
+        Click a marker to show information about the restaurant
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
