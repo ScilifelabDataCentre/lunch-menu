@@ -31,8 +31,8 @@ export function setRegion ({ commit }, value) {
   commit('updateRegion', value);
 }
 
-export function setShowMap ({ commit }, value) {
-  commit('updateShowMap', value);
+export function setShowMapList ({ commit }, value) {
+  commit('updateShowMapList', value);
 }
 
 // expects payload to be {'restaurant': name, 'favourite': state}

@@ -29,3 +29,7 @@ export function favourites (state) {
 export function currentRegion (state) {
   return state.currentRegion;
 }
+
+export function showMapList (state) {
+  return state.showMapList;
+}

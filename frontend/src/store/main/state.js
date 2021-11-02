@@ -5,5 +5,6 @@ export default function () {
     showMap: true,
     currentRegion: 'solna',
     favourites: [],
+    showMapList: 'map',
   }
 }

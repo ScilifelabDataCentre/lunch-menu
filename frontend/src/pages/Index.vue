@@ -8,18 +8,27 @@
   </div>
   <div v-if="selectedRegion != 'favourites'">
     <div class="flex justify-center">
-      <q-toggle left-label
-                label="Area map"
-                :icon="showMap ? 'las la-eye' : 'las la-eye-slash'"
-                v-model="showMap" />
+      <q-btn-toggle
+        v-model="showMapList"
+        rounded
+        unelevated
+        toggle-color="primary"
+        color="white"
+        text-color="primary"
+        :options="[
+          {label: 'Map', value: 'map'},
+          {label: 'List', value: 'list'}
+          ]"
+        />
     </div>
-    <div class="q-my-lg q-mx-md">
-      <q-slide-transition>
-        <menu-map v-if="showMap" />
-      </q-slide-transition>
+    <div v-if="showMapList === 'map'" class="q-my-lg q-mx-md">
+      <menu-map />
+    </div>
+    <div v-show="showMapList === 'list'" class="q-my-lg q-mx-md">
+      <menu-list />
     </div>
   </div>
-  <menu-list />
+  <menu-list v-else/>
 </q-page>
 </template>
 
@@ -61,12 +70,12 @@ export default {
       }
     },
 
-    showMap: {
+    showMapList: {
       get () {
-        return this.$store.state.main.showMap
+        return this.$store.state.main.showMapList
       },
       set (newValue) {
-        this.$store.dispatch('main/setShowMap', newValue)
+        this.$store.dispatch('main/setShowMapList', newValue)
       }
     },
 

@@ -6,8 +6,8 @@ export function updateRegion (state, payload) {
   state.currentRegion = payload;
 }
 
-export function updateShowMap (state, payload) {
-  state.showMap = payload;
+export function updateShowMapList (state, payload) {
+  state.showMapList = payload;
 }
 
 export function updateVisRes (state) {
