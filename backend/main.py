@@ -49,8 +49,6 @@ def read_restaurants(intext: str) -> dict:
         intext(str): The text loaded from the restaurants file.
     """
     data = json.loads(intext)
-    for entry in data:
-        data[entry]["identifier"] = entry
     return data
 
 REST_DATA = read_restaurants(open(REST_FILENAME).read())
