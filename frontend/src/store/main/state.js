@@ -1,9 +1,10 @@
 export default function () {
   return {
     restaurants: [],
-    showSolna: true,
-    showUppsala: true,
-    onlyFavourites: false,
+    visibleRestaurants: [],
+    showMap: true,
+    currentRegion: 'solna',
     favourites: [],
+    showMapList: 'map',
   }
 }

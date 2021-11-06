@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-
 export function getRestaurants ({ commit }) {
   return new Promise((resolve, reject) => {
     axios
       .get('/api/restaurant')
       .then((response) => {
         commit('updateRestaurants', response.data.restaurants);
+        commit('updateVisRes', response.data.restaurants);
         resolve(response);
       })
       .catch((err) => {
@@ -14,7 +14,6 @@ export function getRestaurants ({ commit }) {
       });
   });
 }
-
 
 export function getRestaurant ({ commit }, identifier) {
   return new Promise((resolve, reject) => {
@@ -29,23 +28,19 @@ export function getRestaurant ({ commit }, identifier) {
   });
 }
 
-
-export function setShowSolna ({ commit }, status) {
-  commit('updateSolna', status);
+export function setRegion ({ commit }, value) {
+  commit('updateRegion', value);
 }
 
-
-export function setShowUppsala ({ commit }, status) {
-  commit('updateUppsala', status);
+export function setShowMapList ({ commit }, value) {
+  commit('updateShowMapList', value);
 }
-
-
-export function setOnlyFavourites ({ commit }, status) {
-  commit('updateOnlyFavourites', status);
-}
-
 
 // expects payload to be {'restaurant': name, 'favourite': state}
 export function setFavourite ({ commit }, payload) {
   commit('updateFavourite', payload);
+}
+
+export function updateVisRes ({ commit }) {
+  commit('updateVisRes');
 }
