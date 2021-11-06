@@ -119,19 +119,19 @@ export default {
       this.selectedRestaurant = '',
       this.currRes = null;
       this.updateResSource();
-      this.mapObject.getView().fit(this.resSource.getExtent(), {padding: [70, 70, 70, 70]});
+      if (this.resSource.getFeatures().length > 0)
+        this.mapObject.getView().fit(this.resSource.getExtent(), {padding: [70, 70, 70, 70]});
+      else
+      this.mapObject.setView(new View({center: fromLonLat([18.02588, 59.34864]), zoom:15}))
     },
   }, 
   
   data () {
     return {
-      coordinates: [],
-      solnaCenter: fromLonLat([18.02588, 59.34864]),
-      uppsalaCenter: fromLonLat([17.63807, 59.84353]),
       mapObject: null,
       selectedRestaurant: '',
       currRes: null,
-      resSource: {},
+      resSource: null,
     }
   },
 
@@ -139,6 +139,7 @@ export default {
     this.mapObject = new Map({
       target: this.$refs['map-root'],
       layers: [ new TileLayer({ source: new OSM() }) ],
+      view: new View({center: fromLonLat([18.02588, 59.34864]), zoom:15})
     })
     this.resSource = new Vector({features: []});
     this.updateResSource();
@@ -154,10 +155,10 @@ export default {
                                 });
 
     this.mapObject.addLayer(layer);
-    this.mapObject.getView().fit(this.resSource.getExtent(), {padding: [70, 70, 70, 70]});
+    if (this.resSource.getFeatures().length > 0) {
+      this.mapObject.getView().fit(this.resSource.getExtent(), {padding: [70, 70, 70, 70]});
+    }
     this.mapObject.on('click', this.handleMapClick);
-    this.mapObject.updateSize();
-    this.mapObject.renderSync();
   },
 }
 </script>
