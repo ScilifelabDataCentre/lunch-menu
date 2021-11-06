@@ -6,6 +6,7 @@ export function getRestaurants ({ commit }) {
       .get('/api/restaurant')
       .then((response) => {
         commit('updateRestaurants', response.data.restaurants);
+        commit('updateVisRes', response.data.restaurants);
         resolve(response);
       })
       .catch((err) => {
