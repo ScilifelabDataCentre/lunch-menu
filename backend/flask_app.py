@@ -31,7 +31,7 @@ def list_restaurants():
 def get_restaurant(name):
     data = dict(main.get_restaurant(name))
     if not data:
-        abort(status=404)
+        flask.abort(status=404)
     data["menu"] = [{"dish": entry} for entry in data["menu"]]
     return flask.jsonify({"restaurant": data,
                     "url": flask.url_for("get_restaurant", name=name, _external=True)})
