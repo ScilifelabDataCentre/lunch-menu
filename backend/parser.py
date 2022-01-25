@@ -375,12 +375,14 @@ def parse_rudbeck(res_data):
     data = {"menu": []}
     soup = get_parser(res_data["menuUrl"])
 
-    days = soup.find_all("div", {"class": "container-fluid no-print"})
-    day = days[get_weekdigit()]
-    dishes = day.find_all("span")[3:]
-    for dish in dishes:
-        data["menu"].append(dish.get_text().strip())
+    menu_part = soup.find("div", {"class": "menu-item " + get_weekday(lang="en")})
 
+    for entry in menu_part.find_all("p"):
+        if "class" not in entry.attrs:
+            text = entry.text.strip()
+            if text[0] == '-':
+                text = text[1:].lstrip()
+            data["menu"].append(text)
     return data
 
 
