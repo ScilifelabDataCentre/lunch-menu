@@ -14,13 +14,15 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "ol": "^6.7.0",
-    "quasar": "^2.3.0",
+    "quasar": "^2.5.1",
+    "vue": "^3.2.29",
+    "vue-router": "^4.0.12",
     "vuex": "^4.0.1",
     "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app": "^3.1.10",
+    "@quasar/app": "^3.3.2",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.0.0",
