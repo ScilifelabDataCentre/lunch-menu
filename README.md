@@ -42,13 +42,13 @@ To add a new restaurant:
 
 ## Supported endpoints in the flask application:
 
-- `/restaurant/` (json): List all supported restaurants
-- `/restaurant/<identifier>/` (json): Retrieve menu for a restaurant (identifier can be obtained from the above request).
+- `/restaurant` (json): List all supported restaurants
+- `/restaurant/<identifier>` (json): Retrieve menu for a restaurant (identifier can be obtained from the above request).
 
 
 ## Hosted versions:
 
-- [Backend](https://menu.dckube.scilifelab.se/api/)
+- [Backend](https://menu.dckube.scilifelab.se/api)
 - [Frontend](https://menu.dckube.scilifelab.se/)
 
 
