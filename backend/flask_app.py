@@ -3,7 +3,7 @@ import os
 import flask
 import flask_caching
 import flask_cors
-import werkzeug.middleware.proxy_fix
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 import main
 import slack
@@ -13,7 +13,7 @@ cache = flask_caching.Cache(app, config={"CACHE_TYPE": "simple"})
 cors = flask_cors.CORS(app, resources={r"/*": {"origins": "*"}})
 
 if os.environ.get("REVERSE_PROXY", False):
-    app.wsgi_app = proxy_fix.ProxyFix(app.wsgi_app)
+    app.wsgi_app = ProxyFix(app.wsgi_app)
 
 app.register_blueprint(slack.blueprint, url_prefix="/api/slack")
 
