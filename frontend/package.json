@@ -10,11 +10,11 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.11.4",
+    "@quasar/extras": "^1.13.4",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "ol": "^6.7.0",
-    "quasar": "^2.5.1",
+    "quasar": "^2.6.2",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.1",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
-    "@quasar/app": "^3.3.2",
+    "@quasar/app": "^3.3.3",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.0.0",
