@@ -27,16 +27,16 @@ jobs:
         id: meta-backend
         uses: docker/metadata-action@v3
         with:
-          images:
-            - scilifelabdatacentre/menu-backend
-            - ghcr.io/scilifelabdatacentre/menu-backend
+          images: |
+            scilifelabdatacentre/menu-backend
+            ghcr.io/scilifelabdatacentre/menu-backend
       - name: Docker meta - frontend
         id: meta-frontend
         uses: docker/metadata-action@v3
         with:
-          images:
-            - scilifelabdatacentre/menu-frontend
-            - ghcr.io/scilifelabdatacentre/menu-frontend
+          images: |
+            scilifelabdatacentre/menu-frontend
+            ghcr.io/scilifelabdatacentre/menu-frontend
       - name: Push backend to Docker Hub
         uses: docker/build-push-action@v2
         with:
