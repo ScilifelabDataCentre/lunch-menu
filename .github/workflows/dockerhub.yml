@@ -18,28 +18,38 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Log in to Docker Hub
+      - name: Log in to Github Container Repository
         uses: docker/login-action@v1
         with:
           username: talavis
           password: ${{ secrets.GHCR_TOKEN }}
-      - id: docker-tag
-        uses: yuya-takeyama/docker-tag-from-github-ref-action@v1
+      - name: Docker meta - backend
+        id: meta-backend
+        uses: docker/metadata-action@v3
+        with:
+          images:
+	    - scilifelabdatacentre/menu-backend
+	    - ghcr.io/scilifelabdatacentre/menu-backend
+      - name: Docker meta - frontend
+        id: meta-frontend
+        uses: docker/metadata-action@v3
+        with:
+          images:
+	    - scilifelabdatacentre/menu-frontend
+	    - ghcr.io/scilifelabdatacentre/menu-frontend
       - name: Push backend to Docker Hub
         uses: docker/build-push-action@v2
         with:
           file: Dockerfiles/Dockerfile.backend
           context: .
           push: true
-          tags: |
-            scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
-            ghcr.io/scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
-      - name: Push frontend to Docker Hub
+          tags: ${{ steps.meta-backend.outputs.tags }}
+          labels: ${{ steps.meta-backend.outputs.labels }}
+      - name: Push backend to Docker Hub
         uses: docker/build-push-action@v2
         with:
           file: Dockerfiles/Dockerfile.frontend
           context: .
           push: true
-          tags: |
-            scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
-            ghcr.io/scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
