@@ -32,8 +32,8 @@ jobs:
           context: .
           push: true
           tags: |
-	    scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
-   	    ghcr.io/scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
+            scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
+            ghcr.io/scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
       - name: Push frontend to Docker Hub
         uses: docker/build-push-action@v2
         with:
@@ -41,5 +41,5 @@ jobs:
           context: .
           push: true
           tags: |
-	    scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
-   	    ghcr.io/scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
+            scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
+            ghcr.io/scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
