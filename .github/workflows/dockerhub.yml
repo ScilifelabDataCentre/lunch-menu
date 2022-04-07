@@ -18,6 +18,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
       - id: docker-tag
         uses: yuya-takeyama/docker-tag-from-github-ref-action@v1
       - name: Push backend to Docker Hub
@@ -26,11 +31,15 @@ jobs:
           file: Dockerfiles/Dockerfile.backend
           context: .
           push: true
-          tags: scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
+          tags: |
+	    scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
+   	    ghcr.io/scilifelabdatacentre/menu-backend:${{ steps.docker-tag.outputs.tag }}
       - name: Push frontend to Docker Hub
         uses: docker/build-push-action@v2
         with:
           file: Dockerfiles/Dockerfile.frontend
           context: .
           push: true
-          tags: scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
+          tags: |
+	    scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
+   	    ghcr.io/scilifelabdatacentre/menu-frontend:${{ steps.docker-tag.outputs.tag }}
