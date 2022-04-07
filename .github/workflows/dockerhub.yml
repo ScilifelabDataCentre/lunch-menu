@@ -21,7 +21,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: ${{ github.repository_owner }}
+          username: talavis
           password: ${{ secrets.GHCR_TOKEN }}
       - id: docker-tag
         uses: yuya-takeyama/docker-tag-from-github-ref-action@v1
