@@ -39,7 +39,7 @@ jobs:
           images: |
             scilifelabdatacentre/menu-frontend
             ghcr.io/scilifelabdatacentre/menu-frontend
-      - name: Push backend to Docker Hub
+      - name: Build and push backend
         uses: docker/build-push-action@v2
         with:
           file: Dockerfiles/Dockerfile.backend
@@ -47,7 +47,7 @@ jobs:
           push: true
           tags: ${{ steps.meta-backend.outputs.tags }}
           labels: ${{ steps.meta-backend.outputs.labels }}
-      - name: Push backend to Docker Hub
+      - name: Build and push frontend
         uses: docker/build-push-action@v2
         with:
           file: Dockerfiles/Dockerfile.frontend
