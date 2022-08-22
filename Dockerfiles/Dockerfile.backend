@@ -1,4 +1,6 @@
-FROM python:alpine
+FROM python:3.10-alpine AS base
+
+RUN apk update && apk upgrade
 
 RUN mkdir /code
 COPY ./backend/requirements.txt /code/
@@ -9,6 +11,12 @@ RUN pip install -r requirements.txt
 RUN pip install gunicorn
 
 COPY ./backend/*.py /code/
+
+FROM base as dev
+
+CMD ["flask", "run", "-h", "0.0.0.0", "--port", "5000"]
+
+FROM base as production
 
 ENV GUNICORN_CMD_ARGS "--bind=0.0.0.0:8000 --workers=2 --thread=4 --worker-class=gthread --forwarded-allow-ips='*' --access-logfile -"
 
