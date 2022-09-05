@@ -1,57 +1,99 @@
+---
+# Build and publish docker image(s)
+# Publishing to Dockerhub requires a username and token
+# as the secrets DOCKERHUB_USERNAME and DOCKERHUB_TOKEN
+# remember to change repo-name and set dockerfile(s)/image name(s) in the matrix
+
 name: Publish Docker Image
 on:
+  # generate image whenever there is a push to the listed branches
   push:
     branches:
       - master
-      - develop
+  # generate images for releases, using the tag name
+  # the newest one will be latest as well
   release:
     types: [published]
 jobs:
   push_to_registry:
-    if: github.repository == 'ScilifelabDataCentre/lunch-menu'
+    # only generate images when in the named repo
+    # (to avoid running the action in forks)
+    if: github.repository == 'scilifelabdatacentre/lunch-menu'
     name: Publish Docker Image
     runs-on: ubuntu-latest
+    # Cancel earlier job if there is a new one for the same branch/release
+    concurrency:
+      group: ${{ github.ref }}-docker-build
+      cancel-in-progress: true
+    # Define the images/tags to build; will run in parallell
+    strategy:
+      matrix:
+        include:
+          - dockerfile: Dockerfiles/Dockerfile.backend
+            images: |
+              docker.io/scilifelabdatacentre/menu-backend
+              ghcr.io/scilifelabdatacentre/menu-backend
+          - dockerfile: Dockerfiles/Dockerfile.frontend
+            images: |
+              docker.io/scilifelabdatacentre/menu-frontend
+              ghcr.io/scilifelabdatacentre/menu-frontend
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      # only needed when publishing to Dockerhub
       - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
+          # available in scilifelabdatacentre, ask admin for help
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # only needed when publishing to Github (ghcr.io)
       - name: Log in to Github Container Repository
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
+          # will run as the user who triggered the action, using its token
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Docker meta - backend
-        id: meta-backend
-        uses: docker/metadata-action@v3
+      - name: Docker Meta
+        id: meta
+        uses: docker/metadata-action@v4
         with:
-          images: |
-            scilifelabdatacentre/menu-backend
-            ghcr.io/scilifelabdatacentre/menu-backend
-      - name: Docker meta - frontend
-        id: meta-frontend
-        uses: docker/metadata-action@v3
+          images: ${{ matrix.images }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+      - name: ensure lowercase name
+        run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+      - name: Build for scan
+        uses: docker/build-push-action@v3
         with:
-          images: |
-            scilifelabdatacentre/menu-frontend
-            ghcr.io/scilifelabdatacentre/menu-frontend
-      - name: Build and push backend
-        uses: docker/build-push-action@v2
+          file: ${{ matrix.dockerfile }}
+          context: .
+          push: false
+          target: production
+          tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.7.1
         with:
-          file: Dockerfiles/Dockerfile.backend
+          image-ref: 'ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}'
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          # Prevent pushing images with known security issues
+          exit-code: '1'
+      - name: Build and Publish
+        uses: docker/build-push-action@v3
+        with:
+          file: ${{ matrix.dockerfile }}
           context: .
           push: true
-          tags: ${{ steps.meta-backend.outputs.tags }}
-          labels: ${{ steps.meta-backend.outputs.labels }}
-      - name: Build and push frontend
-        uses: docker/build-push-action@v2
-        with:
-          file: Dockerfiles/Dockerfile.frontend
-          context: .
-          push: true
-          tags: ${{ steps.meta-frontend.outputs.tags }}
-          labels: ${{ steps.meta-frontend.outputs.labels }}
+          # Set to wanted target, or remove if you do not use targets
+          target: production
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
