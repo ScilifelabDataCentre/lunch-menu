@@ -346,20 +346,17 @@ def parse_nanna(res_data):
     soup = get_parser(res_data["menuUrl"])
 
     menu_part = soup.find("article", {"class": "article"}).find("div", {"class": "text"})
-    if not menu_part.find("h2").find(text=re.compile(r"MATSEDEL V\." + str(get_week()))):
-        return data
 
     day = f"{get_weekday().capitalize()} {str(get_day())} {get_month()}"
     current_day = False
-    for tag in menu_part.find_all(("ul", "strong")):
+    for tag in menu_part.find_all(("p", "strong")):
         if current_day:
-            if tag.name == "strong":
-                break
-            if tag.name == "ul":
-                # Keep only Swedish
-                for entry in tag.children:
-                    if entry.name and next(entry.children).name != "em":
-                        data["menu"].append(entry.text)
+            if subtag := next(tag.children):
+                if subtag.name == "strong":
+                    break
+            # English menu is written in italic
+            if tag.text.strip() and next(tag.children).name != "em":
+                data["menu"].append(tag.text)
         else:
             if tag.name == "strong" and day in tag.text:
                 current_day = True
