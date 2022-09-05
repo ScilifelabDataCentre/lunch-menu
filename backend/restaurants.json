@@ -50,18 +50,6 @@
     },
     {
       "coordinate": [
-        59.34503,
-        18.02406
-      ],
-      "homepage": "http://www.restauranghjulet.se",
-      "identifier": "hjulet",
-      "menuUrl": "http://www.restauranghjulet.se",
-      "name": "Restaurang Hjulet",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34508/18.02423",
-      "region": "Solna"
-    },
-    {
-      "coordinate": [
         59.84346,
         17.64162
       ],
