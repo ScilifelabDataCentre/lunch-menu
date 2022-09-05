@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: Dockerfiles/Dockerfile.backend
+      target: dev
+    environment:
+      FLASK_ENV: development
+      FLASK_APP: flask_app.py
+      TZ: Europe/Stockholm
+    restart: on-failure
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /code/backend
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfiles/Dockerfile.frontend
+      target: dev
+    restart: on-failure
+    environment:
+      VERSION: "dev"
+    ports:
+     - 127.0.0.1:8080:8080
+    volumes:
+      - type: bind
+        source: ./frontend/src
+        target: /code/src
+
+  proxy:
+    image: nginx:alpine
+    ports:
+      - 127.0.0.1:5000:80
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - type: bind
+        source: ./Dockerfiles/nginx.conf.dev
+        target: /etc/nginx/nginx.conf
