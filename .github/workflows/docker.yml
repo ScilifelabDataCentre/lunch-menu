@@ -79,14 +79,6 @@ jobs:
           push: false
           target: production
           tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.7.1
-        with:
-          image-ref: 'ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}'
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
-          # Prevent pushing images with known security issues
-          exit-code: '1'
       - name: Build and Publish
         uses: docker/build-push-action@v3
         with:
