@@ -284,9 +284,7 @@ def parse_hubben(res_data):
 
     days = soup.find_all("div", {"class": "day"})
     current = days[get_weekdigit()]
-    dishes = current.find_all(
-        "div", {"class": "element description col-md-4 col-print-5"}
-    )
+    dishes = current.find_all("div", {"class": "element description col-md-4 col-print-5"})
     for dish in dishes:
         data["menu"].append(dish.get_text().strip().replace("\n", " "))
 
@@ -330,7 +328,7 @@ def parse_livet(res_data):
     month = get_month()
     month = f"[{month[0]}{month[0].upper()}]{month[1:]}"
     re_today = f"{weekday} {get_day()} {month}"
-    
+
     started = False
     for tag in content.find_all(("strong", "ul")):
         if tag.find(text=re.compile(re_today)):
@@ -381,7 +379,7 @@ def parse_rudbeck(res_data):
     for entry in menu_part.find_all("p"):
         if "class" not in entry.attrs:
             text = entry.text.strip()
-            if text[0] == '-':
+            if text[0] == "-":
                 text = text[1:].lstrip()
             data["menu"].append(text)
     return data
