@@ -14,6 +14,18 @@
     },
     {
       "coordinate": [
+        59.35039,
+        18.02265
+      ],
+      "homepage": "",
+      "identifier": "delta",
+      "menuUrl": "",
+      "name": "Café Delta",
+      "osm": "https://www.openstreetmap.org/#map=19/59.35039/18.02265",
+      "region": "Stockholm"
+    },
+    {
+      "coordinate": [
         59.84292,
         17.64129
       ],
