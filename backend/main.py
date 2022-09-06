@@ -56,26 +56,23 @@ def read_restaurants(intext: str) -> dict:
 
 REST_DATA = read_restaurants(open(REST_FILENAME).read())
 
-# works as ordered dict as well, but must be _ordered_
 MAPPER = {
-    "jorpes": ps.parse_jorpes,
+    "bikupan": ps.parse_bikupan,
+    "biomedicum": ps.parse_biomedicum,
+    "delta": ps.parse_delta,
+    "dufva": ps.parse_dufva,
     "glada": ps.parse_glada,
     "haga": ps.parse_haga,
-    "delta": ps.parse_delta,
+    "hubben": ps.parse_hubben,
     "jons": ps.parse_jons,
+    "jorpes": ps.parse_jorpes,
     "livet": ps.parse_livet,
     "nanna": ps.parse_nanna,
-    "svarta": ps.parse_svarta,
-    "bikupan": ps.parse_bikupan,
-    "dufva": ps.parse_dufva,
-    "hubben": ps.parse_hubben,
     "rudbeck": ps.parse_rudbeck,
+    "street": ps.parse_street,
+    "svarta": ps.parse_svarta,
     "tallrik": ps.parse_tallrik,
 }
-
-KI = ("jorpes", "glada", "haga", "hjulet", "jons", "livet", "nanna", "svarta")
-
-UU = ("bikupan", "dufva", "hubben", "rudbeck", "tallrik")
 
 
 def activate_parsers(restaurants, restaurant_data):

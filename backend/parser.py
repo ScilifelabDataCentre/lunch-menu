@@ -215,6 +215,14 @@ def parse_bikupan(res_data: dict) -> dict:
 
 
 @restaurant
+def parse_biomedicum(res_data):
+    """
+    No homepage for Café Biomedicum.
+    """
+    return {"menu": []}
+
+
+@restaurant
 def parse_delta(res_data):
     """
     No homepage for Café Delta.
@@ -377,6 +385,16 @@ def parse_rudbeck(res_data):
                 text = text[1:].lstrip()
             data["menu"].append(text)
     return data
+
+
+@restaurant
+def parse_street(res_data):
+    """
+    Parse the menu of STHLM Street Food.
+
+    Image-based menu, i.e. no parser.
+    """
+    return {"menu": []}
 
 
 @restaurant
