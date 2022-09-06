@@ -5,7 +5,7 @@ import flask_caching
 import flask_cors
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-import main
+import utils
 import slack
 
 app = flask.Flask(__name__)
