@@ -5,7 +5,7 @@ import os
 
 import flask
 
-import main
+import utils
 
 
 blueprint = flask.Blueprint("slack", __name__)  # pylint: disable=invalid-name
@@ -49,9 +49,7 @@ def handle_slack_command():
     if not identifiers:
         text = list_identifiers()
 
-    response = {
-        "blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": text}}]
-    }
+    response = {"blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": text}}]}
     return flask.jsonify(response)
 
 
