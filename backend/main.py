@@ -54,6 +54,7 @@ def read_restaurants(intext: str) -> dict:
         data[entry["identifier"]] = entry
     return data
 
+
 REST_DATA = read_restaurants(open(REST_FILENAME).read())
 
 MAPPER = {
@@ -82,9 +83,7 @@ def activate_parsers(restaurants, restaurant_data):
     output = []
     for restaurant in restaurants:
         data = MAPPER[restaurant](restaurant_data[restaurant])
-        output.append(
-            f"""<div class="title"><a href="{data['url']}">{data['title']}</a>"""
-        )
+        output.append(f"""<div class="title"><a href="{data['url']}">{data['title']}</a>""")
         output.append(f"""(<a href="{data['map_url']}">{data['location']}</a>)</div>""")
         if "menu" in data:
             output.append('<div class="menu">')
@@ -110,109 +109,3 @@ def list_restaurants():
     List all supported restaurants.
     """
     return list(REST_DATA.values())
-
-
-def page_end():
-    """
-    Print the closure of tags etc
-    """
-    lines = list()
-    lines.append(
-        '<div class="endnote">Code available at '
-        + '<a href="https://github.com/talavis/lunch-menu">'
-        + "Github</a>. Patches are very welcome.</div>"
-    )
-    lines.append("</body>")
-    lines.append("</html>")
-    return lines
-
-
-def page_start(weekday, day, month):
-    """
-    Print the initialisation of the page
-    """
-    lines = list()
-    lines.append("<html>")
-    lines.append("<head>")
-    date = weekday.capitalize() + " " + str(day) + " " + str(month)
-    lines.append("<title>Dagens mat - {}</title>".format(date))
-    lines.append('<link href="styles.css" rel="stylesheet" type="text/css">')
-    lines.append('<style type="text/css"></style>')
-    lines.append("</head>")
-    lines.append("<body>")
-    # page formatting
-    lines.append("")
-    return lines
-
-
-def parse_restaurant_names(rest_names):
-    """
-    Decide what restaurants to generate menus for
-    """
-    restaurants = list()
-    for param in rest_names:
-        if param not in KI and param not in UU:
-            raise ValueError("{} not a valid restaurant".format(param))
-        restaurants.append(param.lower())
-    return restaurants
-
-
-def print_usage(supported):
-    """
-    Print description of syntax
-    """
-    sys.stderr.write("Usage: {} restaurant1 [...] \n".format(sys.argv[0]))
-    sys.stderr.write("Supported restaurants: {}\n".format(", ".join(sorted(supported))))
-    sys.stderr.write("Write all to generate all supported restaurants\n")
-
-
-def gen_ki_menu():
-    """
-    Generate a menu for restaurants at KI
-    """
-    output = ""
-    output += "\n".join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(KI, REST_DATA)
-    output += "\n".join(page_end())
-    return output
-
-
-def gen_uu_menu():
-    """
-    Generate a menu for restaurants at UU
-    """
-    output = ""
-    output += "\n".join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month()))
-    output += activate_parsers(UU, REST_DATA)
-    output += "\n".join(page_end())
-
-    sys.stderr.write(output + "\n")
-    return output
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2 or "-h" in sys.argv:
-        print_usage(KI + UU)
-        sys.exit()
-
-    REST_NAMES_IN = tuple()
-    if "all" in sys.argv[1:]:
-        REST_NAMES_IN += KI + UU
-    elif "ki" in sys.argv[1:]:
-        REST_NAMES_IN += KI
-    elif "uu" in sys.argv[1:]:
-        REST_NAMES_IN += UU
-    else:
-        REST_NAMES_IN = [param for param in sys.argv[1:] if param != "-r"]
-
-    try:
-        REST_NAMES = parse_restaurant_names(REST_NAMES_IN)
-    except ValueError as err:
-        sys.stderr.write("E: {}\n".format(err))
-        print_usage((x for x in MAPPER))
-        sys.exit(1)
-
-    # print the menus
-    print("\n".join(page_start(ps.get_weekday(), str(ps.get_day()), ps.get_month())))
-    print(activate_parsers(REST_NAMES, REST_DATA))
-    print("\n".join(page_end()))
