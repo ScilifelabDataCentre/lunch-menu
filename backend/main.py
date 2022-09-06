@@ -61,7 +61,7 @@ MAPPER = {
     "jorpes": ps.parse_jorpes,
     "glada": ps.parse_glada,
     "haga": ps.parse_haga,
-    "hjulet": ps.parse_hjulet,
+    "delta": ps.parse_delta,
     "jons": ps.parse_jons,
     "livet": ps.parse_livet,
     "nanna": ps.parse_nanna,
