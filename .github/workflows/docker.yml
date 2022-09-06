@@ -69,16 +69,6 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-      - name: ensure lowercase name
-        run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-      - name: Build for scan
-        uses: docker/build-push-action@v3
-        with:
-          file: ${{ matrix.dockerfile }}
-          context: .
-          push: false
-          target: production
-          tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:sha-${{ github.sha }}
       - name: Build and Publish
         uses: docker/build-push-action@v3
         with:
