@@ -31,7 +31,7 @@ def list_entities():
 def list_restaurants():
     return flask.jsonify(
         {
-            "restaurants": main.list_restaurants(),
+            "restaurants": utils.list_restaurants(),
             "url": flask.url_for("list_restaurants", _external=True),
         }
     )
@@ -40,7 +40,7 @@ def list_restaurants():
 @app.route("/api/restaurant/<name>")
 @cache.cached(timeout=10800)
 def get_restaurant(name):
-    data = dict(main.get_restaurant(name))
+    data = dict(utils.get_restaurant(name))
     if not data:
         flask.abort(status=404)
     data["menu"] = [{"dish": entry} for entry in data["menu"]]
