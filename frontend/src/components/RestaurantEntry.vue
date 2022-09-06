@@ -7,8 +7,8 @@
              no-wrap
              text-color="info"
              type="a"
-             :href="restaurantBase.homepage"
-             icon-right="las la-external-link-alt"
+             :href="restaurantBase.homepage.length ? restaurantBase.homepage : '#'"
+             :icon-right="restaurantBase.homepage.length ? 'las la-external-link-alt' : ''"
              :label="restaurantBase.name" />
       <q-space />
       

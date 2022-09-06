@@ -2,7 +2,7 @@
   "restaurants": [
     {
       "coordinate": [
-        59.8422,
+        59.84220,
         17.63403
       ],
       "homepage": "https://www.hors.se/uppsala/17/3/restaurang-bikupan/",
@@ -11,6 +11,30 @@
       "name": "Restaurang Bikupan",
       "osm": "https://www.openstreetmap.org/#map=18/59.84186/17.63407",
       "region": "Uppsala"
+    },
+    {
+      "coordinate": [
+        59.34910,
+        18.02600
+      ],
+      "homepage": "",
+      "identifier": "biomedicum",
+      "menuUrl": "",
+      "name": "Café Biomedicum",
+      "osm": "https://www.openstreetmap.org/#map=19/59.34910/18.02600",
+      "region": "Solna"
+    },
+    {
+      "coordinate": [
+        59.35039,
+        18.02265
+      ],
+      "homepage": "",
+      "identifier": "delta",
+      "menuUrl": "",
+      "name": "Café Delta",
+      "osm": "https://www.openstreetmap.org/#map=19/59.35039/18.02265",
+      "region": "Solna"
     },
     {
       "coordinate": [
@@ -41,9 +65,9 @@
         59.34941,
         18.02116
       ],
-      "homepage": "http://orenib.se/haga_gk2.pdf",
+      "homepage": "",
       "identifier": "haga",
-      "menuUrl": "http://orenib.se/haga_gk2.pdf",
+      "menuUrl": "",
       "name": "Haga gatuk\u00f6k",
       "osm": "https://www.openstreetmap.org/#map=19/59.34931/18.02095",
       "region": "Solna"
@@ -119,6 +143,18 @@
       "name": "Bistro Rudbeck",
       "osm": "https://www.openstreetmap.org/#map=19/59.84518/17.63968",
       "region": "Uppsala"
+    },
+    {
+      "coordinate": [
+        59.34747,
+        18.02653
+      ],
+      "homepage": "http://www.sthlmstreetlunch.com/",
+      "identifier": "street",
+      "menuUrl": "http://www.sthlmstreetlunch.com/",
+      "name": "STHLM Street Lunch",
+      "osm": "https://www.openstreetmap.org/#map=19/59.34747/18.02653",
+      "region": "Solna"
     },
     {
       "coordinate": [
