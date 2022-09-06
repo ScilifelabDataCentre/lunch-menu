@@ -310,8 +310,7 @@ def parse_jorpes(res_data):
     """
     Parse the menu of Resturang Jorpes
     """
-    data = {"menu": []}
-    return data
+    return {"menu": []}
 
 
 @restaurant
