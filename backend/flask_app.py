@@ -18,7 +18,7 @@ if os.environ.get("REVERSE_PROXY", False):
 app.register_blueprint(slack.blueprint, url_prefix="/api/slack")
 
 
-@app.route("/api/")
+@app.route("/api")
 @cache.cached(timeout=10800)
 def list_entities():
     return flask.jsonify(
