@@ -47,3 +47,12 @@ def get_restaurant(name):
     return flask.jsonify(
         {"restaurant": data, "url": flask.url_for("get_restaurant", name=name, _external=True)}
     )
+
+
+@app.route("/api/version")
+@cache.cached()
+def get_backend_version():
+    ver = os.environ.get("VERSION", "")
+    return flask.jsonify(
+        {"version": ver, "url": flask.url_for("get_backend_version", _external=True)}
+    )
