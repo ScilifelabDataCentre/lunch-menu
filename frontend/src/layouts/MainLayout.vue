@@ -16,6 +16,9 @@
 
       <q-space />
 
+      <div class="q-mr-xl text-weight-bold text-caption">
+	{{ version }}
+      </div>
       <q-btn flat
              round
              dense
@@ -74,6 +77,7 @@ export default {
   data () {
     return {
       today: '',
+      version: process.env.VERSION,
     }
   },
 

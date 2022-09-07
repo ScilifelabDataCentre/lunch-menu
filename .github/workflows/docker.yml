@@ -75,6 +75,7 @@ jobs:
           file: ${{ matrix.dockerfile }}
           context: .
           push: true
+          build-args: version=${{ github.ref_name }}
           # Set to wanted target, or remove if you do not use targets
           target: production
           tags: ${{ steps.meta.outputs.tags }}
