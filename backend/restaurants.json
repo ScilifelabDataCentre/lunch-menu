@@ -110,6 +110,18 @@
     },
     {
       "coordinate": [
+        59.84827,
+        17.63534
+      ],
+      "homepage": "https://hotelvonkraemer.se/en/restaurant/lunch/",
+      "identifier": "kraemer",
+      "menuUrl": "https://hotelvonkraemer.se/en/restaurant/lunch/",
+      "name": "Hotel von Kraemer",
+      "osm": "https://www.openstreetmap.org/#map=19/59.84827/17.63534",
+      "region": "Uppsala"
+    },
+    {
+      "coordinate": [
         59.34833,
         18.03035
       ],
