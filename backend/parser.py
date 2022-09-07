@@ -316,6 +316,14 @@ def parse_jorpes(res_data):
 
 
 @restaurant
+def parse_kraemer(res_data):
+    """
+    No menu for Hotel von Kraemer.
+    """
+    return {"menu": []}
+
+
+@restaurant
 def parse_livet(res_data):
     """
     Parse the menu of Livet

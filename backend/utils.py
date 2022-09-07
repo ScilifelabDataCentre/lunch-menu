@@ -67,6 +67,7 @@ MAPPER = {
     "hubben": ps.parse_hubben,
     "jons": ps.parse_jons,
     "jorpes": ps.parse_jorpes,
+    "kraemer": ps.parse_kraemer,
     "livet": ps.parse_livet,
     "nanna": ps.parse_nanna,
     "rudbeck": ps.parse_rudbeck,
