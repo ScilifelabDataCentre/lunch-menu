@@ -370,6 +370,17 @@ def parse_nanna(res_data):
         else:
             if tag.name == "strong" and day in tag.text:
                 current_day = True
+    if not data["menu"]:
+        for tag in menu_part.find_all(("ul", "strong", "p")):
+            if current_day:
+                if tag.name == "ul":
+                    for subtag in tag.children:
+                        if subtag.text.strip() and next(tag.children).name != "em":
+                            data["menu"].append(subtag.text.strip())
+                    break
+            else:
+                if tag.name in ("strong", "p") and day in tag.text:
+                    current_day = True
 
     return data
 
