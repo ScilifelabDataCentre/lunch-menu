@@ -134,6 +134,18 @@
     },
     {
       "coordinate": [
+	59.35093,
+	18.02430
+      ],
+      "homepage": "https://www.maethaiexpress.se/mae-thai-karolinska/",
+      "identifier": "maethai",
+      "menuUrl": "https://www.maethaiexpress.se/thai-sushi-meny/",
+      "name": "Mai Thai Express",
+      "osm": "https://www.openstreetmap.org/#map=19/59.35093/18.02430",
+      "region": "Solna"
+    },
+    {
+      "coordinate": [
         59.34867,
         18.0278
       ],

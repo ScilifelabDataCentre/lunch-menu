@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2014-2021, Linus Östberg and contributors
+# Copyright (c) 2014-2022, Linus Östberg and contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -69,6 +69,7 @@ MAPPER = {
     "jorpes": ps.parse_jorpes,
     "kraemer": ps.parse_kraemer,
     "livet": ps.parse_livet,
+    "maethai": ps.parse_maethai,
     "nanna": ps.parse_nanna,
     "rudbeck": ps.parse_rudbeck,
     "street": ps.parse_street,
