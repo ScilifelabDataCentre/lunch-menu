@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2014-2021, Linus Östberg and contributors
+# Copyright (c) 2014-2022, Linus Östberg and contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -347,6 +347,14 @@ def parse_livet(res_data):
                 data["menu"] = [entry.text for entry in tag.find_all("li") if entry.text.strip()]
             break
     return data
+
+
+@restaurant
+def parse_maethai(res_data):
+    """
+    Parse the menu of Mai Thai Express
+    """
+    return {"menu": []}
 
 
 @restaurant
