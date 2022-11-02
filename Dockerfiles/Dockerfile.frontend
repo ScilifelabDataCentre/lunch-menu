@@ -20,12 +20,12 @@ ENV VERSION=$version
 
 RUN quasar build
 
-FROM nginx:alpine as production
+FROM nginxinc/nginx-unprivileged:alpine as production
 
 COPY --from=build /code/dist/spa/ /usr/share/nginx/html/
 COPY ./Dockerfiles/nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 
 FROM base as dev
