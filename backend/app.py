@@ -1,16 +1,26 @@
 import os
 
-from fastapi import FastAPI
-
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 from fastapi_cache.decorator import cache
-
 from starlette_context import middleware, plugins
 
 import utils
 
-app = FastAPI()
+
+app = FastAPI(openapi_url="/api/openapi.json",
+              docs_url="/api/docs",
+              redoc_url="/api/redoc")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 if os.environ.get("REVERSE_PROXY", False):
     app.add_middleware(
@@ -22,15 +32,16 @@ if os.environ.get("REVERSE_PROXY", False):
 
 
 @app.get("/api")
-@cache(expires=360000)
+@cache(expire=360000)
 async def list_entities():
-    return {"entities": ["restaurant"]}
+    return {"documentation_swagger": app.url_path_for("swagger_ui_html"),
+            "documentation_redoc": app.url_path_for("redoc_html"),
+            "openapi": app.url_path_for("openapi"),}
 
 
 @app.get("/api/restaurant")
-@cache(expires=360000)
+@cache(expire=360000)
 async def list_restaurants():
-    print("asd")
     return {
         "restaurants": utils.list_restaurants(),
     }
@@ -39,6 +50,7 @@ async def list_restaurants():
 @app.get("/api/restaurant/{name}")
 @cache(expire=10800)
 async def get_restaurant(name):
+    print("not cached")
     data = dict(utils.get_restaurant(name))
     if not data:
         flask.abort(status=404)
@@ -47,7 +59,7 @@ async def get_restaurant(name):
 
 
 @app.get("/api/version")
-@cache(expires=360000)
+@cache(expire=360000)
 async def get_backend_version():
     ver = os.environ.get("VERSION", "")
     return {"version": ver,}
