@@ -9,7 +9,8 @@ on:
   # generate image whenever there is a push to the listed branches
   push:
     branches:
-      - master
+      - main
+      - fastapi
   # generate images for releases, using the tag name
   # the newest one will be latest as well
   release:
