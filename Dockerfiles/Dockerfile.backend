@@ -2,6 +2,8 @@ FROM python:3.11-alpine AS base
 
 RUN apk update && apk upgrade && apk add build-base
 
+LABEL org.opencontainers.image.description "Menu aggregator - backend (Fastapi instead of Flask)"
+
 RUN mkdir /code
 COPY ./backend/requirements.txt /code/
 COPY ./backend/restaurants.json /code/
