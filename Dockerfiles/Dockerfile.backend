@@ -1,6 +1,8 @@
-FROM python:3.10-alpine AS base
+FROM python:3.11-alpine AS base
 
-RUN apk update && apk upgrade
+RUN apk update && apk upgrade && apk add build-base
+
+LABEL org.opencontainers.image.description "Menu aggregator - backend (Fastapi instead of Flask)"
 
 RUN mkdir /code
 COPY ./backend/requirements.txt /code/
@@ -8,21 +10,22 @@ COPY ./backend/restaurants.json /code/
 WORKDIR /code
 
 RUN pip install -r requirements.txt
-RUN pip install gunicorn
-
 COPY ./backend/*.py /code/
+
+ENV UVICORN_HOST=0.0.0.0
+ENV UVICORN_PORT=8000
+
+CMD ["uvicorn", "app:app"]
+
 
 FROM base as dev
 
-CMD ["flask", "run", "-h", "0.0.0.0", "--port", "5000"]
+ENV VERSION=dev
+ENV UVICORN_RELOAD=1
+
 
 FROM base as production
 
 ARG version
 ENV VERSION=$version
-
-ENV GUNICORN_CMD_ARGS "--bind=0.0.0.0:8000 --workers=2 --thread=4 --worker-class=gthread --forwarded-allow-ips='*' --access-logfile -"
-
-CMD ["gunicorn","flask_app:app"]
-
 EXPOSE 8000

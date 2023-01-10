@@ -70,7 +70,6 @@ MAPPER = {
     "kraemer": ps.parse_kraemer,
     "livet": ps.parse_livet,
     "maethai": ps.parse_maethai,
-    "nanna": ps.parse_nanna,
     "rudbeck": ps.parse_rudbeck,
     "street": ps.parse_street,
     "svarta": ps.parse_svarta,

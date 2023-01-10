@@ -2,6 +2,8 @@ FROM node:18-alpine as base
 
 RUN yarn global add @quasar/cli
 
+LABEL org.opencontainers.image.description "Menu aggregator - frontend"
+
 COPY ./frontend/package.json /package.json
 COPY ./frontend/yarn.lock /yarn.lock
 WORKDIR /
@@ -11,8 +13,6 @@ COPY ./frontend /code
 RUN mv /node_modules /code/
 WORKDIR /code
 
-
-
 FROM base as build
 
 ARG version
@@ -20,12 +20,12 @@ ENV VERSION=$version
 
 RUN quasar build
 
-FROM nginx:alpine as production
+FROM nginxinc/nginx-unprivileged:alpine as production
 
 COPY --from=build /code/dist/spa/ /usr/share/nginx/html/
-COPY ./Dockerfiles/nginx.conf /etc/nginx/nginx.conf
+COPY ./Dockerfiles/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 
 FROM base as dev
