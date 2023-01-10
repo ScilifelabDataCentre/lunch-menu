@@ -358,42 +358,6 @@ def parse_maethai(res_data):
 
 
 @restaurant
-def parse_nanna(res_data):
-    """Parse the menu of Nanna Svartz."""
-    data = {"menu": []}
-    soup = get_parser(res_data["menuUrl"])
-
-    menu_part = soup.find("article", {"class": "article"}).find("div", {"class": "text"})
-
-    day = f"{get_weekday().capitalize()} {str(get_day())} {get_month()}"
-    current_day = False
-    for tag in menu_part.find_all(("p", "strong")):
-        if current_day:
-            if subtag := next(tag.children):
-                if subtag.name == "strong":
-                    break
-            # English menu is written in italic
-            if tag.text.strip() and next(tag.children).name != "em":
-                data["menu"].append(tag.text)
-        else:
-            if tag.name == "strong" and day in tag.text:
-                current_day = True
-    if not data["menu"]:
-        for tag in menu_part.find_all(("ul", "strong", "p")):
-            if current_day:
-                if tag.name == "ul":
-                    for subtag in tag.children:
-                        if subtag.text.strip() and next(tag.children).name != "em":
-                            data["menu"].append(subtag.text.strip())
-                    break
-            else:
-                if tag.name in ("strong", "p") and day in tag.text:
-                    current_day = True
-
-    return data
-
-
-@restaurant
 def parse_rudbeck(res_data):
     """
     Parse the menu of Bistro Rudbeck
