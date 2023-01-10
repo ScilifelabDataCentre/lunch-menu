@@ -10,7 +10,6 @@ on:
   push:
     branches:
       - main
-      - fastapi
   # generate images for releases, using the tag name
   # the newest one will be latest as well
   release:
@@ -24,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     # Cancel earlier job if there is a new one for the same branch/release
     concurrency:
-      group: ${{ github.ref }}-docker-build
+      group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}: ${{ matrix.dockerfile }}'
       cancel-in-progress: true
     # Define the images/tags to build; will run in parallell
     strategy:
