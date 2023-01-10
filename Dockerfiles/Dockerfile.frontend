@@ -13,8 +13,6 @@ COPY ./frontend /code
 RUN mv /node_modules /code/
 WORKDIR /code
 
-
-
 FROM base as build
 
 ARG version
