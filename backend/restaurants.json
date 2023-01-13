@@ -180,17 +180,5 @@
       "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02804",
       "region": "Solna"
     },
-    {
-      "coordinate": [
-        59.84248,
-        17.64046
-      ],
-      "homepage": "https://www.compass-group.se/MatDryck/Restauranger/uppsala/tallriket/",
-      "identifier": "tallrik",
-      "menuUrl": "https://eurest.mashie.com/public/menu/ulls+restaurang/f2caeaeb?country=se",
-      "name": "Tallriket",
-      "osm": "https://www.openstreetmap.org/#map=19/59.84248/17.64046",
-      "region": "Uppsala"
-    }
   ]
 }

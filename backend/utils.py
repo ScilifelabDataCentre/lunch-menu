@@ -73,7 +73,6 @@ MAPPER = {
     "rudbeck": ps.parse_rudbeck,
     "street": ps.parse_street,
     "svarta": ps.parse_svarta,
-    "tallrik": ps.parse_tallrik,
 }
 
 
