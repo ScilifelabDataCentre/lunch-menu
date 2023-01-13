@@ -17,9 +17,9 @@
         59.34910,
         18.02600
       ],
-      "homepage": "",
+      "homepage": "https://ki.hors.se/17/5/bio-medicum/",
       "identifier": "biomedicum",
-      "menuUrl": "",
+      "menuUrl": "https://ki.hors.se/17/5/bio-medicum/",
       "name": "Café Biomedicum",
       "osm": "https://www.openstreetmap.org/#map=19/59.34910/18.02600",
       "region": "Solna"
@@ -101,9 +101,9 @@
         59.34849,
         18.02719
       ],
-      "homepage": "https://restaurang-ns.ki.se/cafe-erik-jorpes/",
+      "homepage": "https://ki.hors.se/17/4/cafe-erik-jorpes/",
       "identifier": "jorpes",
-      "menuUrl": "https://restaurang-ns.ki.se/cafe-erik-jorpes/",
+      "menuUrl": "https://ki.hors.se/17/4/cafe-erik-jorpes/",
       "name": "Caf\u00e9 Erik Jorpes",
       "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02721",
       "region": "Solna"
@@ -146,6 +146,18 @@
     },
     {
       "coordinate": [
+        59.34867,
+        18.0278
+      ],
+      "homepage": "https://ki.hors.se/17/3/restaurang-nanna-svartz/",
+      "identifier": "nanna",
+      "menuUrl": "https://ki.hors.se/17/3/restaurang-nanna-svartz/",
+      "name": "Restaurang Nanna Svartz",
+      "osm": "https://www.openstreetmap.org/#map=19/59.34848/18.02807",
+      "region": "Solna"
+    },
+    {
+      "coordinate": [
         59.84537,
         17.63998
       ],
@@ -173,9 +185,9 @@
         59.34858,
         18.0277
       ],
-      "homepage": "https://restaurang-ns.ki.se/svarta-rafven/",
+      "homepage": "https://ki.hors.se/17/7/svarta-rafven/",
       "identifier": "svarta",
-      "menuUrl": "https://restaurang-ns.ki.se/svarta-rafven/",
+      "menuUrl": "https://ki.hors.se/17/7/svarta-rafven/",
       "name": "Svarta R\u00e4fven",
       "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02804",
       "region": "Solna"
