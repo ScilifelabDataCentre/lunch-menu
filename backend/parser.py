@@ -358,6 +358,14 @@ def parse_maethai(res_data):
 
 
 @restaurant
+def parse_nanna(res_data):
+    """
+    Parse the menu of Nanna Svartz.
+    """
+    return {"menu": []}
+
+
+@restaurant
 def parse_rudbeck(res_data):
     """
     Parse the menu of Bistro Rudbeck
