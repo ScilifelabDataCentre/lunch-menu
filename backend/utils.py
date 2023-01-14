@@ -71,6 +71,7 @@ MAPPER = {
     "livet": ps.parse_livet,
     "maethai": ps.parse_maethai,
     "nanna": ps.parse_nanna,
+    "omni": ps.parse_omni,
     "rudbeck": ps.parse_rudbeck,
     "street": ps.parse_street,
     "svarta": ps.parse_svarta,

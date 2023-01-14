@@ -153,7 +153,19 @@
       "identifier": "nanna",
       "menuUrl": "https://ki.hors.se/17/3/restaurang-nanna-svartz/",
       "name": "Restaurang Nanna Svartz",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34848/18.02807",
+      "osm": "https://www.openstreetmap.org/#map=19/59.34867/18.02780",
+      "region": "Solna"
+    },
+    {
+      "coordinate": [
+	59.34709,
+	18.03335
+      ],
+      "homepage": "https://restaurangomni.se/dagens-lunch/",
+      "identifier": "omni",
+      "menuUrl": "https://restaurangomni.se/dagens-lunch/",
+      "name": "Restaurang Omni",
+      "osm": "https://www.openstreetmap.org/#map=19/59.34709/18.03335",
       "region": "Solna"
     },
     {
@@ -191,6 +203,6 @@
       "name": "Svarta R\u00e4fven",
       "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02804",
       "region": "Solna"
-    },
+    }
   ]
 }
