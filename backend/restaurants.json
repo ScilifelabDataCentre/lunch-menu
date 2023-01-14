@@ -50,6 +50,18 @@
     },
     {
       "coordinate": [
+	59.83928,
+	17.63800
+      ],
+      "homepage": "https://www.elmauppsala.se/",
+      "identifier": "elma",
+      "menuUrl": "https://www.elmauppsala.se/",
+      "name": "Elma",
+      "osm": "https://www.openstreetmap.org/#map=18/59.83928/17.63800",
+      "region": "Uppsala"
+    },
+    {
+      "coordinate": [
         59.35125,
         18.02999
       ],
