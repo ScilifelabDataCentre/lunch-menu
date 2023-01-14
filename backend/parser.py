@@ -56,7 +56,7 @@ def restaurant(func):
         try:
             data.update(func(res_data))
         except Exception as err:
-            sys.stderr.write(f"E in {func.__name__}: {err}\n")
+            sys.stderr.write(f"Error in {func.__name__}: {err}\n")
             data.update({"menu": []})
             pass
         return data
@@ -363,6 +363,31 @@ def parse_nanna(res_data):
     Parse the menu of Nanna Svartz.
     """
     return {"menu": []}
+
+
+@restaurant
+def parse_omni(res_data):
+    """
+    Parse the menu of Omni.
+    """
+    data = {"menu": []}
+    soup = get_parser(res_data["menuUrl"])
+
+    days = soup.find_all("thead", {"class": "lunch-day-header"})
+
+    wanted = f"{get_weekday()} {get_day()} {get_month()}"
+
+    for day in days:
+        if wanted in day.text.lower():
+            next_tag = day
+            while next_tag.name != "tbody":
+                next_tag = next_tag.nextSibling
+            data["menu"] = [
+                tag.text.strip() for tag in next_tag.find_all("td", {"class": "td_title"})
+            ]
+            break
+
+    return data
 
 
 @restaurant
