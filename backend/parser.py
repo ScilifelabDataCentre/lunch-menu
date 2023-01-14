@@ -257,6 +257,42 @@ def parse_dufva(res_data):
 
 
 @restaurant
+def parse_elma(res_data):
+    """Parse the menu of Elma."""
+    data = {"menu": []}
+    soup = get_parser(res_data["menuUrl"])
+
+    week_text = soup.find("div", {"class": "dishes-wrapper"}).find("h2").text.strip()
+    if week_text == f"LUNCH  V.{get_week()}":
+        days = soup.find("div", {"class": "dishes-wrapper"}).find_all(
+            "div", {"class": "dish--content"}
+        )
+        ref_weekday = get_weekday()
+
+        for day in days:
+            weekday = day.find("h2").text.strip().lower()
+            if ref_weekday == "måndag":
+                weekday = weekday.replace(f"a{chr(778)}", "å")  # special encoding on the website
+            if weekday not in ("lördag", "söndag") and weekday in (
+                ref_weekday,
+                "veckans vegetariska",
+                "veckans pizza",
+            ):
+                # dish is first title
+                main = day.find("h3", {"class": "dish--title"}).text.strip()
+                # followed by extras, potentially multiple tags
+                extra = " ".join(
+                    [part.text.strip() for part in day.find_all("p", {"class": "dish--desc"})]
+                ).strip()
+                dish = main
+                if extra:
+                    dish += " " + extra
+                data["menu"].append(dish)
+
+    return data
+
+
+@restaurant
 def parse_glada(res_data):
     """
     Parse the menu of Glada restaurangen
