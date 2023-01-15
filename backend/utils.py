@@ -62,6 +62,7 @@ MAPPER = {
     "biomedicum": ps.parse_biomedicum,
     "delta": ps.parse_delta,
     "dufva": ps.parse_dufva,
+    "elma": ps.parse_elma,
     "glada": ps.parse_glada,
     "haga": ps.parse_haga,
     "hubben": ps.parse_hubben,

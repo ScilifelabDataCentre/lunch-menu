@@ -1,16 +1,16 @@
 import os
 
-from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 from fastapi_cache.decorator import cache
 from starlette_context import middleware, plugins
+import fastapi
 
 import utils
 
 
-app = FastAPI(openapi_url="/api/openapi.json",
+app = fastapi.FastAPI(openapi_url="/api/openapi.json",
               docs_url="/api/docs",
               redoc_url="/api/redoc")
 
@@ -50,10 +50,9 @@ async def list_restaurants():
 @app.get("/api/restaurant/{name}")
 @cache(expire=10800)
 async def get_restaurant(name):
-    print("not cached")
     data = dict(utils.get_restaurant(name))
     if not data:
-        flask.abort(status=404)
+        raise fastapi.HTTPException(status_code=404, detail="Restaurant not found")
     data["menu"] = [{"dish": entry} for entry in data["menu"]]
     return {"restaurant": data,}
 
