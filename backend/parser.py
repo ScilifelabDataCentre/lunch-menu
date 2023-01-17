@@ -47,11 +47,13 @@ def restaurant(func):
     """
 
     def helper(res_data):
+        map_url = ("https://www.openstreetmap.org/#map=19/"
+                   f"{res_data['coordinate'][0]}/{res_data['coordinate'][1]}")
         data = {
             "title": res_data["name"],
             "location": res_data["region"],
             "url": res_data["homepage"],
-            "map_url": res_data["osm"],
+            "map_url": map_url,
         }
         try:
             data.update(func(res_data))
