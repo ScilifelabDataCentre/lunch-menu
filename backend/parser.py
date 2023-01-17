@@ -398,7 +398,24 @@ def parse_nanna(res_data):
     """
     Parse the menu of Nanna Svartz.
     """
-    return {"menu": []}
+    data = {"menu": []}
+    soup = get_parser(res_data["menuUrl"])
+
+    weeks = soup.find_all("div", {"class": "menu-container"})
+    for week in weeks:
+        try:
+            header = week.find("h2", {"class": "section-title"}).text
+        except AttributeError:
+            continue
+        if f"Lunch vecka {get_week()}" in header:
+            entries = week.find("div", {"class": get_weekday(lang="en")}).find_all("p")
+            for entry in entries:
+                tmp = entry.get("class")
+                if tmp and "small-title" in tmp:
+                    continue
+                data["menu"].append(entry.text.strip())
+
+    return data
 
 
 @restaurant
