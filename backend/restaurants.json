@@ -9,7 +9,6 @@
       "identifier": "bikupan",
       "menuUrl": "https://www.hors.se/uppsala/17/3/restaurang-bikupan/",
       "name": "Restaurang Bikupan",
-      "osm": "https://www.openstreetmap.org/#map=18/59.84186/17.63407",
       "region": "Uppsala"
     },
     {
@@ -21,7 +20,6 @@
       "identifier": "biomedicum",
       "menuUrl": "https://ki.hors.se/17/5/bio-medicum/",
       "name": "Café Biomedicum",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34910/18.02600",
       "region": "Solna"
     },
     {
@@ -33,7 +31,6 @@
       "identifier": "delta",
       "menuUrl": "",
       "name": "Café Delta",
-      "osm": "https://www.openstreetmap.org/#map=19/59.35039/18.02265",
       "region": "Solna"
     },
     {
@@ -45,7 +42,6 @@
       "identifier": "dufva",
       "menuUrl": "https://matfest.se/veckans-lunch/",
       "name": "Sven Dufva",
-      "osm": "https://www.openstreetmap.org/#map=19/59.84298/17.64096",
       "region": "Uppsala"
     },
     {
@@ -57,7 +53,6 @@
       "identifier": "elma",
       "menuUrl": "https://www.elmauppsala.se/",
       "name": "Elma",
-      "osm": "https://www.openstreetmap.org/#map=18/59.83928/17.63800",
       "region": "Uppsala"
     },
     {
@@ -69,7 +64,6 @@
       "identifier": "glada",
       "menuUrl": "http://www.dengladarestaurangen.se/#!meny/c30g",
       "name": "Den Glada Restaurangen",
-      "osm": "http://www.openstreetmap.org/#map=19/59.35123/18.03006",
       "region": "Solna"
     },
     {
@@ -81,7 +75,6 @@
       "identifier": "haga",
       "menuUrl": "",
       "name": "Haga gatuk\u00f6k",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34931/18.02095",
       "region": "Solna"
     },
     {
@@ -93,7 +86,6 @@
       "identifier": "hubben",
       "menuUrl": "https://vasakronan.foodbycoor.se/hubben/restaurangen/restaurangens-meny",
       "name": "Restaurang Hubben",
-      "osm": "https://www.openstreetmap.org/#map=18/59.84334/17.64074",
       "region": "Uppsala"
     },
     {
@@ -105,7 +97,6 @@
       "identifier": "jons",
       "menuUrl": "https://jonsjacob.gastrogate.com/lunch/",
       "name": "J\u00f6ns Jacob ",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34673/18.02465",
       "region": "Solna"
     },
     {
@@ -117,7 +108,6 @@
       "identifier": "jorpes",
       "menuUrl": "https://ki.hors.se/17/4/cafe-erik-jorpes/",
       "name": "Caf\u00e9 Erik Jorpes",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02721",
       "region": "Solna"
     },
     {
@@ -129,7 +119,6 @@
       "identifier": "kraemer",
       "menuUrl": "https://hotelvonkraemer.se/en/restaurant/lunch/",
       "name": "Hotel von Kraemer",
-      "osm": "https://www.openstreetmap.org/#map=19/59.84827/17.63534",
       "region": "Uppsala"
     },
     {
@@ -141,7 +130,6 @@
       "identifier": "livet",
       "menuUrl": "https://www.livetbrand.com/har-finns-livet/stockholm-solna/livet-restaurant-solna/",
       "name": "Livet [Restaurant]",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34853/18.02989",
       "region": "Solna"
     },
     {
@@ -153,7 +141,6 @@
       "identifier": "maethai",
       "menuUrl": "https://www.maethaiexpress.se/thai-sushi-meny/",
       "name": "Mai Thai Express",
-      "osm": "https://www.openstreetmap.org/#map=19/59.35093/18.02430",
       "region": "Solna"
     },
     {
@@ -165,7 +152,6 @@
       "identifier": "nanna",
       "menuUrl": "https://ki.hors.se/17/3/restaurang-nanna-svartz/",
       "name": "Restaurang Nanna Svartz",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34867/18.02780",
       "region": "Solna"
     },
     {
@@ -177,7 +163,6 @@
       "identifier": "omni",
       "menuUrl": "https://restaurangomni.se/dagens-lunch/",
       "name": "Restaurang Omni",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34709/18.03335",
       "region": "Solna"
     },
     {
@@ -189,7 +174,6 @@
       "identifier": "rudbeck",
       "menuUrl": "https://www.hors.se/uppsala/17/10/bistro-rudbeck/",
       "name": "Bistro Rudbeck",
-      "osm": "https://www.openstreetmap.org/#map=19/59.84518/17.63968",
       "region": "Uppsala"
     },
     {
@@ -201,7 +185,6 @@
       "identifier": "street",
       "menuUrl": "http://www.sthlmstreetlunch.com/",
       "name": "STHLM Street Lunch",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34747/18.02653",
       "region": "Solna"
     },
     {
@@ -213,7 +196,6 @@
       "identifier": "svarta",
       "menuUrl": "https://ki.hors.se/17/7/svarta-rafven/",
       "name": "Svarta R\u00e4fven",
-      "osm": "https://www.openstreetmap.org/#map=19/59.34851/18.02804",
       "region": "Solna"
     }
   ]
