@@ -47,8 +47,10 @@ def restaurant(func):
     """
 
     def helper(res_data):
-        map_url = ("https://www.openstreetmap.org/#map=19/"
-                   f"{res_data['coordinate'][0]}/{res_data['coordinate'][1]}")
+        map_url = (
+            "https://www.openstreetmap.org/#map=19/"
+            f"{res_data['coordinate'][0]}/{res_data['coordinate'][1]}"
+        )
         data = {
             "title": res_data["name"],
             "location": res_data["region"],
@@ -397,9 +399,7 @@ def parse_maethai(res_data):
 
 @restaurant
 def parse_nanna(res_data):
-    """
-    Parse the menu of Nanna Svartz.
-    """
+    """Parse the menu of Nanna Svartz."""
     data = {"menu": []}
     soup = get_parser(res_data["menuUrl"])
 
@@ -476,7 +476,29 @@ def parse_street(res_data):
 
 @restaurant
 def parse_svarta(res_data):
-    """
-    Parse the menu of Svarta Räfven
-    """
-    return {"menu": []}
+    """Parse the menu of Svarta Räfven."""
+    data = {"menu": []}
+    soup = get_parser(res_data["menuUrl"])
+
+    weeks = soup.find_all("div", {"class": "menu-container"})
+    for week in weeks:
+        try:
+            header = week.find("h2", {"class": "section-title"}).text
+        except AttributeError:
+            continue
+        if f"Lunch vecka {get_week()}" in header:
+            entries = week.find_all("div", {"class": "menu-item"})
+            for entry in entries:
+                dish = ""
+                for row in entry.find_all("p"):
+                    p_class = row.get("class")
+                    if p_class:
+                        if "menu-en" in p_class:
+                            continue
+                        if "small-title" in p_class:
+                            dish += row.text.strip() + ": "
+                    else:
+                        dish += row.text.strip()
+                data["menu"].append(dish)
+
+    return data
