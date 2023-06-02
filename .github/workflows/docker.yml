@@ -31,11 +31,9 @@ jobs:
         include:
           - dockerfile: Dockerfiles/Dockerfile.backend
             images: |
-              docker.io/scilifelabdatacentre/menu-backend
               ghcr.io/scilifelabdatacentre/menu-backend
           - dockerfile: Dockerfiles/Dockerfile.frontend
             images: |
-              docker.io/scilifelabdatacentre/menu-frontend
               ghcr.io/scilifelabdatacentre/menu-frontend
     permissions:
       contents: read
@@ -44,13 +42,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-      # only needed when publishing to Dockerhub
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          # available in scilifelabdatacentre, ask admin for help
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
       # only needed when publishing to Github (ghcr.io)
       - name: Log in to Github Container Repository
         uses: docker/login-action@v2
