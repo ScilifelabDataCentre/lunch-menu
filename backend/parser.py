@@ -192,6 +192,7 @@ def get_year():
 
 ### date management end ###
 
+
 ### parsers start ###
 @restaurant
 def parse_bikupan(res_data: dict) -> dict:
@@ -368,25 +369,7 @@ def parse_livet(res_data):
     """
     Parse the menu of Livet
     """
-    data = {"menu": []}
-    soup = get_parser(res_data["menuUrl"])
-    content = soup.find("div", {"class": "content"})
-    weekday = get_weekday()
-    weekday = f"[{weekday[0]}{weekday[0].upper()}]{weekday[1:]}"
-    month = get_month()
-    month = f"[{month[0]}{month[0].upper()}]{month[1:]}"
-    re_today = f"{weekday} {get_day()} {month}"
-
-    started = False
-    for tag in content.find_all(("strong", "ul")):
-        if tag.find(text=re.compile(re_today)):
-            started = True
-            continue
-        if started:
-            if tag.name == "ul":
-                data["menu"] = [entry.text for entry in tag.find_all("li") if entry.text.strip()]
-            break
-    return data
+    return {"menu": []}
 
 
 @restaurant
