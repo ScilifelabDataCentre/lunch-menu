@@ -192,6 +192,7 @@ def get_year():
 
 ### date management end ###
 
+
 ### parsers start ###
 @restaurant
 def parse_bikupan(res_data: dict) -> dict:
