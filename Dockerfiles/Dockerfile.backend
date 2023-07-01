@@ -29,3 +29,5 @@ FROM base as production
 ARG version
 ENV VERSION=$version
 EXPOSE 8000
+
+USER 10000
