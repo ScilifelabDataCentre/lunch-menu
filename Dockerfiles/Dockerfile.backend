@@ -2,7 +2,7 @@ FROM python:3.11-alpine AS base
 
 RUN apk update && apk upgrade && apk add build-base
 
-LABEL org.opencontainers.image.description "Menu aggregator - backend (Fastapi instead of Flask)"
+LABEL org.opencontainers.image.description "The backend part of the SciLifeLab lunch menu aggregator."
 
 RUN mkdir /code
 COPY ./backend/requirements.txt /code/
