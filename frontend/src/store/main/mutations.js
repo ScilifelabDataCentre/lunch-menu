@@ -1,5 +1,6 @@
 export function updateRestaurants (state, payload) {
-  state.restaurants = payload;
+  if(typeof payload !== "undefined")
+    state.restaurants = payload;
 }
 
 export function updateRegion (state, payload) {
