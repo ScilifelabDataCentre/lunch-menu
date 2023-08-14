@@ -1,6 +1,6 @@
-FROM python:3.11-alpine AS base
+FROM python:3.11 AS base
 
-RUN apk update && apk upgrade && apk add build-base
+RUN apt update && apt upgrade -y
 
 LABEL org.opencontainers.image.description "The backend part of the SciLifeLab lunch menu aggregator."
 
@@ -29,5 +29,3 @@ FROM base as production
 ARG version
 ENV VERSION=$version
 EXPOSE 8000
-
-USER 10000
