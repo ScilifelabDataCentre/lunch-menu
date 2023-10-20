@@ -1,14 +1,14 @@
 Lunch Menu Aggregator
 =====================
 
-This is the code for a webpage listing the menus of the restaurants near SciLifeLab Solna (KI) and Uppsala (BMC).
+This is the code for a web page listing the menus of the restaurants near SciLifeLab Solna (KI) and Uppsala (BMC).
 
 The first code was written in 2010 by [@talavis](https://github.com/talavis), who is still the main developer. There are also multiple contributors of e.g. bugfixes and new parsers.
 
 There are three parts:
 
-* A parser that can be imported in Python. It uses Requests and BeatifulSoup to download and parse the restaurant web pages.
-* A backend that makes the menus available via via an API built on top of Flask.
+* A parser that can be imported in Python. It uses Requests and BeautifulSoup to download and parse the restaurant web pages.
+* A backend that makes the menus available via an API built on top of Flask.
 * A frontend that presents the menus in a more readable format (by making requests to the backend). It is written in Quasar (Vue).
 
 
